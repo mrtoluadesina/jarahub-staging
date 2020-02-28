@@ -41,10 +41,15 @@ import {
 import { ReviewType, ReviewBody } from './types/review';
 import { CategoryOutput } from './types/category';
 import { GetAllCategories } from './controllers/category.controller';
-import { ProductByCategoryType, SingleProductType } from './types/product';
+import {
+  ProductByCategoryType,
+  SingleProductType,
+  ProductByCategoryPayload,
+} from './types/product';
 import {
   filterByCategory,
   GetASingleProduct,
+  getAllProducts,
 } from './controllers/product.controller';
 
 const query = new GraphQLObjectType({
@@ -130,6 +135,13 @@ const query = new GraphQLObjectType({
         },
       },
       resolve: async (_, { productId }) => await GetASingleProduct(productId),
+    },
+    getProduct: {
+      type: new GraphQLList(ProductByCategoryPayload),
+      description: 'Get all products',
+      resolve: async () => {
+        return await getAllProducts();
+      },
     },
   }),
 });
