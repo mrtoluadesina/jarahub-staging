@@ -9,7 +9,7 @@ import { ICategory } from '../models/category.model';
 export const CategoryType: GraphQLObjectType<ICategory> = new GraphQLObjectType(
   {
     name: 'CategoryType',
-    description: 'The category type',
+    description: 'The product category type',
     fields: () => ({
       name: {
         type: GraphQLString,
