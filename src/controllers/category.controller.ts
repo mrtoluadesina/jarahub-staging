@@ -16,7 +16,14 @@ import httpStatus = require('http-status');
  * @returns {ICategory}
  */
 //Get all Categories
-export const GetAllCategories = () => Category.find();
+export const GetAllCategories = async () =>
+  await Category.find().populate({
+    path: 'children',
+    populate: {
+      path: 'children',
+      model: 'Category',
+    },
+  });
 
 /**
  *
@@ -37,6 +44,14 @@ export const Create = async (body: ICategory) => {
     }
 
     const category = await new Category(body);
+
+    if (body.parents && body.parents.length) {
+      body.parents.forEach(async cat => {
+        let parentCategory = await Category.findById(cat);
+        parentCategory!.children!.push(category._id);
+        await parentCategory!.save();
+      });
+    }
 
     const forIndex = elasticsearch.index({
       index: body.name

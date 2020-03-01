@@ -7,7 +7,10 @@ import httpStatus from 'http-status';
 import removeDuplicates from '../helpers/removeDuplicateSearchObjects';
 
 //Get All Products
-export const getAllProducts = () => Product.find({ isDeleted: false });
+export const getAllProducts = async () =>
+  await Product.find({ isDeleted: false })
+    .populate('categoryId')
+    .exec();
 
 //Create a Product
 export const Create = async (body: IProduct) => {

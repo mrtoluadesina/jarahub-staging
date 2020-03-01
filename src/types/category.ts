@@ -4,33 +4,41 @@ import {
   GraphQLBoolean,
   GraphQLList,
 } from 'graphql';
+import { ICategory } from '../models/category.model';
 
-export const CategoryType = new GraphQLObjectType({
-  name: 'CategoryType',
-  description: 'The category type',
-  fields: () => ({
-    name: {
-      type: GraphQLString,
-      description: 'The category name',
-      resolve: parent => parent.name,
-    },
-    isDeleted: {
-      type: GraphQLBoolean,
-      description: 'The delete status of the category',
-      resolve: parent => parent.isDeleted,
-    },
-    parents: {
-      type: new GraphQLList(GraphQLString),
-      description: 'The category parent if any',
-      resolve: parent => parent.parents,
-    },
-    icon: {
-      type: GraphQLString,
-      description: 'The category icon',
-      resolve: parent => parent.icon,
-    },
-  }),
-});
+export const CategoryType: GraphQLObjectType<ICategory> = new GraphQLObjectType(
+  {
+    name: 'CategoryType',
+    description: 'The category type',
+    fields: () => ({
+      name: {
+        type: GraphQLString,
+        description: 'The category name',
+        resolve: parent => parent.name,
+      },
+      isDeleted: {
+        type: GraphQLBoolean,
+        description: 'The delete status of the category',
+        resolve: parent => parent.isDeleted,
+      },
+      parents: {
+        type: new GraphQLList(GraphQLString),
+        description: 'The category parent if any',
+        resolve: parent => parent.parents,
+      },
+      icon: {
+        type: GraphQLString,
+        description: 'The category icon',
+        resolve: parent => parent.icon,
+      },
+      children: {
+        type: new GraphQLList(CategoryType),
+        description: 'The sub categories',
+        resolve: parent => parent.children,
+      },
+    }),
+  },
+);
 
 export const CategoryOutput = new GraphQLObjectType({
   name: 'CategoryOutput',

@@ -24,7 +24,7 @@ import schema from './schema';
 import mongoose from 'mongoose';
 // COMMENTED CODE: DELETE SEED IN PRODUCTION
 //
-import seed from './db/seed';
+// import seed from './db/seed';
 
 const app = express();
 
