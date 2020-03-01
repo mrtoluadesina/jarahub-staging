@@ -1,9 +1,9 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model, Types } from 'mongoose';
 
 export interface ICategory extends Document {
   name: string;
   isDeleted: Boolean;
-  parents?: string | string[];
+  parents?: Types.ObjectId | Types.ObjectId[];
   icon?: string;
 }
 
@@ -26,6 +26,7 @@ const CategoryModel = new Schema(
     },
     parents: {
       type: Schema.Types.Mixed,
+      ref: 'Categories',
     },
     icon: {
       type: String,
