@@ -67,7 +67,7 @@ mongoose.connect(`${process.env.MONGO_URI}`, {
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.error('MongoDB database connection established successfully!');
-  // seed();
+  seed();
 });
 connection.once('open', () => {});
 connection.once('error', err => {
