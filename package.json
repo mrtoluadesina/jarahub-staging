@@ -12,7 +12,7 @@
     "start:dev": "tsc --watch & nodemon --exec NODE_ENV=development bin/www",
     "test": "NODE_ENV=test jest",
     "client:start": "cd client; yarn start",
-    "compile:start": "tsc & NODE_ENV=development bin/www"
+    "compile:start": "yarn tsc & NODE_ENV=development bin/www"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
