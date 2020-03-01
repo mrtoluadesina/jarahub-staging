@@ -11,6 +11,7 @@ export interface Category {
   name: string;
   isDeleted: Boolean;
   parents?: string | string[];
+  icon?: string;
 }
 
 const CategoryModel = new Schema(
