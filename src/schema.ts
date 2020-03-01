@@ -4,6 +4,7 @@ import {
   GraphQLID,
   GraphQLList,
   GraphQLString,
+  GraphQLInt,
 } from 'graphql';
 import {
   OrderType,
@@ -45,11 +46,14 @@ import {
   ProductByCategoryType,
   SingleProductType,
   ProductByCategoryPayload,
+  ProductByCategoryWithPaginationType,
 } from './types/product';
 import {
   filterByCategory,
   GetASingleProduct,
   getAllProducts,
+  getAllProductsPaginated,
+  getProductsByCategoryWithPagination,
 } from './controllers/product.controller';
 
 const query = new GraphQLObjectType({
@@ -139,9 +143,32 @@ const query = new GraphQLObjectType({
     getProduct: {
       type: new GraphQLList(ProductByCategoryPayload),
       description: 'Get all products',
-      resolve: async () => {
-        return await getAllProducts();
+      resolve: async () => await getAllProducts(),
+    },
+    getProductWithPagination: {
+      type: ProductByCategoryType,
+      description: 'Get the product in paginated format',
+      args: {
+        pageNumber: {
+          type: GraphQLInt,
+          description: 'The current page number',
+        },
       },
+      resolve: async (_, { pageNumber }) =>
+        await getAllProductsPaginated(pageNumber),
+    },
+    getProductByCategoryWithPagination: {
+      type: ProductByCategoryWithPaginationType,
+      description: 'Get all this products in a category in a paginated format',
+      args: {
+        pageNumber: {
+          type: GraphQLInt,
+          description: 'The page number to be gotten',
+        },
+        filterParam: { type: GraphQLString, description: 'The category' },
+      },
+      resolve: async (_, { pageNumber, filterParam }) =>
+        await getProductsByCategoryWithPagination(pageNumber, filterParam),
     },
   }),
 });

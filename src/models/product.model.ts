@@ -1,4 +1,4 @@
-import { Schema, Document, model, Types } from 'mongoose';
+import { Schema, Document, model, Types, Model } from 'mongoose';
 
 export interface IProduct extends Document {
   name: string;
@@ -16,6 +16,10 @@ export interface IProduct extends Document {
   tags: Array<string>;
   brandId?: Types.ObjectId;
   reviews?: Array<Types.ObjectId>;
+}
+
+export interface ProductModelI extends Model<IProduct> {
+  paginate(T: number, C: (E: any, R: any) => {}): void;
 }
 
 export interface IPrice {
@@ -90,4 +94,4 @@ const ProductModel = new Schema(
   { timestamps: true },
 );
 
-export default model<IProduct>('Product', ProductModel);
+export default model<IProduct, ProductModelI>('Product', ProductModel);
