@@ -266,12 +266,76 @@ export const filterByCategory = async (filterParam: string) => {
         null,
         '',
       );
-    console.log(category._id);
     const products = await Product.find({
       categoryId: { $in: [category._id] },
     });
-    console.log(products);
     return sendResponse(200, 'Success', products, null, '');
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getAllProductsPaginated = async (pageNumber: number) => {
+  let pageNo: number = pageNumber || 0;
+  let limit: number = 10;
+  let skip = pageNo * (limit - 1);
+  let count = await Product.countDocuments({}, function(err, _count) {
+    if (err) {
+      throw new Error(err.message);
+    }
+  });
+
+  if (!count) return sendResponse(404, 'No data was found', {}, null, '');
+
+  let payload = await Product.find()
+    .skip(skip)
+    .limit(limit);
+
+  return sendResponse(200, 'Products found', payload, null, '');
+};
+
+export const getProductsByCategoryWithPagination = async (
+  pageNumber: number,
+  filterParam: string,
+) => {
+  try {
+    let pageNo: number = pageNumber || 0;
+    let limit: number = 12;
+    let skip: number = pageNo * (limit - 1);
+    const pattern = new RegExp(filterParam, 'ig');
+    const category = await Category.findOne({ name: { $regex: pattern } });
+    if (!category)
+      return sendResponse(
+        404,
+        'Category does not exist or has been deleted',
+        {},
+        null,
+        '',
+      );
+    let categoryCount = await Product.countDocuments(
+      {
+        categoryId: { $in: [category._id] },
+      },
+      function(err, _count) {
+        if (err) throw new Error(err.message);
+      },
+    );
+    if (!categoryCount)
+      return sendResponse(404, 'No product in this category', {}, null, '');
+
+    let payload = await Product.find({
+      categoryId: { $in: [category._id] },
+    })
+      .skip(skip)
+      .limit(limit);
+
+    return sendResponse(
+      200,
+      `Products found in ${filterParam}`,
+      { data: payload, count: categoryCount },
+      null,
+      '',
+    );
   } catch (error) {
     throw new Error(error.message);
   }
