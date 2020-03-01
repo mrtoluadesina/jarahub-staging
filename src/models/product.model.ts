@@ -37,8 +37,7 @@ const ProductModel = new Schema(
       required: true,
     },
     categoryId: {
-      type: Array,
-      of: Types.ObjectId,
+      type: [Types.ObjectId],
       ref: 'Category',
     },
     sku: {
