@@ -7,10 +7,13 @@ interface IRemark {
   remark: String;
 }
 
+
 export interface ITransactionNoExtend {
   chargedAmount: number;
-  user: String;
   items: ICartItem[];
+  billing: object;
+  isPickUp: boolean
+
 }
 
 export interface ITransaction extends Document {
@@ -21,10 +24,10 @@ export interface ITransaction extends Document {
   remarks: IRemark[];
   user: IUser;
 }
-const Remarks = new Schema({
+const Remarks = {
   time: Date,
   remark: String,
-});
+};
 
 const TransactionModel = new Schema(
   {
@@ -51,15 +54,31 @@ const TransactionModel = new Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      required: true,
+      // required: true,
       ref: 'User',
     },
     items: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'CartItem',
-      },
+      { 
+        productDetailsId: {
+          type: Schema.Types.ObjectId,
+          ref: 'CartItem',
+          required: true
+        },
+        quantity : {
+          type: Number,
+          required: true
+        }
+      }
     ],
+    billing: {
+      firstName: String,
+      lastName: String,
+      phone: String,
+      address: String,
+      city: String,
+      state: String,
+      country: String
+    }
   },
   { timestamps: true },
 );
