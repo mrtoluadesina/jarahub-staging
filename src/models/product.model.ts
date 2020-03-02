@@ -19,7 +19,7 @@ export interface IProduct extends Document {
 }
 
 export interface ProductModelI extends Model<IProduct> {
-  paginate(T: number, C: (E: any, R: any) => {}): void;
+  post(T: string, C: (E: any, R: any) => {}): void;
 }
 
 export interface IPrice {
@@ -37,8 +37,8 @@ const ProductModel = new Schema(
       required: true,
     },
     categoryId: {
-      type: [Types.ObjectId],
-      ref: 'Category',
+      type: [Schema.Types.ObjectId],
+      ref: 'Categories',
     },
     sku: {
       type: String,
@@ -92,5 +92,11 @@ const ProductModel = new Schema(
   },
   { timestamps: true },
 );
+
+ProductModel.pre('find', function(next) {
+  this.populate('categoryId', 'name', 'Category');
+  this.populate('brandId', 'name', 'Brand');
+  next();
+});
 
 export default model<IProduct, ProductModelI>('Product', ProductModel);
