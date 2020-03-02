@@ -28,6 +28,40 @@ export const ProductByCategoryType = new GraphQLObjectType({
   }),
 });
 
+export const ProductByCategoryWithPaginationType = new GraphQLObjectType({
+  name: 'ProductByCategoryWithPaginationType',
+  description: 'Result type for getting product by category',
+  fields: () => ({
+    statusCode: {
+      type: GraphQLString,
+      description: 'The response status code',
+      resolve: parent => parent.statusCode,
+    },
+    message: {
+      type: GraphQLString,
+      description: 'The response message',
+      resolve: parent => parent.message,
+    },
+    payload: {
+      type: ProductCategoryWithPagination,
+      description: 'The response payload',
+      resolve: parent => parent.payload,
+    },
+  }),
+});
+
+export const ProductCategoryWithPagination = new GraphQLObjectType({
+  name: 'ProductCategoryWithPagination',
+  description: 'Payload for category with pagination',
+  fields: () => ({
+    data: {
+      type: new GraphQLList(ProductByCategoryPayload),
+      description: 'The main payload',
+    },
+    count: { type: GraphQLInt, description: 'The total result count' },
+  }),
+});
+
 export const SingleProductType = new GraphQLObjectType({
   name: 'SingleProductType',
   description: 'Result type for getting product by category',

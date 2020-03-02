@@ -3,6 +3,7 @@ import * as userController from '../controllers/user.controller';
 import { celebrate as validate, errors } from 'celebrate';
 import userValidation from '../validations/user.validation';
 // import validate from '../validations/user.validation';
+import userAuth from '../middlewares/userAuth';
 
 const router = express.Router();
 
@@ -37,6 +38,23 @@ router.post(
     }
   },
 );
+
+router.get(
+  '/me',
+  userAuth,
+  async function(req: Request, res: Response) {
+    try {
+      const { user } = req.body;
+      return res
+        .status(200)
+        .json(user)
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: 'Internal Server Error', error: error.message });
+    }
+  }
+)
 
 router.put(
   '/:userID',
