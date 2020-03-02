@@ -4,7 +4,7 @@ export interface ICartItem extends Document {
   userId: Types.ObjectId;
   productDetailsId: Types.ObjectId;
   savedForLater: Boolean;
-  quantity: string;
+  quantity: number;
   amount: number;
 }
 
@@ -24,7 +24,7 @@ const CartItemModel = new Schema(
       default: false,
     },
     quantity: {
-      type: String,
+      type: Number,
       required: true,
     },
     amount: {
