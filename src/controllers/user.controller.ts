@@ -15,19 +15,25 @@ export const Signup = async (body: IUserNoExtend) => {
     const { email } = body;
 
     const Exist = await User.findOne({ email });
-
-    if (Exist) {
+    let user: IUser | null
+    if (Exist && !Exist.isGuest) {
       return sendResponse(httpStatus.OK, 'This email is in use', {}, null, '');
     }
-
-    const user = new User(body);
-    const data = await user.save();
+    if (!Exist) {
+      user = new User(body);
+    } else {
+      let password = body.password;
+      delete body.password;
+      user = await User.findOneAndUpdate({email}, { ...body, isGuest: false }, { new: true })
+      user!!.password = password;
+    }
+    const data = await user!!.save();
     const subject = 'Welcome to EmallFZE! 👋 Please confirm your email address';
     const token = TokenEncoder(email, data._id, data.isActive!);
 
     await sendMail(email, messages.confirmationEmail(token), subject);
 
-    return sendResponse(httpStatus.OK, 'Signup Successful', data, null, token);
+    return sendResponse(httpStatus.OK, 'Signup Successful', data.transform(), null, token);
   } catch (error) {
     throw new Error(error);
   }
