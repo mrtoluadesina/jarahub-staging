@@ -94,7 +94,7 @@ const ProductModel = new Schema(
   },
   { timestamps: true },
 );
-
+// model methods
 ProductModel.pre('find', function(next) {
   this.populate('categoryId', 'name', 'Category');
   this.populate('brandId', 'name', 'Brand');
