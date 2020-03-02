@@ -8,9 +8,7 @@ import removeDuplicates from '../helpers/removeDuplicateSearchObjects';
 
 //Get All Products
 export const getAllProducts = async () =>
-  await Product.find({ isDeleted: false })
-    .populate('categoryId')
-    .exec();
+  await Product.find({ isDeleted: false });
 
 //Create a Product
 export const Create = async (body: IProduct) => {
