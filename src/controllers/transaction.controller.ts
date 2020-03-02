@@ -1,18 +1,18 @@
 import Transaction, { ITransactionNoExtend } from '../models/transaction.model';
 import httpStatus from 'http-status';
 import sendResponse from '../helpers/response';
-// import { tokenEncoder as TokenEncoder } from '../helpers/tokenEncoder';
-// import sendMail from '../helpers/sendMail';
-// import messages from '../helpers/mailMessage';
+import { IUser } from '../models/user.model';
+import Product from '../models/product.model'
 
 // Return All Users
 export const getAllTransaction = () => Transaction.find();
 
 // Creating a User
-export const init = async (body: ITransactionNoExtend) => {
+export const init = async (user: IUser, body: ITransactionNoExtend) => {
   try {
     const items = [];
-    let chargedAmount = 0;
+    let chargedAmount = body.isPickUp ? 200000 : 0; //there should be a model to get the actual value from.
+    // put the factor of different pickup location.
     let remarks = [
       {
         time: Date.now(),
@@ -20,11 +20,15 @@ export const init = async (body: ITransactionNoExtend) => {
       },
     ];
     for (let i = 0; i < body.items.length; i++) {
-      // take the ids of items
-      items.push(body.items[i]._id);
-      //get the total for the items
-      // NOTE: discount is yet to be gotten
-      chargedAmount += body.items[i].amount * parseInt(body.items[i].quantity);
+      let item = await Product.findById(body.items[i].productDetailsId)
+      if (item){
+        //get the total for the items
+        chargedAmount += (item.calculatePrice(body.items[i].quantity) * body.items[i].quantity)
+        // NOTE: discount is yet to be gotten
+        // take the ids of items
+        items.push({productDetailsId: body.items[i].productDetailsId, quantity: body.items[i].quantity});
+      }
+
     }
     remarks.push({
       time: Date.now(),
@@ -36,7 +40,7 @@ export const init = async (body: ITransactionNoExtend) => {
     const transaction = new Transaction({
       chargedAmount,
       remarks,
-      user: body.user,
+      user: user._id,
       items,
     });
 
@@ -48,7 +52,13 @@ export const init = async (body: ITransactionNoExtend) => {
       null,
       '',
     );
-  } catch (error) {
-    throw new Error(error);
+  } catch (error) {    
+    return sendResponse(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Transaction failed to initialize',
+      {},
+      null,
+      ''
+    )
   }
 };
