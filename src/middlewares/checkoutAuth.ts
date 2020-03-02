@@ -6,6 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     let user = null;
+    const { email, billing : { firstName, lastName } } = req.body;
     if (req.headers['authorization']) {
       const { decodedToken } = TokenDecoder(req);
   
@@ -22,9 +23,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
     if (user) {
       req.body.user = user;
-      return next();
+    } else {
+      user = new User({ email, firstName, lastName, isGuest: true })
     }
-    return res.json({ message: 'Unappoved User' });
+    return next();
   } catch (error) {
     next(error);
   }
