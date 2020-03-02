@@ -15,4 +15,12 @@ router.post('/', checkoutAuth ,async function(req: Request, res: Response) {
   res.send({ statusCode, message, payload });
 });
 
+router.post('/verify', async function(req: Request, res: Response) {
+  // verify transaction
+
+  // create orders
+
+  // return response
+})
+
 export default router;
