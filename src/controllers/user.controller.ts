@@ -156,7 +156,12 @@ export const getOneUser = async (userID: string) => {
 
     return sendResponse(httpStatus.OK, 'user found', user, null, '');
   } catch (error) {
-    throw new Error(error);
+    const userByEmail = await User.findOne({ email: userID });
+
+    if (!userByEmail) {
+      throw new Error(error);
+    }
+    return sendResponse(httpStatus.OK, 'user found', userByEmail, null, '');
   }
 };
 
