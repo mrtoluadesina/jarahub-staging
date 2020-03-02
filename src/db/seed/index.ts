@@ -5,11 +5,14 @@ import Product from '../../models/product.model';
 import elasticSearch from '../../elasticsearch/config';
 import admin from './data/admin';
 import Admin from '../../models/admin.model';
+import Category from '../../models/category.model';
 
 const cleanDatabase = async () => {
   try {
-    await User.deleteMany({});
-    await Product.deleteMany({});
+    await User.db.dropCollection('users');
+    await Product.db.dropCollection('products');
+    await Admin.db.dropCollection('admin');
+    await Category.db.dropCollection('categories');
     return console.log('Successfully cleared database');
   } catch (error) {
     console.log('An error occured: ', error.message);

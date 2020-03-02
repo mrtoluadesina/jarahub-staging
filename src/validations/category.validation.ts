@@ -13,13 +13,17 @@ export default {
         .error(new Error('user was not authenticated')),
       name: Joi.string()
         .min(2)
-        .max(15)
+        .max(20)
         .required()
         .error(
           new Error(
             'Name is required or does not meet requirements of min 2 and max 15',
           ),
         ),
+      parents: Joi.array()
+        .items(Joi.string())
+        .error(new Error('parents must be an array of category ids')),
+      icon: Joi.string().error(new Error('icon is required')),
     },
   },
 };

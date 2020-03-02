@@ -11,11 +11,11 @@ import {
   loginAdmin,
   getSingleAdmin,
 } from '../controllers/admin.controllers';
-import adminAuth from '../middlewares/adminAuth';
+// import adminAuth from '../middlewares/adminAuth';
 
 const router = Router();
 
-router.use(adminAuth);
+// router.use(adminAuth);
 router.post(
   '/',
   validate(userValidation.createUser, { abortEarly: false }),

@@ -7,8 +7,20 @@ import adminAuth from '../middlewares/adminAuth';
 
 const router = Router();
 
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const response = await productController.getAllProductsPaginated(
+      req.query.page,
+    );
+    return res.status(200).json(response);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: 'An error occured', error: error.message });
+  }
+});
 //Get all products
-router.get('/', async function(_req: Request, res: Response) {
+router.get('/all', async function(_req: Request, res: Response) {
   try {
     const response = await productController.getAllProducts();
 
@@ -36,6 +48,20 @@ router.get('/:productId', async (req: Request, res: Response) => {
 
 router.get('/category/:category', async (req: Request, res: Response) => {
   try {
+    const response = await productController.getProductsByCategoryWithPagination(
+      req.query.page,
+      req.params.category,
+    );
+    return res.status(response.statusCode).json(response);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: error.message });
+  }
+});
+
+router.get('/category/:category/all', async (req: Request, res: Response) => {
+  try {
     const response = await productController.filterByCategory(
       req.params.category,
     );
@@ -51,7 +77,7 @@ router.get('/category/:category', async (req: Request, res: Response) => {
 router.get('/search/:query', async (req: Request, res: Response) => {
   try {
     const response = await productController.search(req.params.query);
-    return res.status(response.statusCode).json(response);
+    return res.status(response.statusCode).json('l;kjghfjgkb');
   } catch (error) {
     return res
       .status(500)

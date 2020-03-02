@@ -1,4 +1,4 @@
-import { Schema, Document, model, Types } from 'mongoose';
+import { Schema, Document, model, Types, Model } from 'mongoose';
 import { getActualPrice } from '../helpers/products'
 
 export interface IProduct extends Document {
@@ -20,6 +20,10 @@ export interface IProduct extends Document {
   calculatePrice: Function;
 }
 
+export interface ProductModelI extends Model<IProduct> {
+  post(T: string, C: (E: any, R: any) => {}): void;
+}
+
 export interface IPrice {
   range: String;
 }
@@ -35,9 +39,8 @@ const ProductModel = new Schema(
       required: true,
     },
     categoryId: {
-      type: Array,
-      of: Types.ObjectId,
-      ref: 'Category',
+      type: [Schema.Types.ObjectId],
+      ref: 'Categories',
     },
     sku: {
       type: String,
@@ -99,4 +102,10 @@ ProductModel.methods = {
   }
 }
 
-export default model<IProduct>('Product', ProductModel);
+ProductModel.pre('find', function(next) {
+  this.populate('categoryId', 'name', 'Category');
+  this.populate('brandId', 'name', 'Brand');
+  next();
+});
+
+export default model<IProduct, ProductModelI>('Product', ProductModel);

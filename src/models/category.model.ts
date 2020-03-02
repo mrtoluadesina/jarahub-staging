@@ -1,16 +1,19 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model, Types } from 'mongoose';
 
 export interface ICategory extends Document {
   name: string;
   isDeleted: Boolean;
-  parents?: string | string[];
+  parents?: Types.ObjectId[];
   icon?: string;
+  children?: Types.ObjectId[];
 }
 
 export interface Category {
   name: string;
   isDeleted: Boolean;
-  parents?: string | string[];
+  parents?: Types.ObjectId[];
+  icon?: string;
+  children?: Types.ObjectId[];
 }
 
 const CategoryModel = new Schema(
@@ -24,11 +27,13 @@ const CategoryModel = new Schema(
       default: false,
     },
     parents: {
-      type: Schema.Types.Mixed,
+      type: Array,
+      ref: 'Category',
     },
     icon: {
       type: String,
     },
+    children: [{ type: Types.ObjectId, ref: 'Category' }],
   },
   { timestamps: true },
 );
