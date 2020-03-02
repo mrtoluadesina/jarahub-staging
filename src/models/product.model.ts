@@ -1,4 +1,5 @@
 import { Schema, Document, model, Types, Model } from 'mongoose';
+import { getActualPrice } from '../helpers/products'
 
 export interface IProduct extends Document {
   name: string;
@@ -16,6 +17,7 @@ export interface IProduct extends Document {
   tags: Array<string>;
   brandId?: Types.ObjectId;
   reviews?: Array<Types.ObjectId>;
+  calculatePrice: Function;
 }
 
 export interface ProductModelI extends Model<IProduct> {
@@ -55,7 +57,7 @@ const ProductModel = new Schema(
       type: Number,
     },
     price: {
-      type: Map,
+      type: Object,
       of: String,
       required: true,
     },
@@ -98,5 +100,12 @@ ProductModel.pre('find', function(next) {
   this.populate('brandId', 'name', 'Brand');
   next();
 });
+
+ProductModel.methods = {
+  calculatePrice(qty: number){
+    let productPrice = this.price
+    return getActualPrice(qty, productPrice)
+  }
+}
 
 export default model<IProduct, ProductModelI>('Product', ProductModel);
