@@ -1,4 +1,5 @@
 import { Schema, Document, model, Types } from 'mongoose';
+import { getActualPrice } from '../helpers/products'
 
 export interface IProduct extends Document {
   name: string;
@@ -16,6 +17,7 @@ export interface IProduct extends Document {
   tags: Array<string>;
   brandId?: Types.ObjectId;
   reviews?: Array<Types.ObjectId>;
+  calculatePrice: Function;
 }
 
 export interface IPrice {
@@ -52,7 +54,7 @@ const ProductModel = new Schema(
       type: Number,
     },
     price: {
-      type: Map,
+      type: Object,
       of: String,
       required: true,
     },
@@ -89,5 +91,12 @@ const ProductModel = new Schema(
   },
   { timestamps: true },
 );
+
+ProductModel.methods = {
+  calculatePrice(qty: number){
+    let productPrice = this.price
+    return getActualPrice(qty, productPrice)
+  }
+}
 
 export default model<IProduct>('Product', ProductModel);
