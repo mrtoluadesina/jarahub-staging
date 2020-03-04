@@ -18,6 +18,7 @@ export interface IProduct extends Document {
   brandId?: Types.ObjectId;
   reviews?: Array<Types.ObjectId>;
   calculatePrice: Function;
+  updateOrderCount: Function;
 }
 
 export interface ProductModelI extends Model<IProduct> {
@@ -91,6 +92,10 @@ const ProductModel = new Schema(
       of: Types.ObjectId,
       ref: 'Review',
     },
+    orderCount: {
+      type: Number,
+      default: 0
+    }
   },
   { timestamps: true },
 );
@@ -105,6 +110,10 @@ ProductModel.methods = {
   calculatePrice(qty: number){
     let productPrice = this.price
     return getActualPrice(qty, productPrice)
+  },
+  async updateOrderCount(qty: number) {
+    this.orderCount += qty;
+    await this.save()
   }
 }
 
