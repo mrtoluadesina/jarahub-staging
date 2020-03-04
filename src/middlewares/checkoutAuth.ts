@@ -3,7 +3,7 @@ import User from '../models/user.model';
 import { Request, Response, NextFunction } from 'express';
 
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, _res: Response, next: NextFunction) => {
   try {
     let user = null;
     const { email, billing : { firstName, lastName } } = req.body;
@@ -21,11 +21,11 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       user = await User.findOne({ email: req.body.email })
     }
 
-    if (user) {
-      req.body.user = user;
-    } else {
+    if (!user) {
       user = new User({ email, firstName, lastName, isGuest: true })
+      await user.save()
     }
+    req.body.user = user;
     return next();
   } catch (error) {
     next(error);
