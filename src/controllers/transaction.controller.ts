@@ -5,6 +5,7 @@ import { IUser } from '../models/user.model';
 import Product from '../models/product.model';
 import { createOrder } from './order.controller';
 import addressModel from '../models/address.model';
+import ControllerResponse from '../interfaces/ControllerResponse';
 
 // Return All Users
 export const getAllTransaction = () => Transaction.find();
@@ -103,7 +104,7 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
 export const verify = async (body: {
   transaction: string;
   reference: string;
-}) => {
+}): Promise<ControllerResponse> => {
   const remarks = [];
   const transaction = await Transaction.findById(body.transaction);
   try {
@@ -111,7 +112,13 @@ export const verify = async (body: {
       await transaction.verify(body.reference);
       if (transaction.status !== 'Success') {
         // send message to user for debit and resolutions sake
-        return;
+        return sendResponse(
+          httpStatus.INTERNAL_SERVER_ERROR,
+          'Transaction failed to initialize',
+          {},
+          { message: 'error.message' },
+          '',
+        );
       }
       //proceed with order creation of order
       remarks.push({ time: Date.now(), remark: `Initialize Order creation` });
