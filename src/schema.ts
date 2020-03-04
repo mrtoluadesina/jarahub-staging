@@ -56,6 +56,8 @@ import {
   getProductsByCategoryWithPagination,
 } from './controllers/product.controller';
 
+import { decodeToken } from './middlewares/userAuth';
+
 const query = new GraphQLObjectType({
   name: 'Query',
   description: 'The query root of Nert.',
@@ -90,6 +92,17 @@ const query = new GraphQLObjectType({
         const result = await getAllUsers();
         return result;
       },
+    },
+    getMe: {
+      type: UserType,
+      description: 'Get a Logged in user',
+      args: {
+        userToken: { type: GraphQLString, description: "The logged in user's token"}
+      },
+      resolve: async (_, { userToken }) => {
+        const user = await decodeToken(userToken)
+        return user
+      }
     },
     getBrands: {
       type: BrandType,
