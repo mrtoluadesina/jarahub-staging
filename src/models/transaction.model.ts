@@ -8,13 +8,11 @@ interface IRemark {
   remark: String;
 }
 
-
 export interface ITransactionNoExtend {
   chargedAmount: number;
   items: ICartItem[];
   billing: object;
-  isPickUp: boolean
-
+  isPickUp: boolean;
 }
 
 export interface ITransaction extends Document {
@@ -27,7 +25,7 @@ export interface ITransaction extends Document {
   items: ICartItem[];
   discount: String;
   address: String;
-  verify: Function
+  verify: Function;
 }
 const Remarks = {
   time: Date,
@@ -50,7 +48,7 @@ const TransactionModel = new Schema(
     paidAmount: {
       type: Number,
       min: 0,
-      default: 0
+      default: 0,
     },
     reference: {
       type: String,
@@ -64,37 +62,34 @@ const TransactionModel = new Schema(
       ref: 'User',
     },
     items: [
-      { 
+      {
         productDetailsId: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
-          required: true
+          required: true,
         },
-        quantity : {
+        quantity: {
           type: Number,
-          required: true
+          required: true,
         },
-        amount : {
+        amount: {
           type: Number,
-          required: true
-        }
-      }
+          required: true,
+        },
+      },
     ],
     address: {
       type: Schema.Types.ObjectId,
-      ref: 'Address'
+      ref: 'Address',
     },
     discount: {
       type: Schema.Types.ObjectId,
-      ref: 'Discount'
+      ref: 'Discount',
     },
     paidAt: {
       type: Date,
-      default: null
-        }
-      }
-    ],
-    }
+      default: null,
+    },
   },
   { timestamps: true },
 );
@@ -102,7 +97,7 @@ const TransactionModel = new Schema(
 TransactionModel.post('save', function(doc, next) {
   doc
     .populate({ path: 'user', select: '-password' })
-    .populate({ path: 'items.productDetailsId'})//, populate: { path: 'productDetailsId'}})
+    .populate({ path: 'items.productDetailsId' }) //, populate: { path: 'productDetailsId'}})
     .execPopulate()
     .then(function() {
       next();
@@ -110,45 +105,56 @@ TransactionModel.post('save', function(doc, next) {
 });
 
 TransactionModel.methods = {
-  async verify (ref: string) {
-    let data = await verify(ref)
+  async verify(ref: string) {
+    let data = await verify(ref);
     const remark = [];
-    if (data){
-      remark.push({time: Date.now(), remark: `Reference confirmed: ${ref}`});
-      const { data: {status, amount, paidAt} } = data;
+    if (data) {
+      remark.push({ time: Date.now(), remark: `Reference confirmed: ${ref}` });
+      const {
+        data: { status, amount, paidAt },
+      } = data;
       if (status == 'success') {
         switch (true) {
           case this.chargedAmount < amount:
-            remark.push({ time: Date.now(), remark: `Undercharged: Paid ${amount} but expected ${this.chargedAmount}`})
+            remark.push({
+              time: Date.now(),
+              remark: `Undercharged: Paid ${amount} but expected ${this.chargedAmount}`,
+            });
             this.paidAmount = amount;
             this.status = 'Success';
-            
+
             break;
           case this.chargedAmount > amount:
-            remark.push({ time: Date.now(), remark: `OverCharged: Paid ${amount} but expected ${this.chargedAmount}`})
+            remark.push({
+              time: Date.now(),
+              remark: `OverCharged: Paid ${amount} but expected ${this.chargedAmount}`,
+            });
             this.paidAmount = amount;
             this.status = 'Failed';
             break;
-            
+
           default:
-            remark.push({ time: Date.now(), remark: `Exact: Paid ${amount}`})
-            this.paidAmount = amount
+            remark.push({ time: Date.now(), remark: `Exact: Paid ${amount}` });
+            this.paidAmount = amount;
             this.status = 'Success';
             break;
         }
-
       } else {
-          remark.push({ time: Date.now(), remark: `Failed: Paid ${paidAt? amount: 0} but expected ${this.chargedAmount}`})
-          this.paidAmount = paidAt? amount: 0;
-          this.status = 'Failed';
+        remark.push({
+          time: Date.now(),
+          remark: `Failed: Paid ${paidAt ? amount : 0} but expected ${
+            this.chargedAmount
+          }`,
+        });
+        this.paidAmount = paidAt ? amount : 0;
+        this.status = 'Failed';
       }
     } else {
-        remark.push({ time: Date.now(), remark: `Failed: Invalid reference`})
+      remark.push({ time: Date.now(), remark: `Failed: Invalid reference` });
     }
 
-    this.remarks = [...this.remarks, ...remark]
-  }
-}
-
+    this.remarks = [...this.remarks, ...remark];
+  },
+};
 
 export default mongoose.model<ITransaction>('Transaction', TransactionModel);
