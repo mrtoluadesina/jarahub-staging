@@ -5,6 +5,7 @@ import Discount from '../models/discount.model';
 import sendResponse from '../helpers/response';
 import Response from '../interfaces/ControllerResponse';
 import { OrderBody } from '../interfaces/Orders';
+import productModel from '../models/product.model';
 
 /**
  * @typedef {Object} UserResponse
@@ -25,46 +26,45 @@ import { OrderBody } from '../interfaces/Orders';
 export async function createOrder(
   userId: string,
   orderBody: OrderBody,
-): Promise<Response> {
-  try {
-    const newOrder: IOrder = new Order({ ...orderBody.order, userId });
-
-    let totalAmount: number = 0;
-    for (
-      let i: number = 0, length: number = orderBody.cartItems.length;
-      i < length;
-      i++
-    ) {
-      const orderItem = new OrderItem({
-        orderId: newOrder._id,
-        productDetailsId: orderBody.cartItems[i].productDetailsId,
-        quantity: orderBody.cartItems[i].quantity,
-        isWholeSale: orderBody.cartItems[i].isWholeSale,
-        amount: orderBody.cartItems[i].amount,
-      });
-
-      totalAmount += orderBody.cartItems[i].amount;
-
-      newOrder.orderItems.push(orderItem._id);
-
-      await orderItem.save();
-    }
-    if (orderBody.order.discountId) {
-      const discount = await Discount.findOne({
-        _id: orderBody.order.discountId,
-      });
-
-      if (discount!.valid < new Date()) {
-        return sendResponse(401, 'Coupon code exipred', {}, null, '');
-      }
-
-      const percentageDiscount: number = parseInt(discount!.discount);
-
-      newOrder.amount = totalAmount - (percentageDiscount / 100) * totalAmount;
-    } else {
-      newOrder.amount = totalAmount;
-    }
-
+  ): Promise<Response> {
+    try {
+      const newOrder: IOrder = new Order({ ...orderBody.order, userId });
+      let totalAmount: number = 0;
+      for (
+        let i: number = 0, length: number = orderBody.cartItems.length;
+        i < length;
+        i++
+        ) {
+          const orderItem = new OrderItem({
+            orderId: newOrder._id,
+            productDetailsId: orderBody.cartItems[i].productDetailsId,
+            quantity: orderBody.cartItems[i].quantity,
+            isWholeSale: orderBody.cartItems[i].isWholeSale,
+            amount: orderBody.cartItems[i].amount,
+          });
+          
+          totalAmount += orderBody.cartItems[i].amount;
+          
+          newOrder.orderItems.push(orderItem._id);
+          let product = await productModel.findById(orderBody.cartItems[i].productDetailsId)
+          await product!!.updateOrderCount(orderBody.cartItems[i].quantity);
+          await orderItem.save();
+        }
+        if (orderBody.order.discountId) {
+          const discount = await Discount.findOne({
+            _id: orderBody.order.discountId,
+          });
+          
+          if (discount!.valid < new Date()) {
+            return sendResponse(401, 'Coupon code exipred', {}, null, '');
+          }
+          
+          const percentageDiscount: number = parseInt(discount!.discount);
+          
+          newOrder.amount = totalAmount - (percentageDiscount / 100) * totalAmount;
+        } else {
+          newOrder.amount = totalAmount;
+        }
     const payload = await newOrder.save();
 
     await Cart.deleteMany({ userId });
