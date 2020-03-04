@@ -23,10 +23,16 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
     if (user) {
       req.body.user = user;
+
     } else {
       user = new User({ email, firstName, lastName, isGuest: true })
     }
     return next();
+
+      return next();
+    }
+    return res.json({ message: 'Unappoved User' });
+
   } catch (error) {
     next(error);
   }
