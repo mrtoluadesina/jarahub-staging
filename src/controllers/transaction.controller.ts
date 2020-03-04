@@ -13,6 +13,7 @@ export const getAllTransaction = () => Transaction.find();
 export const init = async (user: IUser, body: ITransactionNoExtend) => {
   try {
     const items = [];
+
     let chargedAmount = body.isPickUp ? 20000000 : 0; //there should be a model to get the actual value from.
     // put the factor of different pickup location.
     let remarks = [
@@ -34,6 +35,11 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
         items.push({productDetailsId: body.items[i].productDetailsId, quantity: body.items[i].quantity, amount });
       }
       
+        chargedAmount += (item.calculatePrice(body.items[i].quantity) * body.items[i].quantity)
+        // NOTE: discount is yet to be gotten
+        // take the ids of items
+        items.push({productDetailsId: body.items[i].productDetailsId, quantity: body.items[i].quantity});
+      }
     }
     remarks.push({
       time: Date.now(),

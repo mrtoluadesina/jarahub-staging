@@ -7,6 +7,7 @@ export default async (req: Request, _res: Response, next: NextFunction) => {
   try {
     let user = null;
     const { email, billing : { firstName, lastName } } = req.body;
+
     if (req.headers['authorization']) {
       const { decodedToken } = TokenDecoder(req);
   

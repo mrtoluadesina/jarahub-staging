@@ -91,6 +91,9 @@ const TransactionModel = new Schema(
     paidAt: {
       type: Date,
       default: null
+        }
+      }
+    ],
     }
   },
   { timestamps: true },
