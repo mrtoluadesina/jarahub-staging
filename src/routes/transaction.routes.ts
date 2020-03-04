@@ -19,7 +19,6 @@ router.post('/', checkoutAuth, async function(req: Request, res: Response) {
 });
 
 router.post('/verify', async function(req: Request, res: Response) {
-  // @ts-ignore
   const { statusCode, message, payload, error } = await verify(req.body);
 
   return res.send({ statusCode, message, payload, error });
