@@ -7,7 +7,6 @@ export default async (req: Request, _res: Response, next: NextFunction) => {
   try {
     let user = null;
     const { email, billing : { firstName, lastName } } = req.body;
-
     if (req.headers['authorization']) {
       const { decodedToken } = TokenDecoder(req);
   
@@ -21,7 +20,6 @@ export default async (req: Request, _res: Response, next: NextFunction) => {
     } else {
       user = await User.findOne({ email: req.body.email })
     }
-
     if (!user) {
       user = new User({ email, firstName, lastName, isGuest: true })
       await user.save()

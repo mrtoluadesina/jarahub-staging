@@ -16,7 +16,6 @@ router.post('/', checkoutAuth ,async function(req: Request, res: Response) {
 });
 
 router.post('/verify', async function(req: Request, res: Response) {
-  // verify transaction
   // @ts-ignore
   const { statusCode, message, payload, error } = await verify(req.body);
 
