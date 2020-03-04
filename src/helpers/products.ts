@@ -3,7 +3,6 @@ export const getActualPrice = (qty: number, productPrice: Object) => {
   let lastKey = '';
   for (let key in productPrice) {
     lastKey = key;
-    console.log(key)
     let nums = key.split('-');
     if (parseInt(nums[0]) <= qty && qty <= parseInt(nums[1])) {
       // @ts-ignore

@@ -190,7 +190,6 @@ export const GetASingleProduct = async (productID: String) => {
   } catch (error) {
     try {
       const product = await Product.findOne({ name: productID });
-      console.log(product);
       if (!product) {
         return sendResponse(404, 'product not found', {}, null, '');
       }
