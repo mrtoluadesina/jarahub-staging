@@ -33,19 +33,20 @@ export const Create = async (body: IProduct) => {
 
     let bulkBody: any = [];
 
-    body.name.split(' ').forEach(word => {
-      bulkBody.push({
+    await body.name.split(' ').forEach(async word => {
+      await bulkBody.push({
         index: {
           _index: word.toLowerCase(),
           _type: 'product',
           _id: indexId,
         },
       });
-      bulkBody.push({
+      await bulkBody.push({
         name: product.name,
         description: product.description,
         categoryId: product.categoryId,
         sku: product.sku,
+        id: JSON.stringify(product._id),
         specification: product.specification,
         quantity: product.quantity,
         totalStock: product.totalStock,
@@ -58,7 +59,7 @@ export const Create = async (body: IProduct) => {
       });
     });
 
-    elasticsearch.bulk({ body: bulkBody, refresh: true }, function(
+    await elasticsearch.bulk({ body: bulkBody, refresh: true }, function(
       err,
       _response,
     ) {
@@ -218,13 +219,18 @@ export const search = async (query: string) => {
           },
         },
       });
-      return sendResponse(
-        200,
-        'Search Result',
-        singleSearchResult.hits.hits,
-        null,
-        '',
+      let filtered = removeDuplicates(
+        //@ts-ignore
+        singleSearchResult.hits.hits.map<Array<IProduct>>(item => {
+          try {
+            return item._source;
+          } catch (error) {
+            return { name: null };
+          }
+        }),
+        'name',
       );
+      return sendResponse(200, 'Search Result', filtered, null, '');
     }
     let bulkQuery: any[] = [];
 
@@ -236,6 +242,18 @@ export const search = async (query: string) => {
     });
 
     searchResult = await elasticsearch.msearch({ body: bulkQuery });
+
+    if (!searchResult.length) {
+      let potential = splittedQuery.map(async query => {
+        let ret = Product.find({
+          name: { $regex: query, $options: 'gi' },
+        });
+        return ret;
+      });
+      let [result] = await Promise.all(potential);
+
+      return sendResponse(200, 'Search Result From Db', result, null, '');
+    }
 
     let filtered = removeDuplicates(
       searchResult.responses.map((item: any) => {
@@ -250,7 +268,7 @@ export const search = async (query: string) => {
 
     return sendResponse(200, 'Search Result', filtered, null, '');
   } catch (error) {
-    throw new Error(error.message);
+    return sendResponse(404, 'No search result', {}, error.message, '');
   }
 };
 
