@@ -54,6 +54,7 @@ import {
   getAllProducts,
   getAllProductsPaginated,
   getProductsByCategoryWithPagination,
+  search,
 } from './controllers/product.controller';
 
 import { decodeToken } from './middlewares/userAuth';
@@ -97,12 +98,15 @@ const query = new GraphQLObjectType({
       type: UserType,
       description: 'Get a Logged in user',
       args: {
-        userToken: { type: GraphQLString, description: "The logged in user's token"}
+        userToken: {
+          type: GraphQLString,
+          description: "The logged in user's token",
+        },
       },
       resolve: async (_, { userToken }) => {
-        const user = await decodeToken(userToken)
-        return user
-      }
+        const user = await decodeToken(userToken);
+        return user;
+      },
     },
     getBrands: {
       type: BrandType,
@@ -182,6 +186,17 @@ const query = new GraphQLObjectType({
       },
       resolve: async (_, { pageNumber, filterParam }) =>
         await getProductsByCategoryWithPagination(pageNumber, filterParam),
+    },
+    searchProducts: {
+      type: ProductByCategoryType,
+      description: 'Query to search products',
+      args: {
+        searchQuery: {
+          type: GraphQLString,
+          description: 'The query to search for',
+        },
+      },
+      resolve: async (_, { searchQuery }) => await search(searchQuery),
     },
   }),
 });
