@@ -19,6 +19,7 @@ import cartRouter from './routes/cartItem.routes';
 import orderRouter from './routes/order.routes';
 import authRouter from './routes/auth.routes';
 import transactionRouter from './routes/transaction.routes';
+import couponRouter from './routes/coupon.routes';
 
 import schema from './schema';
 import mongoose from 'mongoose';
@@ -91,6 +92,7 @@ app.use('/api/v1/cart', cartRouter);
 app.use('/api/v1/order', orderRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/transaction', transactionRouter);
+app.use('/api/v1/coupon', couponRouter);
 
 app.use(
   '/graphql',
