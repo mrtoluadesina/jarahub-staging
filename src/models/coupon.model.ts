@@ -1,15 +1,27 @@
 import { Schema, Document, model } from 'mongoose';
 
 
-export interface IDiscount extends Document {
-  name: String;
-  discount: string;
-  type: String;
-  valid: Date;
-  isDeleted: Boolean;
+export interface ICouponNoExtend {
+  category?: String;
+  discountValue: Number;
+  discountUnit: String;
+  validFrom: Date;
+  validUntil: Date;
+  minimumOrderValue: Number;
+  maximumDiscount: Number;
+}
+export interface ICoupon extends Document {
+  category: String;
+  discountValue: Number;
+  discountUnit: String;
+  validFrom: Date;
+  validUntil: Date;
+  minimumOrderValue: Number;
+  maximumDiscount: Number;
+  isDelete: Boolean;
 }
 
-const DiscountModel = new Schema(
+const CouponModel = new Schema(
   {
     category: {
       type: Schema.Types.ObjectId,
@@ -20,6 +32,7 @@ const DiscountModel = new Schema(
       required: true
     },
     discountUnit: {
+      type: String,
       enum: ['NAIRA', 'PERCENTAGE'],
       required: true
     },
@@ -36,6 +49,8 @@ const DiscountModel = new Schema(
       default: 0
     },
     maximumDiscount: {
+      // maximum amount that can be discounted. 
+      // if value exist, discount result should not exceed value
       type: Number
     },
     isDeleted: {
@@ -46,4 +61,4 @@ const DiscountModel = new Schema(
   { timestamps: true },
 );
 
-export default model<IDiscount>('Discount', DiscountModel);
+export default model<ICoupon>('Coupon', CouponModel);
