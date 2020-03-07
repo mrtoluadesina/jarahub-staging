@@ -37,6 +37,10 @@ const DiscountModel = new Schema(
     },
     maximumDiscount: {
       type: Number
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true },
