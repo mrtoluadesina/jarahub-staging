@@ -9,6 +9,11 @@ export interface ICouponNoExtend {
   validUntil: Date;
   minimumOrderValue: Number;
   maximumDiscount: Number;
+  user: {};
+  id: String;
+  createdBy: String;
+  description: String;
+  code: String;
 }
 export interface ICoupon extends Document {
   category: String;
@@ -23,6 +28,11 @@ export interface ICoupon extends Document {
 
 const CouponModel = new Schema(
   {
+    code: {
+      type: String,
+      required: true,
+      unique: true
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category'
@@ -56,6 +66,13 @@ const CouponModel = new Schema(
     isDeleted: {
       type: Boolean,
       default: false
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    description: {
+      type: String
     }
   },
   { timestamps: true },
