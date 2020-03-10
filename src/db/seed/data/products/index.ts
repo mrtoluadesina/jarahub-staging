@@ -1138,25 +1138,6 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
   },
   {
-    name:
-      'Apple IPhone XS Max (4GB RAM, 64GB ROM) IOS 12 (12MP + 12MP)+7MP 4G Smartphone - Silver',
-    description:
-      'Brand new apple iPhone X Max affordable, silver color with ios 12 operating system',
-    categoryId: [category._id, gamCategry._id],
-    sku: 'sku12',
-    specification:
-      '6.5-inch Super Retina display (OLED) with HDR \n IP68 dust and water resistant (maximum depth of 2 meters up to 30 minutes) \n12MP dual cameras with dual OIS and 7MP TrueDepth front camera – Portrait mode, Portrait Lighting, Depth Control, and Smart HDR \nFace ID for secure authentication and Apple Pay \nA12 Bionic with next-generation Neural Engine \nWireless charging – works with Qi chargers \n iOS 12 with Memoji, Screen Time, Siri Shortcuts, and Group FaceTime',
-    quantity: 73,
-    price: new Map([['1-50', '800000'], ['51-60', '750000']]),
-    images: [
-      'https://res.cloudinary.com/codebars/image/upload/v1582093471/garahub/products/iphonex1_irvgux.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582093471/garahub/products/iphonex1_irvgux.jpg',
-    ],
-    isInStock: true,
-    discountId: discount._id,
-    brandId: appleBrand._id,
-  },
-  {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
     description: 'Black HP Quad Core laptop',
     categoryId: [compCategory._id],
@@ -1173,24 +1154,6 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: hpBrand._id,
-  },
-  {
-    name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
-    description: 'Black Nikon camera',
-    categoryId: [camCategory._id],
-    sku: 'sku13',
-    specification:
-      "Poised to deliver in the most challenging of situations, Nikon's D7200 is a versatile DX-format DSLR that caters to both still photography and video users. Featuring a 24.2MP CMOS sensor which lacks an optical low-pass filter, and an EXPEED 4 image processor, the D7200 is able to record up to 6 fps at full-resolution, or 7 fps at a 1.3x crop, with a 100-frame buffer for extended high-speed shooting. This sensor and processor combination also avails a top native sensitivity of ISO 25600, which can further be expanded to black & white-dedicated ISO 51200 and ISO 102400 sensitivities. Full HD 1080p video recording is supported up to 60 fps, and in-camera time lapse shooting with automatic exposure smoothing is possible for up to 9,999 consecutive frames. In addition to the sheer imaging benefits, the D7200 also incorporates a large 3.2\" 1,229k-dot LCD monitor, dual SD card slots, and features built-in snapbridge Wi-Fi connectivity with NFC for simple linking of your mobile device. Capable of performing in both still and video realms, the D7200 is an all-around shooter that blends sophisticated imaging technologies with refined handling and design. Rounding out its feature-set, the D7200 is also characterized by an apt 51-point AF system, with 15 cross-type points, for quick and accurate focusing in a variety of conditions. The 3D Color Matrix Metering II system, which utilizes a 2,016-pixel RGB sensor, also benefits the focusing capabilities in addition to providing precise exposure metering capabilities. Further realizing a complete imaging solution, a series of Picture Control profiles can be applied to refine the color and tonal handling of imagery. Included with the D7200 body is the wide-angle to telephoto zoom AF-S DX NIKKOR 18-140mm f/3.5-5.6G ED VR lens, which features VR image stabilization to minimize camera shake to suit working in dimly-lit conditions and with longer focal lengths. One aspherical element and one extra-low dispersion element are integrated into the lens' design to minimize aberrations and optimize image sharpness and an SWM autofocus mechanism is used to acquire focus quickly, silently, and accurately.",
-    quantity: 200,
-    price: new Map([['1-100', '3000000'], ['100-200', '2000000']]),
-    images: [
-      'https://res.cloudinary.com/codebars/image/upload/v1582093795/garahub/products/nikon1_wjdqhw.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582093795/garahub/products/nikon2_mjowxc.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582093795/garahub/products/nikon3_asa1g4.jpg',
-    ],
-    isInStock: true,
-    discountId: discount._id,
-    brandId: nikonBrand._id,
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -1334,25 +1297,6 @@ const productsData: Array<Products> = [
       'https://res.cloudinary.com/codebars/image/upload/v1582098908/garahub/products/mac2_waxxnp.jpg',
       'https://res.cloudinary.com/codebars/image/upload/v1582098908/garahub/products/mac3_ed6onr.jpg',
       'https://res.cloudinary.com/codebars/image/upload/v1582098908/garahub/products/mac4_h14mkq.jpg',
-    ],
-    isInStock: true,
-    discountId: discount._id,
-    brandId: appleBrand._id,
-  },
-  {
-    name:
-      'Apple IPhone XS Max (4GB RAM, 64GB ROM) IOS 12 (12MP + 12MP)+7MP 4G Smartphone - Silver',
-    description:
-      'Brand new apple iPhone X Max affordable, silver color with ios 12 operating system',
-    categoryId: [category._id, gamCategry._id],
-    sku: 'sku12',
-    specification:
-      '6.5-inch Super Retina display (OLED) with HDR \n IP68 dust and water resistant (maximum depth of 2 meters up to 30 minutes) \n12MP dual cameras with dual OIS and 7MP TrueDepth front camera – Portrait mode, Portrait Lighting, Depth Control, and Smart HDR \nFace ID for secure authentication and Apple Pay \nA12 Bionic with next-generation Neural Engine \nWireless charging – works with Qi chargers \n iOS 12 with Memoji, Screen Time, Siri Shortcuts, and Group FaceTime',
-    quantity: 73,
-    price: new Map([['1-50', '800000'], ['51-60', '750000']]),
-    images: [
-      'https://res.cloudinary.com/codebars/image/upload/v1582093471/garahub/products/iphonex1_irvgux.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582093471/garahub/products/iphonex1_irvgux.jpg',
     ],
     isInStock: true,
     discountId: discount._id,
@@ -1561,24 +1505,6 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
   },
   {
-    name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
-    description: 'Black HP Quad Core laptop',
-    categoryId: [compCategory._id],
-    sku: 'sku12',
-    specification:
-      'Model - HP 255 AMD QUAD CORE(4 Cores) 500GB HDD 4GB RAM 32GB FLASH Processor 1.5Ghz UP TO 2.16GHz Memory - 4GB Hard disk - 500GB Graphics Card - Intel HD Graphics Screen - 15.6 HD BV LED-backlight Display SuperMulti 8X DVD-RW Network - WiFi 802.11 bgn, Bluetooth Webcam + Mic, Battery - Li-Ion 4-cell Operating system - Freedos Other - Memory card reader, Wireless, DUAL AUDIO SPEAKERS Colors- Black Mass- 3kg Warranty - 1 year',
-    quantity: 193,
-    price: new Map([['1-55', '800000'], ['55-100', '750000']]),
-    images: [
-      'https://res.cloudinary.com/codebars/image/upload/v1582093584/garahub/products/hp1_d5660r.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582093584/garahub/products/hp2_kbiwra.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582093584/garahub/products/hp3_lbdzgr.jpg',
-    ],
-    isInStock: true,
-    discountId: discount._id,
-    brandId: hpBrand._id,
-  },
-  {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
     description: 'Black Nikon camera',
     categoryId: [camCategory._id],
@@ -1667,23 +1593,6 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
-  },
-  {
-    name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
-    description: 'Macbook Pro 2017 16gb 256ssd core i7',
-    categoryId: [compCategory._id],
-    sku: 'sku16',
-    specification:
-      'SKU: AP044EL0U3Q08NAFAMZ\nDisplay Size (inches): 15.0\nRAM (GB): 256\nHard Disk (GB): 256\nMegapixels: 0.0\nOperating System: Mac OS X\nInternal Memory(GB): 16\nColor: N/A\nMain Material: N/A\nModel: N/A\nProduct Line: DaDiva\nWeight (kg): 2',
-    quantity: 5,
-    price: new Map([['1-2', '1300000'], ['2-5', '1120000']]),
-    images: [
-      'https://res.cloudinary.com/codebars/image/upload/v1582094459/garahub/products/mac1_snusta.jpg',
-      'https://res.cloudinary.com/codebars/image/upload/v1582094459/garahub/products/mac2_asx44i.jpg',
-    ],
-    isInStock: true,
-    discountId: discount._id,
-    brandId: appleBrand._id,
   },
   {
     name:
