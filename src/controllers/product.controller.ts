@@ -1,6 +1,7 @@
 import Product, { IProduct } from '../models/product.model';
 import Category from '../models/category.model';
 import elasticsearch from '../elasticsearch/config';
+import algoliaClient from '../algolia';
 
 import sendResponse from '../helpers/response';
 import httpStatus from 'http-status';
@@ -74,6 +75,39 @@ export const Create = async (body: IProduct) => {
     return sendResponse(httpStatus.OK, 'product created', payload, null, '');
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const Create_v2 = async (body: IProduct) => {
+  try {
+    const product = new Product(body);
+
+    const splittedName = body.name.replace(/[$@#!%^&*()]/gi, ' ').split(' ');
+
+    splittedName.forEach(word => {
+      const index = algoliaClient.initIndex(word);
+
+      index
+        .setSettings({
+          searchableAttributes: ['name', 'description', 'spectification'],
+        })
+        .then(() => {
+          console.log('settings created');
+        });
+      index
+        .saveObject(body, {
+          autoGenerateObjectIDIfNotExist: true,
+        })
+        .then(({ objectID }) => {
+          console.log(objectID);
+        })
+        .catch(err => console.log(err.message));
+    });
+    const response = await product.save();
+
+    return sendResponse(200, 'Success', response, null, '');
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -204,67 +238,17 @@ export const GetASingleProduct = async (productID: String) => {
 
 export const search = async (query: string) => {
   try {
-    let searchResult: any;
-
     const splittedQuery = query.split(' ');
-
-    if (splittedQuery.length < 2) {
-      let singleSearchResult = await elasticsearch.search({
-        index: query,
-        body: {
-          query: {
-            match: {
-              name: `${query}*`,
-            },
-          },
-        },
+    let potential = splittedQuery.map(async query => {
+      let ret = Product.find({
+        name: { $regex: query, $options: 'gi' },
       });
-      let filtered = removeDuplicates(
-        //@ts-ignore
-        singleSearchResult.hits.hits.map<Array<IProduct>>(item => {
-          try {
-            return item._source;
-          } catch (error) {
-            return { name: null };
-          }
-        }),
-        'name',
-      );
-      return sendResponse(200, 'Search Result', filtered, null, '');
-    }
-    let bulkQuery: any[] = [];
-
-    splittedQuery.forEach(word => {
-      bulkQuery.push({ index: word });
-      bulkQuery.push({
-        query: { match: { name: { query: `${word}*`, fuzziness: 'auto' } } },
-      });
+      return ret;
     });
+    let [result] = await Promise.all(potential);
 
-    searchResult = await elasticsearch.msearch({ body: bulkQuery });
-
-    if (!searchResult.length) {
-      let potential = splittedQuery.map(async query => {
-        let ret = Product.find({
-          name: { $regex: query, $options: 'gi' },
-        });
-        return ret;
-      });
-      let [result] = await Promise.all(potential);
-
-      return sendResponse(200, 'Search Result From Db', result, null, '');
-    }
-
-    let filtered = removeDuplicates(
-      searchResult.responses.map((item: any) => {
-        try {
-          return item.hits.hits[0]._source;
-        } catch (error) {
-          return { name: null };
-        }
-      }),
-      'name',
-    );
+    //@ts-ignore
+    let filtered = removeDuplicates(result, 'name');
 
     return sendResponse(200, 'Search Result', filtered, null, '');
   } catch (error) {
