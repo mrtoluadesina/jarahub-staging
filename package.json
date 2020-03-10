@@ -15,6 +15,7 @@
     "compile:start": "yarn tsc & NODE_ENV=development bin/www"
   },
   "dependencies": {
+    "algoliasearch": "4.0.3",
     "axios": "0.19.2",
     "bcryptjs": "2.4.3",
     "celebrate": "11.0.1",
