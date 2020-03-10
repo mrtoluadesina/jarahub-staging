@@ -6,6 +6,7 @@ import Product from '../models/product.model';
 import { createOrder } from './order.controller';
 import addressModel from '../models/address.model';
 import ControllerResponse from '../interfaces/ControllerResponse';
+import couponModel from '../models/coupon.model';
 
 // Return All Users
 export const getAllTransaction = () => Transaction.find();
@@ -13,13 +14,21 @@ export const getAllTransaction = () => Transaction.find();
 // Creating a User
 export const init = async (user: IUser, body: ITransactionNoExtend) => {
   try {
-    const items = [];
-
-    let chargedAmount = body.isPickUp ? 20000000 : 0; //there should be a model to get the actual value from.
+    const code = body.code
+    let actualAmount = body.isPickUp ? 20000000 : 0; //there should be a model to get the actual value from.
+    let totalOrderQty = 0
+    let transactionBody = {
+      actualAmount,
+      user: user._id,
+      remarks: [],
+      items: []
+    }
     // put the factor of different pickup location.
-    let remarks = [
+    transactionBody.remarks = [
       {
+        // @ts-ignore
         time: Date.now(),
+        // @ts-ignore
         remark: 'initialize transaction',
       },
     ];
@@ -31,33 +40,31 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
         //carefully modify this line of code, it is responsible for money conversion to kobo
         let amount =
           item.calculatePrice(body.items[i].quantity) *
-          body.items[i].quantity *
-          100;
-        chargedAmount += amount;
+          body.items[i].quantity * 100;
+        transactionBody.actualAmount += amount;
         // NOTE: item discount is yet to be gotten
         // take the ids of items
-        items.push({
+        transactionBody.items.push({
+          // @ts-ignore
           productDetailsId: body.items[i].productDetailsId,
+          // @ts-ignore
           quantity: body.items[i].quantity,
+          // @ts-ignore
           amount,
         });
+        // count total order quantity
+        totalOrderQty += body.items[i].quantity;
       }
 
-      chargedAmount +=
-        item!.calculatePrice(body.items[i].quantity) * body.items[i].quantity;
-      // NOTE: discount is yet to be gotten
-      // take the ids of items
-      items.push({
-        productDetailsId: body.items[i].productDetailsId,
-        quantity: body.items[i].quantity,
-      });
     }
-    remarks.push({
+    transactionBody.remarks.push({
+      // @ts-ignore
       time: Date.now(),
-      remark: `Compare total amount: input:- ${body.chargedAmount}. computed:- ${chargedAmount}`,
+      // @ts-ignore
+      remark: `Compare total amount: input:- ${body.chargedAmount}. computed:- ${transactionBody.actualAmount}`,
     });
-    if (body.chargedAmount > chargedAmount) {
-      chargedAmount = body.chargedAmount;
+    if (body.chargedAmount > transactionBody.actualAmount) {
+      transactionBody.actualAmount = body.chargedAmount;
     }
     /*
       In future, discount code may be included...
@@ -67,19 +74,55 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
       let discountValue = 0
       if (discount) discountValue = discount.getValue(chargedAmount)
       chargedAmount -= discountValue
-       */
+      */
+    let validCoupon = {
+      invalid: true,
+      message: ''
+    }
+    let discountValue = 0
+    if (code){
+      const coupon = await couponModel.findOne({ code })
+      if (coupon){
+        // check validation and order amount
+        validCoupon = coupon.checkValidation(totalOrderQty)
+        console.log(validCoupon)
+        // make a discount if coupon exist
+        if (!validCoupon.invalid) {
+          let discountData = coupon.getDiscountvalue(transactionBody.actualAmount)
+          discountValue = discountData.value;
+          if (discountValue){
+            transactionBody.remarks.push({
+              // @ts-ignore
+              time: Date.now(),
+              // @ts-ignore
+              remark: `Coupon computed with ${discountData.message}`,
+            });
+          }
+          validCoupon.message = discountData.message
+          // @ts-ignore
+          transactionBody.coupon = coupon._id
+        }
+        
+      } else {
+        validCoupon = {
+          invalid: true,
+          message: 'Invalid Coupon code'
+        }
+      }
+    }
+
+    // @ts-ignore
+    transactionBody.chargedAmount = transactionBody.actualAmount - discountValue
     const address = new addressModel({
       userId: user._id,
       ...body.billing,
     });
     await address.save();
+    // @ts-ignore
+    transactionBody.address = address._id
 
     const transaction = new Transaction({
-      chargedAmount,
-      remarks,
-      user: user._id,
-      items,
-      address: address._id,
+      ...transactionBody
     });
 
     await transaction.save();
@@ -87,7 +130,7 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
       httpStatus.CREATED,
       'Transaction initialized',
       transaction,
-      null,
+      validCoupon.message? { message: validCoupon.message }: null,
       '',
     );
   } catch (error) {
