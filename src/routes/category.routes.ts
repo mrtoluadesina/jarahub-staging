@@ -39,7 +39,7 @@ router.post(
   validate(categoryValidation.create, { abortEarly: false }),
   async (req: Request, res: Response) => {
     try {
-      const response = await categoryController.Create(req.body);
+      const response = await categoryController.Create_v2(req.body);
 
       return res.status(response.statusCode).json(response);
     } catch (error) {

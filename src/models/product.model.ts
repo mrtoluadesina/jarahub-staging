@@ -1,5 +1,5 @@
 import { Schema, Document, model, Types, Model } from 'mongoose';
-import { getActualPrice } from '../helpers/products'
+import { getActualPrice } from '../helpers/products';
 
 export interface IProduct extends Document {
   name: string;
@@ -15,7 +15,7 @@ export interface IProduct extends Document {
   isInStock: Boolean;
   discountId: Types.ObjectId;
   tags: Array<string>;
-  brandId?: Types.ObjectId;
+  brandId: Types.ObjectId;
   reviews?: Array<Types.ObjectId>;
   calculatePrice: Function;
   updateOrderCount: Function;
@@ -86,6 +86,7 @@ const ProductModel = new Schema(
     brandId: {
       type: Types.ObjectId,
       ref: 'Brand',
+      required: true,
     },
     reviews: {
       type: Array,
@@ -94,8 +95,8 @@ const ProductModel = new Schema(
     },
     orderCount: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   { timestamps: true },
 );
@@ -107,14 +108,14 @@ ProductModel.pre('find', function(next) {
 });
 
 ProductModel.methods = {
-  calculatePrice(qty: number){
-    let productPrice = this.price
-    return getActualPrice(qty, productPrice)
+  calculatePrice(qty: number) {
+    let productPrice = this.price;
+    return getActualPrice(qty, productPrice);
   },
   async updateOrderCount(qty: number) {
     this.orderCount += qty;
-    await this.save()
-  }
-}
+    await this.save();
+  },
+};
 
 export default model<IProduct, ProductModelI>('Product', ProductModel);

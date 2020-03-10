@@ -2,10 +2,10 @@ import users from './data/users';
 import products, { createCategories } from './data/products';
 import User from '../../models/user.model';
 import Product from '../../models/product.model';
-import elasticSearch from '../../elasticsearch/config';
 import admin from './data/admin';
 import Admin from '../../models/admin.model';
 import Category from '../../models/category.model';
+import algoliaClient from '../../algolia';
 
 const cleanDatabase = async () => {
   try {
@@ -50,41 +50,33 @@ export const seedProducts = async () => {
   try {
     await createCategories();
 
-    let bulk: any[] = [];
     const allProducts = products.map(async product => {
       const newProduct = new Product(product);
 
-      product.name.split(' ').forEach(async word => {
-        bulk.push({
-          index: {
-            _index: word.toLowerCase(),
-            _type: 'product',
-            _id: newProduct._id.toString(),
-          },
-        });
-        bulk.push({
-          name: product.name,
-          description: product.description,
-          categoryId: product.categoryId,
-          sku: product.sku,
-          specification: product.specification,
-          quantity: product.quantity,
-          totalStock: product.totalStock,
-          price: product.price,
-          images: product.images,
-          isDeleted: product.isDeleted,
-          inStock: product.isInStock,
-          discountId: product.discountId,
-          tags: product.tags,
-        });
-      });
+      const splittedName = product.name
+        .replace(/[$@#!%^&*()]/gi, ' ')
+        .split(' ');
 
+      splittedName.forEach(_word => {
+        const index = algoliaClient.initIndex('products');
+
+        index.setSettings({
+          searchableAttributes: ['name', 'description', 'specification'],
+          customRanking: ['desc(isInStock)', 'desc(orderCount)'],
+        });
+        index
+          .saveObject(
+            { ...product, id: newProduct._id.toString() },
+            {
+              autoGenerateObjectIDIfNotExist: true,
+            },
+          )
+          .then(({ objectID }) => {
+            console.log(objectID + 'was indexed');
+          })
+          .catch(err => console.log(err.message));
+      });
       return newProduct.save();
-    });
-    elasticSearch.bulk({ body: bulk, refresh: true }, function(err, _response) {
-      if (err) {
-        console.log('Error: ', err);
-      }
     });
     const res = await Promise.all(allProducts);
     return res;

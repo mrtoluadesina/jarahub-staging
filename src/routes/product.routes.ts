@@ -77,7 +77,7 @@ router.get('/category/:category/all', async (req: Request, res: Response) => {
 router.get('/search/:query', async (req: Request, res: Response) => {
   try {
     const response = await productController.search(req.params.query);
-    return res.status(response.statusCode).json('l;kjghfjgkb');
+    return res.status(response.statusCode).json(response);
   } catch (error) {
     return res
       .status(500)
@@ -92,7 +92,7 @@ router.post(
   validate(productValidation.create, { abortEarly: false }),
   async (req: Request, res: Response) => {
     try {
-      const response = await productController.Create(req.body);
+      const response = await productController.Create_v2(req.body);
 
       return res.status(200).json(response);
     } catch (error) {
