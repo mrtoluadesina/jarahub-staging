@@ -13,11 +13,13 @@ export interface ITransactionNoExtend {
   items: ICartItem[];
   billing: object;
   isPickUp: boolean;
+  code: String;
 }
 
 export interface ITransaction extends Document {
   status: String;
   chargedAmount: Number;
+  actualAmount: Number;
   paidAmount: Number;
   reference: String;
   remarks: IRemark[];
@@ -39,6 +41,11 @@ const TransactionModel = new Schema(
       enum: ['Success', 'Failed', 'Abandoned'],
       required: true,
       default: 'Abandoned',
+    },
+    actualAmount: {
+      type: Number,
+      min: 0,
+      required: true,
     },
     chargedAmount: {
       type: Number,
@@ -85,6 +92,10 @@ const TransactionModel = new Schema(
     discount: {
       type: Schema.Types.ObjectId,
       ref: 'Discount',
+    },
+    coupon: {
+      type: Schema.Types.ObjectId,
+      ref: 'Coupon',
     },
     paidAt: {
       type: Date,
