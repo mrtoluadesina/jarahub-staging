@@ -1,5 +1,6 @@
 import Category, { ICategory } from '../models/category.model';
 import elasticsearch from '../elasticsearch/config';
+import algolia from '../algolia';
 import sendResponse from '../helpers/response';
 import httpStatus = require('http-status');
 
@@ -76,6 +77,66 @@ export const Create = async (body: ICategory) => {
     );
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const Create_v2 = async (body: ICategory) => {
+  try {
+    const { name } = body;
+    const isExist = await Category.findOne({ name });
+
+    if (isExist) {
+      return sendResponse(
+        httpStatus.OK,
+        'This category already exits',
+        {},
+        null,
+        '',
+      );
+    }
+    const category = new Category(body);
+
+    if (body.parents && body.parents.length) {
+      body.parents.forEach(async cat => {
+        let parentCategory = await Category.findById(cat);
+        parentCategory!.children!.push(category._id);
+        await parentCategory!.save();
+      });
+    }
+
+    const index = algolia.initIndex('categories');
+
+    index
+      .setSettings({
+        searchableAttributes: ['name'],
+      })
+      .then(() => {
+        console.log('Settings for categories created');
+      });
+    index
+      .saveObject(
+        { ...body, id: category._id.toString() },
+        {
+          autoGenerateObjectIDIfNotExist: true,
+        },
+      )
+      .then(({ objectID }) => {
+        console.log(objectID);
+      })
+      .catch(err => {
+        throw new Error(err.message);
+      });
+    const response = await category.save();
+
+    return sendResponse(
+      200,
+      'Category Created and Indexed',
+      response,
+      null,
+      '',
+    );
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
