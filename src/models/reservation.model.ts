@@ -18,6 +18,7 @@ export interface IReservation extends Document {
   productIds: Array<ISingleProductDetails>;
   userDetails: IUserDetails;
   adminId: Types.ObjectId;
+  userId: Types.ObjectId;
 }
 
 const ReservationSchema = new Schema(
@@ -35,6 +36,9 @@ const ReservationSchema = new Schema(
     adminId: {
       type: Types.ObjectId,
       required: true,
+    },
+    userId: {
+      type: Types.ObjectId,
     },
   },
   { timestamps: true },
