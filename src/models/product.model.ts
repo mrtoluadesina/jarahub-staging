@@ -15,10 +15,12 @@ export interface IProduct extends Document {
   isInStock: Boolean;
   discountId: Types.ObjectId;
   tags: Array<string>;
-  brandId: Types.ObjectId;
+  brandId?: Types.ObjectId;
+  brandName?: String;
   reviews?: Array<Types.ObjectId>;
   calculatePrice: Function;
   updateOrderCount: Function;
+  categoryNames?: Array<string>;
 }
 
 export interface ProductModelI extends Model<IProduct> {
@@ -43,6 +45,7 @@ const ProductModel = new Schema(
       type: [Schema.Types.ObjectId],
       ref: 'Categories',
     },
+    categoryNames: { type: Array, of: String },
     sku: {
       type: String,
       required: true,
@@ -88,6 +91,7 @@ const ProductModel = new Schema(
       ref: 'Brand',
       required: true,
     },
+    brandName: { type: String, required: true },
     reviews: {
       type: Array,
       of: Types.ObjectId,

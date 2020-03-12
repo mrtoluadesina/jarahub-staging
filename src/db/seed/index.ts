@@ -4,7 +4,6 @@ import User from '../../models/user.model';
 import Product from '../../models/product.model';
 import admin from './data/admin';
 import Admin from '../../models/admin.model';
-import Category from '../../models/category.model';
 import algoliaClient from '../../algolia';
 
 const cleanDatabase = async () => {
@@ -12,7 +11,6 @@ const cleanDatabase = async () => {
     await User.db.dropCollection('users');
     await Product.db.dropCollection('products');
     await Admin.db.dropCollection('admin');
-    await Category.db.dropCollection('categories');
     return console.log('Successfully cleared database');
   } catch (error) {
     console.log('An error occured: ', error.message);
@@ -52,30 +50,67 @@ export const seedProducts = async () => {
 
     const allProducts = products.map(async product => {
       const newProduct = new Product(product);
+      const index = algoliaClient.initIndex('products');
 
-      const splittedName = product.name
-        .replace(/[$@#!%^&*()]/gi, ' ')
-        .split(' ');
+      index.setSettings({
+        searchableAttributes: [
+          'name',
+          'description',
+          'specification',
+          'brandName',
+          'categoryNames',
+          'images',
+        ],
+        customRanking: ['desc(quantity)', 'desc(orderCount)'],
+        attributesForFaceting: ['brandName'],
+      });
+      index
+        .saveObject(
+          {
+            ...product,
+            id: newProduct._id.toString(),
+            objectID: newProduct._id.toString(),
+            price: JSON.stringify(newProduct.price),
+          },
+          {
+            autoGenerateObjectIDIfNotExist: true,
+          },
+        )
+        .then(({ objectID }) => {
+          console.log(objectID + 'was indexed');
+        })
+        .catch(err => console.log(err.message));
 
-      splittedName.forEach(_word => {
-        const index = algoliaClient.initIndex('products');
-
-        index.setSettings({
-          searchableAttributes: ['name', 'description', 'specification'],
-          customRanking: ['desc(isInStock)', 'desc(orderCount)'],
+      newProduct.categoryNames!.map(category => {
+        const categoryIndex = algoliaClient.initIndex(category);
+        categoryIndex.setSettings({
+          searchableAttributes: [
+            'name',
+            'description',
+            'specification',
+            'brandName',
+            'categoryNames',
+            'images',
+          ],
+          customRanking: ['desc(quantity)', 'desc(orderCount)'],
+          attributesForFaceting: ['brandName'],
         });
-        index
+
+        categoryIndex
           .saveObject(
-            { ...product, id: newProduct._id.toString() },
+            {
+              ...product,
+              objectID: newProduct._id.toString(),
+              price: JSON.stringify(newProduct.price),
+            },
             {
               autoGenerateObjectIDIfNotExist: true,
             },
           )
-          .then(({ objectID }) => {
-            console.log(objectID + 'was indexed');
-          })
+          .then(() => {})
           .catch(err => console.log(err.message));
       });
+
       return newProduct.save();
     });
     const res = await Promise.all(allProducts);
