@@ -60,7 +60,7 @@ const gamCategry = new Category({
   icon: 'gamepad',
 });
 const gadgetCategory = new Category({
-  name: 'Phones & Gadgets',
+  name: 'Phones-Gadgets',
   isDeleted: false,
   icon: 'cellphone-iphone',
 });
@@ -171,12 +171,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
-    categoryNames: [
-      'Phones',
-      'Phones & Gadgets',
-      'Mobile Phones',
-      'iOS Phones',
-    ],
+    categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -275,7 +270,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -340,7 +335,7 @@ const productsData: Array<Products> = [
     brandName: 'Infinix',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Infinix Phones',
       'Android Phones',
     ],
@@ -408,7 +403,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
-    categoryNames: ['Phones', 'Phones & Gadgets', 'iOS Phones', 'Apple Phones'],
+    categoryNames: ['Phones', 'Phones-Gadgets', 'iOS Phones', 'Apple Phones'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -506,7 +501,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -632,12 +627,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
-    categoryNames: [
-      'Phones',
-      'Phones & Gadgets',
-      'Mobile Phones',
-      'iOS Phones',
-    ],
+    categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -735,7 +725,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -861,12 +851,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
-    categoryNames: [
-      'Phones',
-      'Phones & Gadgets',
-      'Mobile Phones',
-      'iOS Phones',
-    ],
+    categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -964,7 +949,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -1090,12 +1075,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
-    categoryNames: [
-      'Phones',
-      'Phones & Gadgets',
-      'Mobile Phones',
-      'iOS Phones',
-    ],
+    categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -1193,7 +1173,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -1376,7 +1356,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -1579,7 +1559,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
@@ -1705,12 +1685,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
-    categoryNames: [
-      'Phones',
-      'Phones & Gadgets',
-      'Mobile Phones',
-      'iOS Phones',
-    ],
+    categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -1788,7 +1763,7 @@ const productsData: Array<Products> = [
     brandName: 'Samsung',
     categoryNames: [
       'Phones',
-      'Phones & Gadgets',
+      'Phones-Gadgets',
       'Samsung Phones',
       'Android Phones',
     ],
