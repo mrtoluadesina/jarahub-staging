@@ -5,3 +5,7 @@ export interface OrderBody {
   order: IOrder;
   cartItems: Array<IOrderItem>;
 }
+
+export interface AdminOrder {
+  products: Array<string>;
+}
