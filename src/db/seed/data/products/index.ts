@@ -50,7 +50,7 @@ const compCategory = new Category({
   icon: 'laptop',
 });
 const hkCategory = new Category({
-  name: 'Home & Kitchen',
+  name: 'Home-Kitchen',
   isDeleted: false,
   icon: 'blender',
 });
@@ -364,7 +364,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -588,7 +588,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -817,7 +817,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1046,7 +1046,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1275,7 +1275,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1458,7 +1458,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1661,7 +1661,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1851,7 +1851,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Binatone',
-    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
+    categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
