@@ -363,8 +363,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
-    categoryNames: ['Home & Kitchen', 'Binatone'],
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -587,7 +587,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -610,6 +611,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name:
@@ -814,7 +816,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -837,6 +840,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name:
@@ -1041,7 +1045,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1064,6 +1069,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name:
@@ -1268,7 +1274,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1291,6 +1298,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -1449,7 +1457,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1472,6 +1481,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -1650,7 +1660,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1673,6 +1684,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name:
@@ -1838,7 +1850,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     brandId: infinixBrand._id,
-    brandName: 'Infinix',
+    brandName: 'Binatone',
+    categoryNames: ['Home & Kitchen', 'Home', 'kitchen'],
   },
   {
     name:
@@ -1861,6 +1874,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: appleBrand._id,
     brandName: 'Apple',
+    categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
   },
   {
     name: 'Hisense 50"Smart UHD 4K TV+Netflix,Youtube&DSTV Now APP-50B7100UW',
@@ -1880,6 +1894,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: hisenseBrand._id,
     brandName: 'Hisense',
+    categoryNames: ['Television Set', '4k'],
   },
   {
     name: 'Polystar 43 INCH SMART CURVED LED TV + Free Wall Bracket',
@@ -1899,6 +1914,7 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: polyStarBrand._id,
     brandName: 'Polystar',
+    categoryNames: ['Television Set', '4k'],
   },
 ];
 
