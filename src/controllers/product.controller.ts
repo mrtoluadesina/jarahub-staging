@@ -82,27 +82,71 @@ export const Create_v2 = async (body: IProduct) => {
   try {
     const product = new Product(body);
 
-    const splittedName = body.name.replace(/[$@#!%^&*()]/gi, ' ').split(' ');
+    const index = algoliaClient.initIndex('products');
 
-    splittedName.forEach(word => {
-      const index = algoliaClient.initIndex(word);
-
-      index
-        .setSettings({
-          searchableAttributes: ['name', 'description', 'spectification'],
-        })
-        .then(() => {
-          console.log('settings created');
-        });
-      index
-        .saveObject(body, {
+    index
+      .setSettings({
+        searchableAttributes: [
+          'name',
+          'description',
+          'spectification',
+          'brandName',
+          'categoryNames',
+          'images',
+        ],
+        customRanking: ['desc(isInStock)', 'desc(orderCount)'],
+        attributesForFaceting: ['brandName'],
+      })
+      .then(() => {
+        console.log('settings created');
+      });
+    index
+      .saveObject(
+        {
+          ...body,
+          id: product._id.toString(),
+          objectID: product._id.toString(),
+        },
+        {
           autoGenerateObjectIDIfNotExist: true,
-        })
-        .then(({ objectID }) => {
-          console.log(objectID);
-        })
-        .catch(err => console.log(err.message));
-    });
+        },
+      )
+      .then(({ objectID }) => {
+        console.log(objectID);
+      })
+      .catch(err => console.log(err.message));
+
+    product.categoryNames!.length &&
+      product.categoryNames!.map(category => {
+        const categoryIndex = algoliaClient.initIndex(category);
+        categoryIndex.setSettings({
+          searchableAttributes: [
+            'name',
+            'description',
+            'specification',
+            'brandName',
+            'categoryNames',
+            'images',
+          ],
+          customRanking: ['desc(quantity)', 'desc(orderCount)'],
+          attributesForFaceting: ['brandName'],
+        });
+
+        categoryIndex
+          .saveObject(
+            {
+              ...body,
+              objectID: product._id.toString(),
+              id: product._id.toString(),
+            },
+            {
+              autoGenerateObjectIDIfNotExist: true,
+            },
+          )
+          .then(() => {})
+          .catch(err => console.log(err.message));
+      });
+
     const response = await product.save();
 
     return sendResponse(200, 'Success', response, null, '');
