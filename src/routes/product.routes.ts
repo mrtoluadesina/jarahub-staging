@@ -119,7 +119,7 @@ router.put('/:productID', async (req: Request, res: Response) => {
 //Delete a Product
 router.delete('/:productID', async (req: Request, res: Response) => {
   try {
-    const response = await productController.Delete(req.body, req.params._id);
+    const response = await productController.Delete(req.params._id);
 
     return res.status(response!.statusCode).json(response);
   } catch (error) {
