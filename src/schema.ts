@@ -57,7 +57,10 @@ import {
   search,
 } from './controllers/product.controller';
 
+import { Create as createCollection } from './controllers/collection.controller';
+
 import { decodeToken } from './middlewares/userAuth';
+import { CollectionInputType, CollectionType } from './types/collection';
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -288,6 +291,14 @@ const mutation = new GraphQLObjectType({
       },
       resolve: async (_, { reviewBody, productId }) =>
         await (await createReview(reviewBody, productId)).payload,
+    },
+    createCollection: {
+      type: CollectionType,
+      description: 'Mutation for creating collection',
+      args: {
+        body: { type: CollectionInputType, description: 'The collection body' },
+      },
+      resolve: async (_, { body }) => await createCollection(body),
     },
   }),
 });
