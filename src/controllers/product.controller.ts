@@ -170,37 +170,19 @@ export const Update = async (body: IProduct, productID: String) => {
       );
     }
 
-    await Product.findOneAndUpdate(
-      { _id: body._id },
-      { $set: body },
+    const response = await Product.findOneAndUpdate(
+      { _id: productID },
+      { $set: { ...body, isDeleted: false } },
       { new: true },
-      (err, result) => {
-        if (err) {
-          return sendResponse(
-            httpStatus.INTERNAL_SERVER_ERROR,
-            'an error occured',
-            {},
-            null,
-            '',
-          );
-        }
-        return sendResponse(
-          httpStatus.OK,
-          'product updated',
-          result!,
-          null,
-          '',
-        );
-      },
     );
-    return;
+    return sendResponse(200, 'Product updated', response!, null, '');
   } catch (error) {
     throw new Error(error);
   }
 };
 
 //Delete a Product
-export const Delete = async (body: IProduct, productID: String) => {
+export const Delete = async (productID: String) => {
   try {
     const product = await Product.findById(productID);
 
@@ -214,31 +196,13 @@ export const Delete = async (body: IProduct, productID: String) => {
       );
     }
 
-    await Product.findOneAndUpdate(
-      { _id: body._id },
+    const response = await Product.findOneAndUpdate(
+      { _id: productID },
       { $set: { isDeleted: true } },
       { new: true },
-      (err, result) => {
-        if (err) {
-          return sendResponse(
-            httpStatus.INTERNAL_SERVER_ERROR,
-            'an error occured',
-            {},
-            null,
-            '',
-          );
-        }
-        return sendResponse(
-          httpStatus.OK,
-          'product is deleted',
-          result!,
-          null,
-          '',
-        );
-      },
     );
 
-    return;
+    return sendResponse(httpStatus.OK, 'Product deleted', response!, null, '');
   } catch (error) {
     throw new Error(error);
   }
