@@ -24,7 +24,7 @@ import couponRouter from './routes/coupon.routes';
 import schema from './schema';
 import mongoose from 'mongoose';
 // COMMENTED CODE: DELETE SEED IN PRODUCTION
-// import seed from './db/seed';
+import seed from './db/seed';
 
 const app = express();
 
@@ -67,7 +67,7 @@ mongoose.connect(`${process.env.MONGO_URI}`, {
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.error('MongoDB database connection established successfully!');
-  // seed();
+  seed();
 });
 connection.once('open', () => {});
 connection.once('error', err => {
