@@ -26,3 +26,22 @@ class Stat implements IStat {
     }
   }
 }
+class WeekStat extends Stat {
+  constructor () {
+    super()
+    this.range = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    this.statCollection = {}
+  }
+  
+  addStat(timeStamp: Date, data: Number) {
+    let day = this.range[(new Date(timeStamp).getUTCDay())];
+    // @ts-ignore
+    if (this.statCollection[day]){
+      // @ts-ignore
+      this.statCollection[day] += data;
+    } else {
+      // @ts-ignore
+      this.statCollection[day] = data;
+    }
+  }
+}
