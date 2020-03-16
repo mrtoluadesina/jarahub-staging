@@ -10,6 +10,7 @@ export interface ICollection extends Document {
   name: string;
   image: string;
   priority: number;
+  description: string;
 }
 
 export interface Collection {
@@ -17,6 +18,7 @@ export interface Collection {
   name: string;
   image: string;
   priority: number;
+  description: string;
 }
 
 const CollectionSchema = new Schema(
@@ -25,6 +27,7 @@ const CollectionSchema = new Schema(
     name: { type: String, required: true },
     image: { type: String, required: true },
     priority: { type: Priority, enum: [0, 1], required: true },
+    description: { type: String, required: true },
   },
   { timestamps: true },
 );
