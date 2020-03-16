@@ -172,7 +172,7 @@ export const Update = async (body: IProduct, productID: String) => {
 
     const response = await Product.findOneAndUpdate(
       { _id: productID },
-      { $set: { ...body, isDeleted: false } },
+      { $set: { ...body, isDeleted: product.isDeleted } },
       { new: true },
     );
     return sendResponse(200, 'Product updated', response!, null, '');
