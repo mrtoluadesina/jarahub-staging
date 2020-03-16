@@ -8,7 +8,7 @@ const router = Router();
 
 router.use(adminAuth);
 router.post(
-  '/collection',
+  '/',
   validate(collectionValidator.create, { abortEarly: false }),
   async function(req: Request, res: Response) {
     try {
