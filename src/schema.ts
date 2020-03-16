@@ -62,6 +62,18 @@ import { Create as createCollection } from './controllers/collection.controller'
 import { decodeToken } from './middlewares/userAuth';
 import { CollectionInputType, CollectionType } from './types/collection';
 
+import {
+  Create as createWishlist,
+  Delete as deleteWishlist,
+  GetUserWishlist,
+  GetWishlist,
+} from './controllers/wishlist.controller';
+import {
+  WishListInputtype,
+  WishlistResponseType,
+  WishListtype,
+} from './types/wishlist';
+
 const query = new GraphQLObjectType({
   name: 'Query',
   description: 'The query root of Nert.',
@@ -201,6 +213,17 @@ const query = new GraphQLObjectType({
       },
       resolve: async (_, { searchQuery }) => await search(searchQuery),
     },
+    getWishlist: {
+      type: new GraphQLList(WishListtype),
+      description: 'Get all wish list item',
+      resolve: async () => await GetWishlist(),
+    },
+    getUserWishlist: {
+      type: WishlistResponseType,
+      description: 'The wishlist belonging to a particular user',
+      args: { userId: { type: GraphQLString, description: 'The user id' } },
+      resolve: async (_, { userId }) => await GetUserWishlist(userId),
+    },
   }),
 });
 
@@ -299,6 +322,24 @@ const mutation = new GraphQLObjectType({
         body: { type: CollectionInputType, description: 'The collection body' },
       },
       resolve: async (_, { body }) => await createCollection(body),
+    },
+    createWishlist: {
+      type: WishlistResponseType,
+      description: 'Mutation to create wishlist',
+      args: {
+        body: { type: WishListInputtype, description: 'The wishlist details' },
+      },
+      resolve: async (_, { body }) => await createWishlist(body),
+    },
+    deleteWishlist: {
+      type: WishlistResponseType,
+      description: 'Mutation for deleting a wishlist',
+      args: {
+        userId: { type: GraphQLString, description: 'The wishlist owner id' },
+        wishlistId: { type: GraphQLString, description: 'The wishlist id' },
+      },
+      resolve: async (_, { userId, wishlistId }) =>
+        deleteWishlist(userId, wishlistId),
     },
   }),
 });
