@@ -3,10 +3,17 @@ import sendResponse from '../helpers/response';
 
 export async function Create(body: WishBody) {
   try {
-    const isExisting = await Wishlist.findOne({ productId: body.productId });
+    const isExisting = await Wishlist.findOne({
+      productId: body.productId,
+      userId: body.userId,
+    });
 
     if (isExisting) {
-      return sendResponse(400, 'Item already in wishlist', {}, null, '');
+      await Wishlist.findOneAndDelete({
+        productId: body.productId,
+        userId: body.userId,
+      });
+      return sendResponse(400, 'Item removed wishlist', {}, null, '');
     }
 
     const wishlistItem = new Wishlist({ ...body, userId: body.id });
