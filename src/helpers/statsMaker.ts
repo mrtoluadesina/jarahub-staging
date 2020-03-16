@@ -91,3 +91,19 @@ class MonthStat extends Stat {
   }
 }
 
+export default function (range: String) {
+  switch (range.toLocaleLowerCase()) {
+    case 'year':
+      return new YearStat();
+      break;
+    case 'month':
+      return new MonthStat();
+      break;
+    case 'week':
+      return new WeekStat();
+      break;
+    default:
+      return null;
+      break;
+  }
+}
