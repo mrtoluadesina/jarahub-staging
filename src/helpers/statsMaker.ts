@@ -45,3 +45,22 @@ class WeekStat extends Stat {
     }
   }
 }
+
+class YearStat extends Stat {
+  constructor () {
+    super()
+    this.statCollection = {}
+  }
+  
+  addStat(timeStamp: Date, data: Number) {
+    let month = this.range[(new Date(timeStamp).getUTCMonth())];
+    // @ts-ignore
+    if (this.statCollection[month]){
+      // @ts-ignore
+      this.statCollection[month] += data;
+    } else {
+      // @ts-ignore
+      this.statCollection[month] = data;
+    }
+  }
+}
