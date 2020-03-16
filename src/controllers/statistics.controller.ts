@@ -25,3 +25,20 @@ export const revenue = async (range: string) => {
   );
 
 }
+export const order = async (range: string) => {
+  // @ts-ignore
+  let orders: IOrderItem[] = await OrderItem.getByRange(range)
+  // get stat constructor ready
+  let statMaker = StatFactory(range)!!
+  orders.forEach((order)=>{
+    statMaker.addStat(order.createdAt, order.quantity)
+  })
+  return sendResponse(
+    httpStatus.CREATED,
+    'Success',
+    statMaker.getStatData(),
+    null, 
+    ''
+  );
+
+}
