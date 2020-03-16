@@ -106,7 +106,10 @@ router.post(
 //Update a Product
 router.put('/:productID', async (req: Request, res: Response) => {
   try {
-    const response = await productController.Update(req.body, req.params._id);
+    const response = await productController.Update(
+      req.body,
+      req.params.productID,
+    );
 
     return res.status(response!.statusCode).json(response);
   } catch (error) {
