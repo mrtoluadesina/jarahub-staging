@@ -12,5 +12,11 @@ router.get('/revenue', async (req: Request, res: Response)=> {
   return res.json({ statusCode, message, payload, error });
 })
 
+router.get('/order', async (req: Request, res: Response)=>{
+  const range = req.query.range;
+  const { statusCode, message, payload, error } = await statsCtrl.order(range)
+  return res.send({ statusCode, message, payload, error });
+})
+
 router.use(errors())
 export default router;
