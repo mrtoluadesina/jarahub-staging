@@ -53,19 +53,18 @@ const OrderModel = new Schema(
   },
 );
 
-
 OrderModel.statics = {
-  async getByRange (range: String = 'week') {
+  async getByRange(range: String = 'week') {
     /*
     if range is year, get year beginning eqivalent
     if range is month, get month beginning
     if range is week, get week beginning eqivalent
     */
-    let date = new Date()
-    let year = date.getUTCFullYear()
-    let month = date.getUTCMonth()
-    let day = date.getUTCDate()
-    let week = date.getUTCDay()
+    let date = new Date();
+    let year = date.getUTCFullYear();
+    let month = date.getUTCMonth();
+    let day = date.getUTCDate();
+    let week = date.getUTCDay();
 
     let dateStart;
     switch (range.toLocaleLowerCase()) {
@@ -73,19 +72,19 @@ OrderModel.statics = {
         dateStart = new Date(`${year}-${1}`);
         break;
       case 'month':
-        dateStart = new Date(`${year}-${month+1}`);
+        dateStart = new Date(`${year}-${month + 1}`);
         break;
       default:
-        dateStart = new Date(`${year}-${month+1}-${day-week}`)
+        dateStart = new Date(`${year}-${month + 1}-${day - week}`);
         break;
     }
     let order = await this.find({
       createdAt: {
-        $gt: dateStart, 
-      }
-    })
+        $gt: dateStart,
+      },
+    });
     return order;
-  }
-}
+  },
+};
 
 export default model<IOrder>('Order', OrderModel);

@@ -3,40 +3,62 @@ interface IStat {
   getStatData: Function;
 }
 
-
 class Stat implements IStat {
   range: string[];
   statCollection: {};
-  constructor () {
-    this.range = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    this.statCollection = {}
+  constructor() {
+    this.range = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    this.statCollection = {};
   }
 
   addStat(timeStamp: Date, data: number) {
-    timeStamp
-    data
+    timeStamp;
+    data;
   }
-  getStatData(){
+  getStatData() {
     // @ts-ignore
-    let data = this.range.map((day)=> this.statCollection[day]? this.statCollection[day]: 0)
-    let label = this.range
+    let data = this.range.map(day =>
+      this.statCollection[day] ? this.statCollection[day] : 0,
+    );
+    let label = this.range;
     return {
       data,
-      label 
-    }
+      label,
+    };
   }
 }
 class WeekStat extends Stat {
-  constructor () {
-    super()
-    this.range = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    this.statCollection = {}
+  constructor() {
+    super();
+    this.range = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    this.statCollection = {};
   }
-  
+
   addStat(timeStamp: Date, data: Number) {
-    let day = this.range[(new Date(timeStamp).getUTCDay())];
+    let day = this.range[new Date(timeStamp).getUTCDay()];
     // @ts-ignore
-    if (this.statCollection[day]){
+    if (this.statCollection[day]) {
       // @ts-ignore
       this.statCollection[day] += data;
     } else {
@@ -47,15 +69,15 @@ class WeekStat extends Stat {
 }
 
 class YearStat extends Stat {
-  constructor () {
-    super()
-    this.statCollection = {}
+  constructor() {
+    super();
+    this.statCollection = {};
   }
-  
+
   addStat(timeStamp: Date, data: Number) {
-    let month = this.range[(new Date(timeStamp).getUTCMonth())];
+    let month = this.range[new Date(timeStamp).getUTCMonth()];
     // @ts-ignore
-    if (this.statCollection[month]){
+    if (this.statCollection[month]) {
       // @ts-ignore
       this.statCollection[month] += data;
     } else {
@@ -65,23 +87,23 @@ class YearStat extends Stat {
   }
 }
 class MonthStat extends Stat {
-  constructor () {
-    super()
-    let date = new Date()
-    let year = date.getUTCFullYear()
-    let month = date.getUTCMonth()
-    let numOfDays = new Date(`${year}-${month+2}`).getUTCDate()
-    
-    this.range = []
-    for (let i = 1; i<= numOfDays; i++) {
-      this.range.push(`${i}`)
+  constructor() {
+    super();
+    let date = new Date();
+    let year = date.getUTCFullYear();
+    let month = date.getUTCMonth();
+    let numOfDays = new Date(`${year}-${month + 2}`).getUTCDate();
+
+    this.range = [];
+    for (let i = 1; i <= numOfDays; i++) {
+      this.range.push(`${i}`);
     }
-    this.statCollection = {}
+    this.statCollection = {};
   }
   addStat(timeStamp: Date, data: Number) {
-    let day = this.range[(new Date(timeStamp).getUTCDate()) - 1];
+    let day = this.range[new Date(timeStamp).getUTCDate() - 1];
     // @ts-ignore
-    if (this.statCollection[day]){
+    if (this.statCollection[day]) {
       // @ts-ignore
       this.statCollection[day] += data;
     } else {
@@ -91,7 +113,7 @@ class MonthStat extends Stat {
   }
 }
 
-export default function (range: String) {
+export default function(range: String) {
   switch (range.toLocaleLowerCase()) {
     case 'year':
       return new YearStat();

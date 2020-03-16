@@ -20,6 +20,8 @@ import orderRouter from './routes/order.routes';
 import authRouter from './routes/auth.routes';
 import transactionRouter from './routes/transaction.routes';
 import couponRouter from './routes/coupon.routes';
+import collectionRouter from './routes/collection.routes';
+import wishlistRouter from './routes/wishlist.routes';
 import statsRouter from './routes/statistics.routes';
 
 import schema from './schema';
@@ -94,7 +96,9 @@ app.use('/api/v1/order', orderRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/transaction', transactionRouter);
 app.use('/api/v1/coupon', couponRouter);
-app.use('/api/v1/stats', statsRouter)
+app.use('/api/v1/collection', collectionRouter);
+app.use('/api/v1/wishlist', wishlistRouter);
+app.use('/api/v1/stats', statsRouter);
 
 app.use(
   '/graphql',
