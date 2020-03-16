@@ -64,3 +64,30 @@ class YearStat extends Stat {
     }
   }
 }
+class MonthStat extends Stat {
+  constructor () {
+    super()
+    let date = new Date()
+    let year = date.getUTCFullYear()
+    let month = date.getUTCMonth()
+    let numOfDays = new Date(`${year}-${month+2}`).getUTCDate()
+    
+    this.range = []
+    for (let i = 1; i<= numOfDays; i++) {
+      this.range.push(`${i}`)
+    }
+    this.statCollection = {}
+  }
+  addStat(timeStamp: Date, data: Number) {
+    let day = this.range[(new Date(timeStamp).getUTCDate()) - 1];
+    // @ts-ignore
+    if (this.statCollection[day]){
+      // @ts-ignore
+      this.statCollection[day] += data;
+    } else {
+      // @ts-ignore
+      this.statCollection[day] = data;
+    }
+  }
+}
+
