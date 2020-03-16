@@ -15,6 +15,7 @@ export interface IOrder extends Document {
   status?: String;
   amount: Number;
   orderItems: String[];
+  createdAt: Date;
 }
 
 const OrderModel = new Schema(
@@ -51,5 +52,40 @@ const OrderModel = new Schema(
     timestamps: true,
   },
 );
+
+
+OrderModel.statics = {
+  async getByRange (range: String = 'week') {
+    /*
+    if range is year, get year beginning eqivalent
+    if range is month, get month beginning
+    if range is week, get week beginning eqivalent
+    */
+    let date = new Date()
+    let year = date.getUTCFullYear()
+    let month = date.getUTCMonth()
+    let day = date.getUTCDate()
+    let week = date.getUTCDay()
+
+    let dateStart;
+    switch (range.toLocaleLowerCase()) {
+      case 'year':
+        dateStart = new Date(`${year}-${1}`);
+        break;
+      case 'month':
+        dateStart = new Date(`${year}-${month+1}`);
+        break;
+      default:
+        dateStart = new Date(`${year}-${month+1}-${day-week}`)
+        break;
+    }
+    let order = await this.find({
+      createdAt: {
+        $gt: dateStart, 
+      }
+    })
+    return order;
+  }
+}
 
 export default model<IOrder>('Order', OrderModel);

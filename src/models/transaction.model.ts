@@ -13,21 +13,25 @@ export interface ITransactionNoExtend {
   items: ICartItem[];
   billing: object;
   isPickUp: boolean;
-  code: String;
+  code: string;
+  getByRange: Function
 }
 
 export interface ITransaction extends Document {
   status: String;
-  chargedAmount: Number;
-  actualAmount: Number;
-  paidAmount: Number;
-  reference: String;
+  chargedAmount: number;
+  actualAmount: number;
+  paidAmount: number;
+  reference: string;
   remarks: IRemark[];
   user: IUser;
+  paidAt: Date;
   items: ICartItem[];
-  discount: String;
-  address: String;
+  discount: string;
+  address: string;
   verify: Function;
+  getByRange: Function
+  updatedAt: Date;
 }
 const Remarks = {
   time: Date,
@@ -115,6 +119,43 @@ TransactionModel.post('save', function(doc, next) {
     });
 });
 
+// Model Methods, statics
+TransactionModel.statics = {
+  async getByRange (range: String = 'week') {
+    /*
+    if range is year, get year beginning eqivalent
+    if range is month, get month beginning
+    if range is week, get week beginning eqivalent
+    */
+    let date = new Date()
+    let year = date.getUTCFullYear()
+    let month = date.getUTCMonth()
+    let day = date.getUTCDate()
+    let week = date.getUTCDay()
+
+    let dateStart;
+    switch (range.toLocaleLowerCase()) {
+      case 'year':
+        dateStart = new Date(`${year}-${1}`);
+        break;
+      case 'month':
+        dateStart = new Date(`${year}-${month+1}`);
+        break;
+      default:
+        dateStart = new Date(`${year}-${month+1}-${day-week}`)
+        break;
+    }
+    let transaction = await this.find({
+      status: 'Success',
+      createdAt: {
+        $gt: dateStart, 
+      }
+    })
+    return transaction;
+  }
+}
+
+// Document methods 
 TransactionModel.methods = {
   async verify(ref: string) {
     let data = await verify(ref);
@@ -125,6 +166,7 @@ TransactionModel.methods = {
         data: { status, amount, paidAt },
       } = data;
       if (status == 'success') {
+        this.paidAt = Date.now();
         switch (true) {
           case this.chargedAmount < amount:
             remark.push({
@@ -165,7 +207,7 @@ TransactionModel.methods = {
     }
 
     this.remarks = [...this.remarks, ...remark];
-  },
+  }
 };
 
 export default mongoose.model<ITransaction>('Transaction', TransactionModel);
