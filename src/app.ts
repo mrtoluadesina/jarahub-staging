@@ -22,6 +22,7 @@ import transactionRouter from './routes/transaction.routes';
 import couponRouter from './routes/coupon.routes';
 import collectionRouter from './routes/collection.routes';
 import wishlistRouter from './routes/wishlist.routes';
+import statsRouter from './routes/statistics.routes';
 
 import schema from './schema';
 import mongoose from 'mongoose';
@@ -97,6 +98,7 @@ app.use('/api/v1/transaction', transactionRouter);
 app.use('/api/v1/coupon', couponRouter);
 app.use('/api/v1/collection', collectionRouter);
 app.use('/api/v1/wishlist', wishlistRouter);
+app.use('/api/v1/stats', statsRouter);
 
 app.use(
   '/graphql',
