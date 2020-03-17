@@ -44,10 +44,7 @@ export async function createCartItem(
       productDetailsId: productInCart[0]._id,
     });
 
-    const updateQuantity = (
-      parseInt(cartItem.quantity) + parseInt(existingCartItem[0].quantity)
-    ).toString();
-
+    const updateQuantity = cartItem.quantity + existingCartItem[0].quantity;
     existingCartItem[0].quantity = updateQuantity;
 
     const payload = await existingCartItem[0].save();

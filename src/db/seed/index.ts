@@ -2,17 +2,15 @@ import users from './data/users';
 import products, { createCategories } from './data/products';
 import User from '../../models/user.model';
 import Product from '../../models/product.model';
-import elasticSearch from '../../elasticsearch/config';
 import admin from './data/admin';
 import Admin from '../../models/admin.model';
-import Category from '../../models/category.model';
+import algoliaClient from '../../algolia';
 
 const cleanDatabase = async () => {
   try {
     await User.db.dropCollection('users');
     await Product.db.dropCollection('products');
     await Admin.db.dropCollection('admin');
-    await Category.db.dropCollection('categories');
     return console.log('Successfully cleared database');
   } catch (error) {
     console.log('An error occured: ', error.message);
@@ -50,41 +48,70 @@ export const seedProducts = async () => {
   try {
     await createCategories();
 
-    let bulk: any[] = [];
     const allProducts = products.map(async product => {
       const newProduct = new Product(product);
+      const index = algoliaClient.initIndex('products');
 
-      product.name.split(' ').forEach(async word => {
-        bulk.push({
-          index: {
-            _index: word.toLowerCase(),
-            _type: 'product',
-            _id: newProduct._id.toString(),
+      index.setSettings({
+        searchableAttributes: [
+          'name',
+          'description',
+          'specification',
+          'brandName',
+          'categoryNames',
+          'images',
+        ],
+        customRanking: ['desc(quantity)', 'desc(orderCount)'],
+        attributesForFaceting: ['brandName'],
+      });
+      index
+        .saveObject(
+          {
+            ...product,
+            id: newProduct._id.toString(),
+            objectID: newProduct._id.toString(),
+            price: JSON.stringify(newProduct.price),
           },
+          {
+            autoGenerateObjectIDIfNotExist: true,
+          },
+        )
+        .then(({ objectID }) => {
+          console.log(objectID + 'was indexed');
+        })
+        .catch(err => console.log(err.message));
+
+      newProduct.categoryNames!.map(category => {
+        const categoryIndex = algoliaClient.initIndex(category);
+        categoryIndex.setSettings({
+          searchableAttributes: [
+            'name',
+            'description',
+            'specification',
+            'brandName',
+            'categoryNames',
+            'images',
+          ],
+          customRanking: ['desc(quantity)', 'desc(orderCount)'],
+          attributesForFaceting: ['brandName'],
         });
-        bulk.push({
-          name: product.name,
-          description: product.description,
-          categoryId: product.categoryId,
-          sku: product.sku,
-          specification: product.specification,
-          quantity: product.quantity,
-          totalStock: product.totalStock,
-          price: product.price,
-          images: product.images,
-          isDeleted: product.isDeleted,
-          inStock: product.isInStock,
-          discountId: product.discountId,
-          tags: product.tags,
-        });
+
+        categoryIndex
+          .saveObject(
+            {
+              ...product,
+              objectID: newProduct._id.toString(),
+              price: JSON.stringify(newProduct.price),
+            },
+            {
+              autoGenerateObjectIDIfNotExist: true,
+            },
+          )
+          .then(() => {})
+          .catch(err => console.log(err.message));
       });
 
       return newProduct.save();
-    });
-    elasticSearch.bulk({ body: bulk, refresh: true }, function(err, _response) {
-      if (err) {
-        console.log('Error: ', err);
-      }
     });
     const res = await Promise.all(allProducts);
     return res;

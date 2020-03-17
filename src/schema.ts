@@ -54,7 +54,21 @@ import {
   getAllProducts,
   getAllProductsPaginated,
   getProductsByCategoryWithPagination,
+  search,
 } from './controllers/product.controller';
+
+import { Create as createCollection } from './controllers/collection.controller';
+
+import { decodeToken } from './middlewares/userAuth';
+import { CollectionInputType, CollectionType } from './types/collection';
+
+import {
+  Create as createWishlist,
+  Delete as deleteWishlist,
+  GetUserWishlist,
+  GetWishlist,
+} from './controllers/wishlist.controller';
+import { WishlistResponseType, WishListtype } from './types/wishlist';
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -89,6 +103,20 @@ const query = new GraphQLObjectType({
       resolve: async () => {
         const result = await getAllUsers();
         return result;
+      },
+    },
+    getMe: {
+      type: UserType,
+      description: 'Get a Logged in user',
+      args: {
+        userToken: {
+          type: GraphQLString,
+          description: "The logged in user's token",
+        },
+      },
+      resolve: async (_, { userToken }) => {
+        const user = await decodeToken(userToken);
+        return user;
       },
     },
     getBrands: {
@@ -169,6 +197,28 @@ const query = new GraphQLObjectType({
       },
       resolve: async (_, { pageNumber, filterParam }) =>
         await getProductsByCategoryWithPagination(pageNumber, filterParam),
+    },
+    searchProducts: {
+      type: ProductByCategoryType,
+      description: 'Query to search products',
+      args: {
+        searchQuery: {
+          type: GraphQLString,
+          description: 'The query to search for',
+        },
+      },
+      resolve: async (_, { searchQuery }) => await search(searchQuery),
+    },
+    getWishlist: {
+      type: new GraphQLList(WishListtype),
+      description: 'Get all wish list item',
+      resolve: async () => await GetWishlist(),
+    },
+    getUserWishlist: {
+      type: WishlistResponseType,
+      description: 'The wishlist belonging to a particular user',
+      args: { userId: { type: GraphQLString, description: 'The user id' } },
+      resolve: async (_, { userId }) => await GetUserWishlist(userId),
     },
   }),
 });
@@ -260,6 +310,34 @@ const mutation = new GraphQLObjectType({
       },
       resolve: async (_, { reviewBody, productId }) =>
         await (await createReview(reviewBody, productId)).payload,
+    },
+    createCollection: {
+      type: CollectionType,
+      description: 'Mutation for creating collection',
+      args: {
+        body: { type: CollectionInputType, description: 'The collection body' },
+      },
+      resolve: async (_, { body }) => await createCollection(body),
+    },
+    createWishlist: {
+      type: WishlistResponseType,
+      description: 'Mutation to create wishlist',
+      args: {
+        userId: { type: GraphQLString, description: 'The user id' },
+        productId: { type: GraphQLString, description: 'The product id' },
+      },
+      resolve: async (_, { userId, productId }) =>
+        await createWishlist({ userId, productId, id: userId }),
+    },
+    deleteWishlist: {
+      type: WishlistResponseType,
+      description: 'Mutation for deleting a wishlist',
+      args: {
+        userId: { type: GraphQLString, description: 'The wishlist owner id' },
+        wishlistId: { type: GraphQLString, description: 'The wishlist id' },
+      },
+      resolve: async (_, { userId, wishlistId }) =>
+        deleteWishlist(userId, wishlistId),
     },
   }),
 });

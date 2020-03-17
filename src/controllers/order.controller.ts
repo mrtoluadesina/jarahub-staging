@@ -5,6 +5,7 @@ import Discount from '../models/discount.model';
 import sendResponse from '../helpers/response';
 import Response from '../interfaces/ControllerResponse';
 import { OrderBody } from '../interfaces/Orders';
+import productModel from '../models/product.model';
 
 /**
  * @typedef {Object} UserResponse
@@ -14,6 +15,14 @@ import { OrderBody } from '../interfaces/Orders';
  * @property {string} error - The error message
  * @property {string} token - The token returned for successful request (optional)
  */
+
+/**
+ *
+ * @returns {UserRessponse} - The response body
+ */
+
+export const GetAllOrder = () =>
+  sendResponse(200, 'Success', Order.find(), null, '');
 
 /**
  * Controller to create and order
@@ -28,7 +37,6 @@ export async function createOrder(
 ): Promise<Response> {
   try {
     const newOrder: IOrder = new Order({ ...orderBody.order, userId });
-
     let totalAmount: number = 0;
     for (
       let i: number = 0, length: number = orderBody.cartItems.length;
@@ -46,7 +54,10 @@ export async function createOrder(
       totalAmount += orderBody.cartItems[i].amount;
 
       newOrder.orderItems.push(orderItem._id);
-
+      let product = await productModel.findById(
+        orderBody.cartItems[i].productDetailsId,
+      );
+      await product!!.updateOrderCount(orderBody.cartItems[i].quantity);
       await orderItem.save();
     }
     if (orderBody.order.discountId) {
@@ -64,7 +75,6 @@ export async function createOrder(
     } else {
       newOrder.amount = totalAmount;
     }
-
     const payload = await newOrder.save();
 
     await Cart.deleteMany({ userId });

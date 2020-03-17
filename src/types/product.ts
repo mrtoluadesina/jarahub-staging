@@ -89,7 +89,7 @@ export const ProductByCategoryPayload = new GraphQLObjectType({
   description: 'The product by category payload',
   fields: () => ({
     categoryId: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(BrandCategoryType),
       description: 'The array of category ids',
       resolve: parent => parent.categoryId,
     },
@@ -156,7 +156,7 @@ export const ProductByCategoryPayload = new GraphQLObjectType({
       resolve: parent => parent.discountId,
     },
     brandId: {
-      type: GraphQLString,
+      type: BrandCategoryType,
       description: 'The brand of the product',
       resolve: parent => parent.brandId,
     },
@@ -165,5 +165,14 @@ export const ProductByCategoryPayload = new GraphQLObjectType({
       description: 'The product id',
       resolve: parent => parent._id,
     },
+  }),
+});
+
+export const BrandCategoryType = new GraphQLObjectType({
+  name: 'BarndType',
+  description: 'The product brand type',
+  fields: () => ({
+    _id: { type: GraphQLString, description: 'The brand Id' },
+    name: { type: GraphQLString, description: 'The brand name' },
   }),
 });

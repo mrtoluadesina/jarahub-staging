@@ -1,4 +1,5 @@
 import { Schema, Document, model, Types, Model } from 'mongoose';
+import { getActualPrice } from '../helpers/products';
 
 export interface IProduct extends Document {
   name: string;
@@ -15,11 +16,15 @@ export interface IProduct extends Document {
   discountId: Types.ObjectId;
   tags: Array<string>;
   brandId?: Types.ObjectId;
+  brandName?: String;
   reviews?: Array<Types.ObjectId>;
+  calculatePrice: Function;
+  updateOrderCount: Function;
+  categoryNames?: Array<string>;
 }
 
 export interface ProductModelI extends Model<IProduct> {
-  paginate(T: number, C: (E: any, R: any) => {}): void;
+  post(T: string, C: (E: any, R: any) => {}): void;
 }
 
 export interface IPrice {
@@ -37,9 +42,10 @@ const ProductModel = new Schema(
       required: true,
     },
     categoryId: {
-      type: [Types.ObjectId],
-      ref: 'Category',
+      type: [Schema.Types.ObjectId],
+      ref: 'Categories',
     },
+    categoryNames: { type: Array, of: String },
     sku: {
       type: String,
       required: true,
@@ -55,7 +61,7 @@ const ProductModel = new Schema(
       type: Number,
     },
     price: {
-      type: Map,
+      type: Object,
       of: String,
       required: true,
     },
@@ -83,14 +89,37 @@ const ProductModel = new Schema(
     brandId: {
       type: Types.ObjectId,
       ref: 'Brand',
+      required: true,
     },
+    brandName: { type: String, required: true },
     reviews: {
       type: Array,
       of: Types.ObjectId,
       ref: 'Review',
     },
+    orderCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
+// model methods
+ProductModel.pre('find', function(next) {
+  this.populate('categoryId', 'name', 'Category');
+  this.populate('brandId', 'name', 'Brand');
+  next();
+});
+
+ProductModel.methods = {
+  calculatePrice(qty: number) {
+    let productPrice = this.price;
+    return getActualPrice(qty, productPrice);
+  },
+  async updateOrderCount(qty: number) {
+    this.orderCount += qty;
+    await this.save();
+  },
+};
 
 export default model<IProduct, ProductModelI>('Product', ProductModel);
