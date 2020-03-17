@@ -11,7 +11,7 @@ router.get('/', function(_req, res, _next) {
 });
 
 router.post('/seed', function(req, res, _next) {
-  if (req.query.owner == 'toluisseeding') {
+  if (req.query.owner == `${process.env.OWNER}`) {
     seed();
   }
 
