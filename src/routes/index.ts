@@ -10,10 +10,12 @@ router.get('/', function(_req, res, _next) {
   res.status(200).json({ message });
 });
 
-router.post('/', function(_req, res, _next) {
-  const seedMessage = seed();
+router.post('/seed', function(req, res, _next) {
+  if (req.query.owner == 'toluisseeding') {
+    seed();
+  }
 
-  res.status(200).json({ seedMessage });
+  res.status(200).json({ message: 'done' });
 });
 
 export default router;
