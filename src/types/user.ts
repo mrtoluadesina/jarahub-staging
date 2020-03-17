@@ -64,6 +64,11 @@ export const UserType: GraphQLObjectType<IUser> = new GraphQLObjectType({
       description: 'Flag to detect verified account',
       resolve: ({ isVerified }) => isVerified,
     },
+    id: {
+      type: GraphQLString,
+      description: 'The user id',
+      resolve: ({ _id }) => _id,
+    },
   }),
 });
 

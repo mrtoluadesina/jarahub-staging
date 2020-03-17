@@ -8,7 +8,7 @@ export interface IWishlist extends Document {
 export interface Wishlist {
   userId: String;
   productId: String;
-  id: string;
+  id?: string;
 }
 
 const WishlistModel = new Schema(

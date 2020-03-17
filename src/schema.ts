@@ -68,11 +68,7 @@ import {
   GetUserWishlist,
   GetWishlist,
 } from './controllers/wishlist.controller';
-import {
-  WishListInputtype,
-  WishlistResponseType,
-  WishListtype,
-} from './types/wishlist';
+import { WishlistResponseType, WishListtype } from './types/wishlist';
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -327,9 +323,11 @@ const mutation = new GraphQLObjectType({
       type: WishlistResponseType,
       description: 'Mutation to create wishlist',
       args: {
-        body: { type: WishListInputtype, description: 'The wishlist details' },
+        userId: { type: GraphQLString, description: 'The user id' },
+        productId: { type: GraphQLString, description: 'The product id' },
       },
-      resolve: async (_, { body }) => await createWishlist(body),
+      resolve: async (_, { userId, productId }) =>
+        await createWishlist({ userId, productId, id: userId }),
     },
     deleteWishlist: {
       type: WishlistResponseType,

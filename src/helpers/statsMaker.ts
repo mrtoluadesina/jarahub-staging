@@ -29,8 +29,8 @@ class Stat implements IStat {
     data;
   }
   getStatData() {
-    // @ts-ignore
     let data = this.range.map(day =>
+      // @ts-ignore
       this.statCollection[day] ? this.statCollection[day] : 0,
     );
     let label = this.range;
