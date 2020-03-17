@@ -76,9 +76,11 @@ export const seedProducts = async () => {
             autoGenerateObjectIDIfNotExist: true,
           },
         )
+        //@ts-ignore
         .then(({ objectID }) => {
           console.log(objectID + 'was indexed');
         })
+        //@ts-ignore
         .catch(err => console.log(err.message));
 
       newProduct.categoryNames!.map(category => {
@@ -108,6 +110,7 @@ export const seedProducts = async () => {
             },
           )
           .then(() => {})
+          //@ts-ignore
           .catch(err => console.log(err.message));
       });
 

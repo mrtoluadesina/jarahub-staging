@@ -41,11 +41,16 @@ const UserModel = new Schema(
     DOB: { type: Date },
     phone: { type: String },
     // @ts-ignore
-    password: { type: String, required: function(){ return !this.isGuest; } },
+    password: {
+      type: String,
+      required: function() {
+        return !this.isGuest;
+      },
+    },
     isDeleted: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
     isVerified: { type: Boolean, default: false },
-    isGuest: { type: Boolean, default: false }
+    isGuest: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
@@ -63,7 +68,7 @@ UserModel.pre<IUser>('save', async function() {
 //   }
 // });
 UserModel.methods = {
-  transform () {
+  transform() {
     const {
       email,
       lastName,
@@ -74,9 +79,9 @@ UserModel.methods = {
       isActive,
       isVerified,
       isGuest,
-    } = this
+    } = this;
 
-    return ({
+    return {
       email,
       firstName,
       lastName,
@@ -86,8 +91,8 @@ UserModel.methods = {
       isActive,
       isVerified,
       isGuest,
-    })
-  }
-}
+    };
+  },
+};
 
 export default mongoose.model<IUser>('User', UserModel);

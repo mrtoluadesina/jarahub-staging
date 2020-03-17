@@ -2,8 +2,6 @@ import Coupon, { ICouponNoExtend } from '../models/coupon.model';
 import sendResponse from '../helpers/response';
 import httpStatus from 'http-status';
 
-
-
 //Get coupon by code
 export const getCoupon = async (code: String) => {
   try {
@@ -25,14 +23,14 @@ export const getCoupon = async (code: String) => {
   }
 };
 
-export const createCoupon = async ( body: ICouponNoExtend ) => {
+export const createCoupon = async (body: ICouponNoExtend) => {
   try {
     // @ts-ignore
-    const { user, id } = body
+    const { user, id } = body;
     delete body.user;
-    delete body.id; 
-    body.createdBy = id
-    const couponExist = await Coupon.findOne({ code: body.code })
+    delete body.id;
+    body.createdBy = id;
+    const couponExist = await Coupon.findOne({ code: body.code });
     if (couponExist) {
       return sendResponse(
         httpStatus.BAD_REQUEST,
@@ -43,7 +41,7 @@ export const createCoupon = async ( body: ICouponNoExtend ) => {
       );
     }
     const coupon = new Coupon(body);
-    await coupon.save()
+    await coupon.save();
     return sendResponse(
       httpStatus.CREATED,
       'Coupon created successfully',
@@ -51,7 +49,6 @@ export const createCoupon = async ( body: ICouponNoExtend ) => {
       null,
       '',
     );
-
   } catch (error) {
     return sendResponse(
       httpStatus.INTERNAL_SERVER_ERROR,
@@ -60,5 +57,5 @@ export const createCoupon = async ( body: ICouponNoExtend ) => {
       null,
       '',
     );
-}
-}
+  }
+};

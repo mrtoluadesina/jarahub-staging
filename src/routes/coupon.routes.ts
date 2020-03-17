@@ -7,40 +7,53 @@ import adminAuth from '../middlewares/adminAuth';
 const router = Router();
 router
   .route('/')
-  .get( async (_req: Request, res: Response) => {
-    return res.json({ message: 'original' })
-    
+  .get(async (_req: Request, res: Response) => {
+    return res.json({ message: 'original' });
   })
-  // create a coupon code 
-  .post( adminAuth, async (req: Request, res: Response)=>{
+  // create a coupon code
+  .post(adminAuth, async (req: Request, res: Response) => {
     try {
-      const { message, statusCode, error, payload } = await couponController.createCoupon(
-        req.body
-      )
+      const {
+        message,
+        statusCode,
+        error,
+        payload,
+      } = await couponController.createCoupon(req.body);
       return res.status(statusCode).json({
-        message, payload, error, statusCode
-      }) 
+        message,
+        payload,
+        error,
+        statusCode,
+      });
     } catch (error) {
       return res.status(500).json({
-        message: error.message, statusCode: error.status
-      }) 
+        message: error.message,
+        statusCode: error.status,
+      });
     }
-  })
+  });
 
 //Get a Single Discount
 router.get('/:code', async (req: Request, res: Response) => {
   try {
-    const { message, statusCode, error, payload } = await couponController.getCoupon(
-      req.params.code
-    )
-  
+    const {
+      message,
+      statusCode,
+      error,
+      payload,
+    } = await couponController.getCoupon(req.params.code);
+
     return res.status(statusCode).json({
-      message, payload, error, statusCode
-    }) 
+      message,
+      payload,
+      error,
+      statusCode,
+    });
   } catch (error) {
     return res.status(500).json({
-      message: error.message, statusCode: error.status
-    }) 
+      message: error.message,
+      statusCode: error.status,
+    });
   }
 });
 

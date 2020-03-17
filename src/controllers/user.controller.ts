@@ -15,7 +15,7 @@ export const Signup = async (body: IUserNoExtend) => {
     const { email } = body;
 
     const Exist = await User.findOne({ email });
-    let user: IUser | null
+    let user: IUser | null;
     if (Exist && !Exist.isGuest) {
       return sendResponse(httpStatus.OK, 'This email is in use', {}, null, '');
     }
@@ -24,7 +24,11 @@ export const Signup = async (body: IUserNoExtend) => {
     } else {
       let password = body.password;
       delete body.password;
-      user = await User.findOneAndUpdate({email}, { ...body, isGuest: false }, { new: true })
+      user = await User.findOneAndUpdate(
+        { email },
+        { ...body, isGuest: false },
+        { new: true },
+      );
       user!!.password = password;
     }
     const data = await user!!.save();
@@ -33,7 +37,13 @@ export const Signup = async (body: IUserNoExtend) => {
 
     await sendMail(email, messages.confirmationEmail(token), subject);
 
-    return sendResponse(httpStatus.OK, 'Signup Successful', data.transform(), null, token);
+    return sendResponse(
+      httpStatus.OK,
+      'Signup Successful',
+      data.transform(),
+      null,
+      token,
+    );
   } catch (error) {
     throw new Error(error);
   }

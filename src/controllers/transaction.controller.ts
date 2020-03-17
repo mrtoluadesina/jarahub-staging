@@ -14,15 +14,15 @@ export const getAllTransaction = () => Transaction.find();
 // Creating a User
 export const init = async (user: IUser, body: ITransactionNoExtend) => {
   try {
-    const code = body.code
+    const code = body.code;
     let actualAmount = body.isPickUp ? 20000000 : 0; //there should be a model to get the actual value from.
-    let totalOrderQty = 0
+    let totalOrderQty = 0;
     let transactionBody = {
       actualAmount,
       user: user._id,
       remarks: [],
-      items: []
-    }
+      items: [],
+    };
     // put the factor of different pickup location.
     transactionBody.remarks = [
       {
@@ -40,7 +40,8 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
         //carefully modify this line of code, it is responsible for money conversion to kobo
         let amount =
           item.calculatePrice(body.items[i].quantity) *
-          body.items[i].quantity * 100;
+          body.items[i].quantity *
+          100;
         transactionBody.actualAmount += amount;
         // NOTE: item discount is yet to be gotten
         // take the ids of items
@@ -55,7 +56,6 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
         // count total order quantity
         totalOrderQty += body.items[i].quantity;
       }
-
     }
     transactionBody.remarks.push({
       // @ts-ignore
@@ -77,20 +77,22 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
       */
     let validCoupon = {
       invalid: true,
-      message: ''
-    }
-    let discountValue = 0
-    if (code){
-      const coupon = await couponModel.findOne({ code })
-      if (coupon){
+      message: '',
+    };
+    let discountValue = 0;
+    if (code) {
+      const coupon = await couponModel.findOne({ code });
+      if (coupon) {
         // check validation and order amount
-        validCoupon = coupon.checkValidation(totalOrderQty)
-        console.log(validCoupon)
+        validCoupon = coupon.checkValidation(totalOrderQty);
+        console.log(validCoupon);
         // make a discount if coupon exist
         if (!validCoupon.invalid) {
-          let discountData = coupon.getDiscountvalue(transactionBody.actualAmount)
+          let discountData = coupon.getDiscountvalue(
+            transactionBody.actualAmount,
+          );
           discountValue = discountData.value;
-          if (discountValue){
+          if (discountValue) {
             transactionBody.remarks.push({
               // @ts-ignore
               time: Date.now(),
@@ -98,31 +100,31 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
               remark: `Coupon computed with ${discountData.message}`,
             });
           }
-          validCoupon.message = discountData.message
+          validCoupon.message = discountData.message;
           // @ts-ignore
-          transactionBody.coupon = coupon._id
+          transactionBody.coupon = coupon._id;
         }
-        
       } else {
         validCoupon = {
           invalid: true,
-          message: 'Invalid Coupon code'
-        }
+          message: 'Invalid Coupon code',
+        };
       }
     }
 
     // @ts-ignore
-    transactionBody.chargedAmount = transactionBody.actualAmount - discountValue
+    transactionBody.chargedAmount =
+      transactionBody.actualAmount - discountValue;
     const address = new addressModel({
       userId: user._id,
       ...body.billing,
     });
     await address.save();
     // @ts-ignore
-    transactionBody.address = address._id
+    transactionBody.address = address._id;
 
     const transaction = new Transaction({
-      ...transactionBody
+      ...transactionBody,
     });
 
     await transaction.save();
@@ -130,7 +132,7 @@ export const init = async (user: IUser, body: ITransactionNoExtend) => {
       httpStatus.CREATED,
       'Transaction initialized',
       transaction,
-      validCoupon.message? { message: validCoupon.message }: null,
+      validCoupon.message ? { message: validCoupon.message } : null,
       '',
     );
   } catch (error) {
