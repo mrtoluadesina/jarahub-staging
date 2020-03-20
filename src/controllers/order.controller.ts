@@ -21,9 +21,10 @@ import productModel from '../models/product.model';
  * @returns {UserRessponse} - The response body
  */
 
-export const GetAllOrder = () =>
-  sendResponse(200, 'Success', Order.find(), null, '');
-
+export const GetAllOrder = async () => {
+  const orders = await Order.find();
+  return sendResponse(200, 'Success', orders, null, '');
+};
 /**
  * Controller to create and order
  *
