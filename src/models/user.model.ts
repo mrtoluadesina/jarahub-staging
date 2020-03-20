@@ -40,10 +40,10 @@ const UserModel = new Schema(
     lastName: { type: String, required: true },
     DOB: { type: Date },
     phone: { type: String },
-    // @ts-ignore
     password: {
       type: String,
       required: function() {
+        // @ts-ignore
         return !this.isGuest;
       },
     },
