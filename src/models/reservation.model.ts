@@ -40,6 +40,10 @@ const ReservationSchema = new Schema(
     userId: {
       type: Types.ObjectId,
     },
+    transactionId: {
+      type: Types.ObjectId,
+      required: true
+    }
   },
   { timestamps: true },
 );
