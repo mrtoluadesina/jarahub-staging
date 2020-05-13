@@ -1,4 +1,6 @@
 import User, { IUser, ILogin, IUserNoExtend } from '../models/user.model';
+import Address from '../models/address.model';
+import Wishlist from '../models/wishlist.model';
 import httpStatus from 'http-status';
 import decrypt from 'bcryptjs';
 import sendResponse from '../helpers/response';
@@ -178,6 +180,35 @@ export const getOneUser = async (userID: string) => {
       throw new Error(error);
     }
     return sendResponse(httpStatus.OK, 'user found', userByEmail, null, '');
+  }
+};
+
+export const getMe = async (userId: string) => {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return sendResponse(httpStatus.NOT_FOUND, 'user not found', {}, null, '');
+    }
+
+    const userAddresses = await Address.find({ userId });
+    const userWishlist = await Wishlist.find({ userId }).populate({
+      path: 'productId',
+      populate: {
+        path: 'productId',
+        model: 'Product',
+      },
+    });
+
+    let me = {
+      details: user,
+      addresses: userAddresses,
+      wishlist: userWishlist,
+    };
+
+    return sendResponse(httpStatus.OK, 'user found', me, null, '');
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
