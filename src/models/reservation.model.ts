@@ -15,10 +15,13 @@ export interface IUserDetails {
 }
 
 export interface IReservation extends Document {
+  transactionId: any;
   productIds: Array<ISingleProductDetails>;
   userDetails: IUserDetails;
   adminId: Types.ObjectId;
   userId: Types.ObjectId;
+  isPickup: boolean;
+  chargedAmount: number;
 }
 
 const ReservationSchema = new Schema(
@@ -40,6 +43,10 @@ const ReservationSchema = new Schema(
     userId: {
       type: Types.ObjectId,
     },
+    transactionId: {
+      type: Types.ObjectId,
+      required: true
+    }
   },
   { timestamps: true },
 );
