@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { celebrate as validate, errors } from 'celebrate';
 import orderValidation from '../validations/order.validation';
+import reservationValidation from '../validations/reservation.validation';
 import {
   createOrder,
   changeOrderStatus,
@@ -85,7 +86,9 @@ router.get('/', async function(_req: Request, res: Response) {
   }
 });
 
-router.post('/reservation', async function(req, res) {
+router.post('/reservation',  
+validate(reservationValidation.create, { abortEarly: false }),
+async function(req, res) {
   try {
     const response = await create(req.body.id, req.body);
     return res.status(response.statusCode).json(response);
