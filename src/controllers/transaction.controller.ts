@@ -200,3 +200,28 @@ export const verify = async (body: {
     );
   }
 };
+
+// get all transactions
+export const getAllTransactions = async () => {
+  try {
+    const transactions = await Transaction.find();
+    // call save method on transaction to populate user and items
+    await transactions.forEach(async (transaction: { save: () => any; }) => await transaction.save());
+    return sendResponse(
+      httpStatus.FOUND,
+      'Success',
+      transactions,
+      null,
+      '',
+    );
+  } catch (error) {
+    return sendResponse(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Transaction query failed',
+      {},
+      { message: error.message },
+      '',
+    );
+  }
+
+};
