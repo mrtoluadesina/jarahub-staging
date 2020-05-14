@@ -13,13 +13,11 @@ export default {
       lastName: Joi.string()
         .required()
         .error(new Error('Lastname is required')),
-      DOB: Joi.date()
-        .required()
-        .error(new Error('DOB is required')),
+      DOB: Joi.date().error(new Error('DOB is required')),
       phone: Joi.string().error(new Error('Phone is required')),
       password: Joi.string()
         .min(6)
-        .max(20)
+        .max(100)
         .required()
         .error(new Error('Password does not meet requirements')),
       isActive: Joi.boolean().default(true),
