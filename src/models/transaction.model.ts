@@ -49,7 +49,6 @@ const TransactionModel = new Schema(
     actualAmount: {
       type: Number,
       min: 0,
-      required: true,
     },
     chargedAmount: {
       type: Number,

@@ -206,7 +206,9 @@ export const getAllTransactions = async () => {
   try {
     const transactions = await Transaction.find();
     // call save method on transaction to populate user and items
-    await transactions.forEach(async (transaction: { save: () => any; }) => await transaction.save());
+    for (let i=0; i < transactions.length; i++) {
+      await transactions[i].save()
+    }
     return sendResponse(
       httpStatus.FOUND,
       'Success',
