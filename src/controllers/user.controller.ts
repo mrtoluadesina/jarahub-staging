@@ -4,9 +4,11 @@ import Wishlist from '../models/wishlist.model';
 import httpStatus from 'http-status';
 import decrypt from 'bcryptjs';
 import sendResponse from '../helpers/response';
+import generateMessageTemplate from '../helpers/generateMessageTemplateHeader';
 import { tokenEncoder as TokenEncoder } from '../helpers/tokenEncoder';
 import sendMail from '../helpers/sendMail';
 import messages from '../helpers/mailMessage';
+import sendMailV2 from '../helpers/sendMailV2';
 
 // Return All Users
 export const getAllUsers = () => User.find();
@@ -33,6 +35,18 @@ export const Signup = async (body: IUserNoExtend) => {
       );
       user!!.password = password;
     }
+    const msg = generateMessageTemplate(
+      process.env.SENDER_MAIL,
+      email,
+      {
+        email: email,
+        name: user!.firstName,
+        Receiver_Name: `${user!.firstName} ${user!.lastName}`,
+      },
+      process.env.WELCOME_MAIL_TEMPLATE_ID,
+      'Welcome to GaraHUB',
+    );
+    await sendMailV2(msg);
     const data = await user!!.save();
     const subject = 'Welcome to EmallFZE! 👋 Please confirm your email address';
     const token = TokenEncoder(email, data._id, data.isActive!);
