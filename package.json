@@ -15,6 +15,7 @@
     "compile:start": "yarn tsc & NODE_ENV=development bin/www"
   },
   "dependencies": {
+    "@sendgrid/mail": "7.1.1",
     "algoliasearch": "4.0.3",
     "axios": "0.19.2",
     "bcryptjs": "2.4.3",
