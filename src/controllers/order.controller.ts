@@ -58,6 +58,17 @@ export async function createOrder(
       let product = await productModel.findById(
         orderBody.cartItems[i].productDetailsId,
       );
+
+      if (!product) {
+        return sendResponse(
+          401,
+          `Product with id ${orderBody.cartItems[i].productDetailsId} not found`,
+          {},
+          null,
+          '',
+        );
+      }
+
       await product!!.updateOrderCount(orderBody.cartItems[i].quantity);
       await orderItem.save();
     }
