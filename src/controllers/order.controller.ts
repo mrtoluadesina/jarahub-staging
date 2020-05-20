@@ -6,6 +6,7 @@ import sendResponse from '../helpers/response';
 import Response from '../interfaces/ControllerResponse';
 import { OrderBody } from '../interfaces/Orders';
 import productModel from '../models/product.model';
+import sendMail from '../helpers/sendMail';
 
 /**
  * @typedef {Object} UserResponse
@@ -23,6 +24,9 @@ import productModel from '../models/product.model';
 
 export const GetAllOrder = async () => {
   const orders = await Order.find();
+  for (let order of orders) {
+    await order.save()
+  }
   return sendResponse(200, 'Success', orders, null, '');
 };
 /**
@@ -88,6 +92,13 @@ export async function createOrder(
       newOrder.amount = totalAmount;
     }
     const payload = await newOrder.save();
+
+    //to send mail to user
+    //get user email, 
+    //@ts-ignore
+    let email = payload.userId.email;
+
+    await sendMail(email, 'Your order have been placed. please use this reference id for tracking and resolutions', 'New Order')
 
     await Cart.deleteMany({ userId });
 
