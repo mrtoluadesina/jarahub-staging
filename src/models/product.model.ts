@@ -91,7 +91,7 @@ const ProductModel = new Schema(
       ref: 'Brand',
       required: true,
     },
-    brandName: { type: String, required: true },
+    brandName: { type: String },
     reviews: {
       type: Array,
       of: Types.ObjectId,

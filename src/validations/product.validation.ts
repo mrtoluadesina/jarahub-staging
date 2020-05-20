@@ -60,6 +60,10 @@ export default {
         .min(24)
         .max(24)
         .error(new Error('dicountId must be a mongo ObjectId')),
+      brandId: Joi.string()
+        .min(24)
+        .max(24)
+        .error(new Error('brandId must be a mongo ObjectId')),
     },
   },
 };
