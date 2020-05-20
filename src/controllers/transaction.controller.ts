@@ -1,6 +1,7 @@
 import Transaction, { ITransactionNoExtend } from '../models/transaction.model';
 import httpStatus from 'http-status';
 import sendResponse from '../helpers/response';
+import { getCollection } from '../helpers/paginator';
 import { IUser } from '../models/user.model';
 import Product from '../models/product.model';
 import { createOrder } from './order.controller';
@@ -10,6 +11,29 @@ import couponModel from '../models/coupon.model';
 
 // Return All Users
 export const getAllTransaction = () => Transaction.find();
+
+// Return All Users
+export const getSingleTransaction = async (id: string) => {
+  const transaction = await Transaction.findById(id);
+
+  if (!transaction) {
+    return sendResponse (
+      httpStatus.NOT_FOUND,
+      'Transaction not found',
+      transaction,
+      { message: 'Not found'},
+      null
+    )
+  }
+  await transaction.save()
+  return sendResponse (
+    httpStatus.FOUND,
+    'Transaction found',
+    transaction,
+    null,
+    null
+  )
+}
 
 // Creating a User
 export const init = async (user: IUser, body: ITransactionNoExtend) => {
@@ -185,7 +209,7 @@ export const verify = async (body: {
     return sendResponse(
       httpStatus.CREATED,
       'Orders Created Successfully',
-      transaction!!,
+      transaction,
       null,
       '',
     );
@@ -202,13 +226,11 @@ export const verify = async (body: {
 };
 
 // get all transactions
-export const getAllTransactions = async () => {
+export const getAllTransactions = async (query: {}) => {
   try {
-    const transactions = await Transaction.find();
-    // call save method on transaction to populate user and items
-    for (let i=0; i < transactions.length; i++) {
-      await transactions[i].save()
-    }
+    const transactions = await getCollection(Transaction, query);
+    // the find pre-hook on transaction populates user and items
+
     return sendResponse(
       httpStatus.FOUND,
       'Success',
