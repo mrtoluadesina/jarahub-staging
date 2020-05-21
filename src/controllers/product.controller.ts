@@ -9,7 +9,7 @@ import removeDuplicates from '../helpers/removeDuplicateSearchObjects';
 
 //Get All Products
 export const getAllProducts = async () =>
-  await Product.find({ isDeleted: false });
+  await Product.find({ isDeleted: false }).sort('-createdAt');
 
 //Create a Product
 export const Create = async (body: IProduct) => {
