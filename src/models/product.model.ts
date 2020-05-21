@@ -89,7 +89,7 @@ const ProductModel = new Schema(
     brandId: {
       type: Types.ObjectId,
       ref: 'Brand',
-      required: true,
+      // add required flag when going to production.
     },
     brandName: { type: String },
     reviews: {
