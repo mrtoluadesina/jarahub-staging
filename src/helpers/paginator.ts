@@ -38,5 +38,5 @@ export const getCollection = async (Model: any, queries: any) => {
   delete query.limit;
   delete query.skip;
 
-  return ({ data: await Model.find(query, null, { limit, skip }), total: await Model.find().estimatedDocumentCount() })
+  return ({ data: await Model.find(query, null, { limit, skip }).sort('-createdAt'), total: await Model.find().estimatedDocumentCount() })
 }
