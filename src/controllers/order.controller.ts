@@ -3,6 +3,7 @@ import Cart from '../models/cartItem.model';
 import OrderItem from '../models/orderItem.model';
 import Discount from '../models/discount.model';
 import sendResponse from '../helpers/response';
+import { getCollection } from '../helpers/paginator';
 import Response from '../interfaces/ControllerResponse';
 import { OrderBody } from '../interfaces/Orders';
 import productModel from '../models/product.model';
@@ -22,11 +23,8 @@ import sendMail from '../helpers/sendMail';
  * @returns {UserRessponse} - The response body
  */
 
-export const GetAllOrder = async () => {
-  const orders = await Order.find();
-  for (let order of orders) {
-    await order.save()
-  }
+export const GetAllOrder = async (query: {}) => {
+  const orders = await getCollection(Order, query);
   return sendResponse(200, 'Success', orders, null, '');
 };
 /**

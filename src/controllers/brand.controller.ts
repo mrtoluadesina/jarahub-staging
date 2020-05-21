@@ -23,7 +23,7 @@ export async function deleteBrand(id: String): Promise<Response> {
   }
 }
 
-export async function getBrands(query) {
+export async function getBrands(query:{}) {
   const payload = await getCollection(Brand, query);
 
   return sendResponse(200, 'Success', payload, null, '');
