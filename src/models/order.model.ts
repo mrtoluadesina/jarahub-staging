@@ -53,6 +53,17 @@ const OrderModel = new Schema(
   },
 );
 
+OrderModel.post('save', function(doc, next) {
+  doc
+    .populate({ path: 'userId', select: '-password' })
+    .populate({ path: 'addressId' })
+    .populate({ path: 'orderItems'}) //, populate: { path: 'productDetailsId'}})
+    .execPopulate()
+    .then(function() {
+      next();
+    });
+});
+
 OrderModel.statics = {
   async getByRange(range: String = 'week') {
     /*

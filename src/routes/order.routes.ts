@@ -70,9 +70,9 @@ router.put(
   },
 );
 
-router.get('/', async function(_req: Request, res: Response) {
+router.get('/', async function(req: Request, res: Response) {
   try {
-    const response = await GetAllOrder();
+    const response = await GetAllOrder(req.query);
 
     return res.status(response.statusCode).json(response);
   } catch (error) {
