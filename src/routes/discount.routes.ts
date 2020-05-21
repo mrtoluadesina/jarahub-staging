@@ -25,9 +25,9 @@ router.get('/:discountID', async (req: Request, res: Response) => {
 router.use(adminAuth);
 
 //Get all Discounts
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    const payload = await discountController.GetAllDiscounts();
+    const payload = await discountController.GetAllDiscounts(req.query);
 
     return res.status(200).json(payload);
   } catch (error) {
