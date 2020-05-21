@@ -1,5 +1,6 @@
 import Brand, { Brand as IBrand } from '../models/brand.model';
 import sendResponse from '../helpers/response';
+import { getCollection } from '../helpers/paginator';
 import Response from '../interfaces/ControllerResponse';
 
 export async function create(body: IBrand): Promise<Response> {
@@ -22,8 +23,8 @@ export async function deleteBrand(id: String): Promise<Response> {
   }
 }
 
-export async function getBrands() {
-  const payload = await Brand.find();
+export async function getBrands(query) {
+  const payload = await getCollection(Brand, query);
 
   return sendResponse(200, 'Success', payload, null, '');
 }
