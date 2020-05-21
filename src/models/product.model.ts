@@ -89,7 +89,6 @@ const ProductModel = new Schema(
     brandId: {
       type: Types.ObjectId,
       ref: 'Brand',
-      required: true,
     },
     brandName: { type: String },
     reviews: {
