@@ -9,8 +9,6 @@ import addressModel from '../models/address.model';
 import ControllerResponse from '../interfaces/ControllerResponse';
 import couponModel from '../models/coupon.model';
 
-// Return All Users
-export const getAllTransaction = () => Transaction.find();
 
 // Return All Users
 export const getSingleTransaction = async (id: string) => {
@@ -205,7 +203,6 @@ export const verify = async (body: {
       remarks.push({ time: Date.now(), remark: `Order Created Successfully` });
       transaction.remarks = [...transaction.remarks, ...remarks];
       await transaction.save();
-    }
     return sendResponse(
       httpStatus.CREATED,
       'Orders Created Successfully',
@@ -213,6 +210,9 @@ export const verify = async (body: {
       null,
       '',
     );
+    }  else {
+      throw new Error('Could not find transaction')
+    }
   } catch (error) {
     if (transaction) await transaction.save();
     return sendResponse(
@@ -230,7 +230,6 @@ export const getAllTransactions = async (query: {}) => {
   try {
     const transactions = await getCollection(Transaction, query);
     // the find pre-hook on transaction populates user and items
-
     return sendResponse(
       httpStatus.FOUND,
       'Success',
