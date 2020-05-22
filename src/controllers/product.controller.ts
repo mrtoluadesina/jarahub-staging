@@ -210,8 +210,67 @@ export const Update = async (body: IProduct, productID: String) => {
   }
 };
 
+/**
+ * This controller toggles product stock
+ * changes isInStock property to false if true
+ * and true if false
+ */
+
+export const updateStock = async (productID: string) => {
+  try {
+    const product = await Product.findById(productID);
+
+    if (!product) {
+      return sendResponse(
+        httpStatus.NOT_FOUND,
+        'product not found',
+        {},
+        null,
+        '',
+      );
+    }
+
+    const response = await Product.findOneAndUpdate(
+      { _id: productID },
+      { $set: { isInStock: product.isInStock ? false : true } },
+      { new: true },
+    );
+
+    const index = algoliaClient.initIndex('products');
+    if (product.isInStock) {
+      index.deleteObject(productID);
+    } else {
+      index
+        .saveObject(
+          {
+            ...product,
+            id: product._id.toString(),
+            objectID: product._id.toString(),
+          },
+          {
+            autoGenerateObjectIDIfNotExist: true,
+          },
+        )
+        .then(({ objectID }) => {
+          console.log(objectID);
+        })
+        .catch(err => console.log(err.message));
+    }
+
+    return sendResponse(
+      httpStatus.OK,
+      'Product stock updated',
+      response!,
+      null,
+      '',
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 //Delete a Product
-export const Delete = async (productID: String) => {
+export const Delete = async (productID: string) => {
   try {
     const product = await Product.findById(productID);
 
