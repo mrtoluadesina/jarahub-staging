@@ -231,6 +231,9 @@ export const Delete = async (productID: String) => {
       { new: true },
     );
 
+    const index = algoliaClient.initIndex('products');
+    index.deleteObject(productID);
+
     return sendResponse(httpStatus.OK, 'Product deleted', response!, null, '');
   } catch (error) {
     throw new Error(error);
