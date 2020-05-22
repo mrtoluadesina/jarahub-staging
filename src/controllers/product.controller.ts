@@ -6,6 +6,7 @@ import algoliaClient from '../algolia';
 import sendResponse from '../helpers/response';
 import httpStatus from 'http-status';
 import removeDuplicates from '../helpers/removeDuplicateSearchObjects';
+import checkValidSlug from '../helpers/checkValidSlug';
 
 //Get All Products
 export const getAllProducts = async () =>
@@ -82,6 +83,32 @@ export const Create_v2 = async (body: IProduct) => {
   try {
     const product = new Product(body);
 
+    const { slug } = product;
+
+    let slugIsValid = checkValidSlug(slug);
+
+    if (!slugIsValid) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Slug must match pattern garamart-samsung-s10-iphone',
+        null,
+        null,
+        '',
+      );
+    }
+
+    const productWithSlug = await Product.findOne({ slug });
+
+    if (productWithSlug) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Product with this slug exist. Kindly use another',
+        {},
+        null,
+        '',
+      );
+    }
+
     const index = algoliaClient.initIndex('products');
 
     index
@@ -93,6 +120,7 @@ export const Create_v2 = async (body: IProduct) => {
           'brandName',
           'categoryNames',
           'images',
+          'slug',
         ],
         customRanking: ['desc(isInStock)', 'desc(orderCount)'],
         attributesForFaceting: ['brandName'],
@@ -127,6 +155,7 @@ export const Create_v2 = async (body: IProduct) => {
             'brandName',
             'categoryNames',
             'images',
+            'slug',
           ],
           customRanking: ['desc(quantity)', 'desc(orderCount)'],
           attributesForFaceting: ['brandName'],
@@ -234,7 +263,18 @@ export const GetASingleProduct = async (productID: String) => {
     try {
       const product = await Product.findOne({ name: productID });
       if (!product) {
-        return sendResponse(404, 'product not found', {}, null, '');
+        const productWithSlug = await Product.findOne({ slug: productID });
+
+        if (!productWithSlug) {
+          return sendResponse(404, 'product not found', {}, null, '');
+        }
+        return sendResponse(
+          200,
+          'Product found by slug',
+          productWithSlug,
+          null,
+          '',
+        );
       }
 
       return sendResponse(200, 'Product found by name', product, null, '');
