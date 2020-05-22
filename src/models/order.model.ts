@@ -53,6 +53,21 @@ const OrderModel = new Schema(
   },
 );
 
+OrderModel.pre('findOne', function (next) {
+  this.populate({ path: 'userId' })
+  this.populate({path: 'addressId'})
+  this.populate({path: 'orderItems'})
+  this.populate({path: 'discountId'})
+  next()
+})
+OrderModel.pre('find', function (next) {
+  this.populate({ path: 'userId' })
+  this.populate({path: 'addressId'})
+  this.populate({path: 'orderItems'})
+  this.populate({path: 'discountId'})
+  next()
+})
+
 OrderModel.post('save', function(doc, next) {
   doc
     .populate({ path: 'userId', select: '-password' })
