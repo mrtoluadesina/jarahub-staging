@@ -140,9 +140,10 @@ export async function changeOrderStatus(
 
 export async function getOrder(orderId: string) {
   try {
-    const payload = await Order.findOne({ _id: orderId }).populate(
-      'orderItems',
-    );
+    const payload = await Order.findOne({ _id: orderId })
+    // .populate(
+    //   'orderItems',
+    // );
 
     return sendResponse(200, 'Order found', payload!, null, '');
   } catch (error) {
