@@ -119,6 +119,19 @@ router.put('/:productID', async (req: Request, res: Response) => {
   }
 });
 
+//Update product stock
+router.put('/stock/:productID', async (req: Request, res: Response) => {
+  try {
+    const response = await productController.updateStock(req.params.productID);
+
+    return res.status(response.statusCode).json(response);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: error.message });
+  }
+});
+
 //Delete a Product
 router.delete('/:productID', async (req: Request, res: Response) => {
   try {
