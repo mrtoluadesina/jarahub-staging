@@ -21,6 +21,7 @@ export interface IProduct extends Document {
   calculatePrice: Function;
   updateOrderCount: Function;
   categoryNames?: Array<string>;
+  slug: string;
 }
 
 export interface ProductModelI extends Model<IProduct> {
@@ -101,6 +102,7 @@ const ProductModel = new Schema(
       type: Number,
       default: 0,
     },
+    slug: { type: String, required: true },
   },
   { timestamps: true },
 );
