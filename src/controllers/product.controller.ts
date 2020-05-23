@@ -90,7 +90,7 @@ export const Create_v2 = async (body: IProduct) => {
     if (!slugIsValid) {
       return sendResponse(
         httpStatus.BAD_REQUEST,
-        'Slug must match pattern garamart-samsung-s10-iphone',
+        'Slug must be a word or match pattern garamart-samsung-s10-iphone',
         null,
         null,
         '',

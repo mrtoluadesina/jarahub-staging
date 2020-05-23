@@ -1,3 +1,3 @@
 export default function checkValidSlug(slug: string): boolean {
-  return !/[^-\w]/gi.test(slug);
+  return !/[^-\w]|\b\w\b/gi.test(slug);
 }
