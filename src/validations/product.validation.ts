@@ -65,7 +65,6 @@ export default {
         .max(24)
         .error(new Error('brandId must be a mongo ObjectId')),
       slug: Joi.string()
-        .pattern(new RegExp(/[^\w]|\_/, 'i'))
         .required()
         .error(
           new Error(
