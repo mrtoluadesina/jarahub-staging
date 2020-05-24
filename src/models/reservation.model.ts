@@ -45,8 +45,8 @@ const ReservationSchema = new Schema(
     },
     transactionId: {
       type: Types.ObjectId,
-      required: true
-    }
+      required: true,
+    },
   },
   { timestamps: true },
 );

@@ -84,6 +84,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/v1', apiRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/brand', brandRouter);
 app.use('/api/v1/product', productRouter);
 app.use('/api/v1/category', categoryRouter);
 app.use('/api/v1/address', addressRouter);

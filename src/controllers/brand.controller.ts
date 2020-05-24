@@ -6,7 +6,6 @@ export async function create(body: IBrand): Promise<Response> {
   try {
     const brand = new Brand(body);
     const payload = await brand.save();
-
     return sendResponse(200, 'Brand Created', payload, null, '');
   } catch (error) {
     throw new Error(error.message);

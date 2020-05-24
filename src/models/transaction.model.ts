@@ -160,7 +160,6 @@ TransactionModel.statics = {
     });
     return transaction;
   },
-  
 };
 
 // Document methods
@@ -216,8 +215,6 @@ TransactionModel.methods = {
 
     this.remarks = [...this.remarks, ...remark];
   },
-
-
 };
 
 export default mongoose.model<ITransaction>('Transaction', TransactionModel);

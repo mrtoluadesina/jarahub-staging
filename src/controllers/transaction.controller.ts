@@ -9,29 +9,28 @@ import addressModel from '../models/address.model';
 import ControllerResponse from '../interfaces/ControllerResponse';
 import couponModel from '../models/coupon.model';
 
-
 // Return All Users
 export const getSingleTransaction = async (id: string) => {
   const transaction = await Transaction.findById(id);
 
   if (!transaction) {
-    return sendResponse (
+    return sendResponse(
       httpStatus.NOT_FOUND,
       'Transaction not found',
       transaction,
-      { message: 'Not found'},
-      null
-    )
+      { message: 'Not found' },
+      null,
+    );
   }
-  await transaction.save()
-  return sendResponse (
+  await transaction.save();
+  return sendResponse(
     httpStatus.FOUND,
     'Transaction found',
     transaction,
     null,
-    null
-  )
-}
+    null,
+  );
+};
 
 // Creating a User
 export const init = async (user: IUser, body: ITransactionNoExtend) => {
@@ -203,15 +202,15 @@ export const verify = async (body: {
       remarks.push({ time: Date.now(), remark: `Order Created Successfully` });
       transaction.remarks = [...transaction.remarks, ...remarks];
       await transaction.save();
-    return sendResponse(
-      httpStatus.CREATED,
-      'Orders Created Successfully',
-      transaction,
-      null,
-      '',
-    );
-    }  else {
-      throw new Error('Could not find transaction')
+      return sendResponse(
+        httpStatus.CREATED,
+        'Orders Created Successfully',
+        transaction,
+        null,
+        '',
+      );
+    } else {
+      throw new Error('Could not find transaction');
     }
   } catch (error) {
     if (transaction) await transaction.save();
@@ -230,13 +229,7 @@ export const getAllTransactions = async (query: {}) => {
   try {
     const transactions = await getCollection(Transaction, query);
     // the find pre-hook on transaction populates user and items
-    return sendResponse(
-      httpStatus.FOUND,
-      'Success',
-      transactions,
-      null,
-      '',
-    );
+    return sendResponse(httpStatus.FOUND, 'Success', transactions, null, '');
   } catch (error) {
     return sendResponse(
       httpStatus.INTERNAL_SERVER_ERROR,
@@ -246,5 +239,4 @@ export const getAllTransactions = async (query: {}) => {
       '',
     );
   }
-
 };

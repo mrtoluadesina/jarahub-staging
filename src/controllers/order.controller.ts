@@ -92,11 +92,15 @@ export async function createOrder(
     const payload = await newOrder.save();
 
     //to send mail to user
-    //get user email, 
+    //get user email,
     //@ts-ignore
     let email = payload.userId.email;
 
-    await sendMail(email, 'Your order have been placed. please use this reference id for tracking and resolutions', 'New Order')
+    await sendMail(
+      email,
+      'Your order have been placed. please use this reference id for tracking and resolutions',
+      'New Order',
+    );
 
     await Cart.deleteMany({ userId });
 
@@ -140,7 +144,7 @@ export async function changeOrderStatus(
 
 export async function getOrder(orderId: string) {
   try {
-    const payload = await Order.findOne({ _id: orderId })
+    const payload = await Order.findOne({ _id: orderId });
     // .populate(
     //   'orderItems',
     // );

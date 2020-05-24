@@ -33,8 +33,7 @@ export default {
         .required(),
       cartItems: Joi.array(),
       order: Joi.object(),
-      addressId: Joi.string()
-      .pattern(/\d/)
+      addressId: Joi.string().pattern(/\d/),
     },
   },
   updateStatus: {
