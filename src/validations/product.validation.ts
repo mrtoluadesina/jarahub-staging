@@ -60,6 +60,17 @@ export default {
         .min(24)
         .max(24)
         .error(new Error('dicountId must be a mongo ObjectId')),
+      brandId: Joi.string()
+        .min(24)
+        .max(24)
+        .error(new Error('brandId must be a mongo ObjectId')),
+      slug: Joi.string()
+        .required()
+        .error(
+          new Error(
+            'slug is required and must match pattern "Garamart-mobile-phone-2010-version"',
+          ),
+        ),
     },
   },
 };

@@ -3,9 +3,11 @@ import Cart from '../models/cartItem.model';
 import OrderItem from '../models/orderItem.model';
 import Discount from '../models/discount.model';
 import sendResponse from '../helpers/response';
+import { getCollection } from '../helpers/paginator';
 import Response from '../interfaces/ControllerResponse';
 import { OrderBody } from '../interfaces/Orders';
 import productModel from '../models/product.model';
+import sendMail from '../helpers/sendMail';
 
 /**
  * @typedef {Object} UserResponse
@@ -21,9 +23,10 @@ import productModel from '../models/product.model';
  * @returns {UserRessponse} - The response body
  */
 
-export const GetAllOrder = () =>
-  sendResponse(200, 'Success', Order.find(), null, '');
-
+export const GetAllOrder = async (query: {}) => {
+  const orders = await getCollection(Order, query);
+  return sendResponse(200, 'Success', orders, null, '');
+};
 /**
  * Controller to create and order
  *
@@ -57,6 +60,17 @@ export async function createOrder(
       let product = await productModel.findById(
         orderBody.cartItems[i].productDetailsId,
       );
+
+      if (!product) {
+        return sendResponse(
+          401,
+          `Product with id ${orderBody.cartItems[i].productDetailsId} not found`,
+          {},
+          null,
+          '',
+        );
+      }
+
       await product!!.updateOrderCount(orderBody.cartItems[i].quantity);
       await orderItem.save();
     }
@@ -76,6 +90,17 @@ export async function createOrder(
       newOrder.amount = totalAmount;
     }
     const payload = await newOrder.save();
+
+    //to send mail to user
+    //get user email,
+    //@ts-ignore
+    let email = payload.userId.email;
+
+    await sendMail(
+      email,
+      'Your order have been placed. please use this reference id for tracking and resolutions',
+      'New Order',
+    );
 
     await Cart.deleteMany({ userId });
 
@@ -119,9 +144,10 @@ export async function changeOrderStatus(
 
 export async function getOrder(orderId: string) {
   try {
-    const payload = await Order.findOne({ _id: orderId }).populate(
-      'orderItems',
-    );
+    const payload = await Order.findOne({ _id: orderId });
+    // .populate(
+    //   'orderItems',
+    // );
 
     return sendResponse(200, 'Order found', payload!, null, '');
   } catch (error) {

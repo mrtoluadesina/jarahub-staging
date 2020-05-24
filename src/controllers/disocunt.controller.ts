@@ -1,9 +1,10 @@
+import httpStatus from 'http-status';
 import Discount, { IDiscount } from '../models/discount.model';
 import sendResponse from '../helpers/response';
-import httpStatus from 'http-status';
+import { getCollection } from '../helpers/paginator';
 
 //Get All Discounts
-export const GetAllDiscounts = () => Discount.find();
+export const GetAllDiscounts = (query: {}) => getCollection(Discount, query);
 
 //Get One Discount
 export const GetSingleDiscount = async (discountID: String) => {

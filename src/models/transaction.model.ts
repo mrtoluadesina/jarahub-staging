@@ -49,7 +49,6 @@ const TransactionModel = new Schema(
     actualAmount: {
       type: Number,
       min: 0,
-      required: true,
     },
     chargedAmount: {
       type: Number,
@@ -109,6 +108,14 @@ const TransactionModel = new Schema(
   { timestamps: true },
 );
 
+// populate on collection
+TransactionModel.pre('find', function(next) {
+  this.populate({ path: 'user', select: '-password' });
+  this.populate({ path: 'items.productDetailsId' });
+  next();
+});
+
+// populate on model
 TransactionModel.post('save', function(doc, next) {
   doc
     .populate({ path: 'user', select: '-password' })

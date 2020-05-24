@@ -98,6 +98,7 @@ app.use('/api/v1/coupon', couponRouter);
 app.use('/api/v1/collection', collectionRouter);
 app.use('/api/v1/wishlist', wishlistRouter);
 app.use('/api/v1/stats', statsRouter);
+app.use('/api/v1/brand', brandRouter);
 
 app.use(
   '/graphql',

@@ -6,10 +6,11 @@ import algoliaClient from '../algolia';
 import sendResponse from '../helpers/response';
 import httpStatus from 'http-status';
 import removeDuplicates from '../helpers/removeDuplicateSearchObjects';
+import checkValidSlug from '../helpers/checkValidSlug';
 
 //Get All Products
 export const getAllProducts = async () =>
-  await Product.find({ isDeleted: false });
+  await Product.find({ isDeleted: false }).sort('-createdAt');
 
 //Create a Product
 export const Create = async (body: IProduct) => {
@@ -82,6 +83,32 @@ export const Create_v2 = async (body: IProduct) => {
   try {
     const product = new Product(body);
 
+    const { slug } = product;
+
+    let slugIsValid = checkValidSlug(slug);
+
+    if (!slugIsValid) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Slug must be a word or match pattern garamart-samsung-s10-iphone',
+        null,
+        null,
+        '',
+      );
+    }
+
+    const productWithSlug = await Product.findOne({ slug });
+
+    if (productWithSlug) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Product with this slug exist. Kindly use another',
+        {},
+        null,
+        '',
+      );
+    }
+
     const index = algoliaClient.initIndex('products');
 
     index
@@ -93,6 +120,7 @@ export const Create_v2 = async (body: IProduct) => {
           'brandName',
           'categoryNames',
           'images',
+          'slug',
         ],
         customRanking: ['desc(isInStock)', 'desc(orderCount)'],
         attributesForFaceting: ['brandName'],
@@ -127,6 +155,7 @@ export const Create_v2 = async (body: IProduct) => {
             'brandName',
             'categoryNames',
             'images',
+            'slug',
           ],
           customRanking: ['desc(quantity)', 'desc(orderCount)'],
           attributesForFaceting: ['brandName'],
@@ -181,8 +210,67 @@ export const Update = async (body: IProduct, productID: String) => {
   }
 };
 
+/**
+ * This controller toggles product stock
+ * changes isInStock property to false if true
+ * and true if false
+ */
+
+export const updateStock = async (productID: string) => {
+  try {
+    const product = await Product.findById(productID);
+
+    if (!product) {
+      return sendResponse(
+        httpStatus.NOT_FOUND,
+        'product not found',
+        {},
+        null,
+        '',
+      );
+    }
+
+    const response = await Product.findOneAndUpdate(
+      { _id: productID },
+      { $set: { isInStock: product.isInStock ? false : true } },
+      { new: true },
+    );
+
+    const index = algoliaClient.initIndex('products');
+    if (product.isInStock) {
+      index.deleteObject(productID);
+    } else {
+      index
+        .saveObject(
+          {
+            ...product,
+            id: product._id.toString(),
+            objectID: product._id.toString(),
+          },
+          {
+            autoGenerateObjectIDIfNotExist: true,
+          },
+        )
+        .then(({ objectID }) => {
+          console.log(objectID);
+        })
+        .catch(err => console.log(err.message));
+    }
+
+    return sendResponse(
+      httpStatus.OK,
+      'Product stock updated',
+      response!,
+      null,
+      '',
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 //Delete a Product
-export const Delete = async (productID: String) => {
+export const Delete = async (productID: string) => {
   try {
     const product = await Product.findById(productID);
 
@@ -201,6 +289,9 @@ export const Delete = async (productID: String) => {
       { $set: { isDeleted: true } },
       { new: true },
     );
+
+    const index = algoliaClient.initIndex('products');
+    index.deleteObject(productID);
 
     return sendResponse(httpStatus.OK, 'Product deleted', response!, null, '');
   } catch (error) {
@@ -234,7 +325,18 @@ export const GetASingleProduct = async (productID: String) => {
     try {
       const product = await Product.findOne({ name: productID });
       if (!product) {
-        return sendResponse(404, 'product not found', {}, null, '');
+        const productWithSlug = await Product.findOne({ slug: productID });
+
+        if (!productWithSlug) {
+          return sendResponse(404, 'product not found', {}, null, '');
+        }
+        return sendResponse(
+          200,
+          'Product found by slug',
+          productWithSlug,
+          null,
+          '',
+        );
       }
 
       return sendResponse(200, 'Product found by name', product, null, '');

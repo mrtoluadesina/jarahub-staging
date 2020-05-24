@@ -22,6 +22,7 @@ interface Products {
   brandName?: String;
   reviews?: Array<Types.ObjectId>;
   categoryNames?: Array<String>;
+  slug: string;
 }
 
 const category = new Category({
@@ -172,6 +173,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
+    slug:
+      'Apple-IPhone-XS-Max-4GB-RAM-64GB-ROM-IOS-12-12MP-12MP-7MP-4G-Smartphone-Silver',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -192,6 +195,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -212,6 +216,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -227,6 +232,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'Microsoft Xbox One X 1TB Console - Gears 5 Bundle',
@@ -247,6 +253,7 @@ const productsData: Array<Products> = [
     brandId: microsoftBrand._id,
     brandName: 'Microsoft',
     categoryNames: ['Gaming', 'Xbox'],
+    slug: 'Microsoft-Xbox-One-X-1TB-Console-Gears-5-Bundle',
   },
   {
     name:
@@ -274,6 +281,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black-',
   },
   {
     name:
@@ -295,6 +304,8 @@ const productsData: Array<Products> = [
     isInStock: true,
     discountId: discount._id,
     categoryNames: ['Headphones'],
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -314,6 +325,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -339,6 +351,8 @@ const productsData: Array<Products> = [
       'Infinix Phones',
       'Android Phones',
     ],
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -360,6 +374,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -383,6 +398,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name:
@@ -404,6 +421,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Phones', 'Phones-Gadgets', 'iOS Phones', 'Apple Phones'],
+    slug:
+      'Apple-IPhone-XS-Max-4GB-RAM-64GB-ROM-IOS-12-12MP-12MP-7MP-4G-Smartphone-Silver',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -424,6 +443,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -444,6 +464,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -459,6 +480,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -478,6 +500,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -505,6 +528,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -525,6 +550,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -544,6 +571,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -563,6 +591,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -584,6 +614,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -607,6 +638,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name:
@@ -628,6 +661,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
+    slug:
+      'Apple-IPhone-XS-Max-4GB-RAM-64GB-ROM-IOS-12-12MP-12MP-7MP-4G-Smartphone-Silver',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -648,6 +683,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -668,6 +704,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -683,6 +720,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -702,6 +740,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -729,6 +768,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -749,6 +790,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -768,6 +811,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -787,6 +831,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -808,6 +854,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -831,6 +878,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name:
@@ -852,6 +901,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
+    slug:
+      'Apple-IPhone-XS-Max-4GB-RAM-64GB-ROM-IOS-12-12MP-12MP-7MP-4G-Smartphone-Silver',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -872,6 +923,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -892,6 +944,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -907,6 +960,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -926,6 +980,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -953,6 +1008,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -973,6 +1030,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -992,6 +1051,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -1011,6 +1071,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -1032,6 +1094,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -1055,6 +1118,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name:
@@ -1076,6 +1141,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
+    slug:
+      'Apple-IPhone-XS-Max-4GB-RAM-64GB-ROM-IOS-12-12MP-12MP-7MP-4G-Smartphone-Silver',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -1096,6 +1163,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -1116,6 +1184,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -1131,6 +1200,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -1150,6 +1220,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -1177,6 +1248,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -1197,6 +1270,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -1216,6 +1291,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -1235,6 +1311,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -1256,6 +1334,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -1279,6 +1358,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -1299,6 +1380,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -1314,6 +1396,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -1333,6 +1416,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -1360,6 +1444,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -1380,6 +1466,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -1399,6 +1487,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -1418,6 +1507,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -1439,6 +1530,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -1462,6 +1554,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name: 'Hp 255 AMD Quad Core (500GB HDD,4GB+ 32GB Flash Drive Freedos',
@@ -1482,6 +1576,7 @@ const productsData: Array<Products> = [
     brandId: hpBrand._id,
     brandName: 'HP',
     categoryNames: ['Computer', 'Laptops', 'HP Laptops'],
+    slug: 'Hp-255-AMD-Quad-Core--500GB-HDD-4GB--32GB-Flash-Drive-Freedos',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -1502,6 +1597,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -1517,6 +1613,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -1536,6 +1633,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -1563,6 +1661,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -1583,6 +1683,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name: 'Apple Mac-book Pro 2017 16gb 256ssd Core I7 Quality Brand',
@@ -1602,6 +1704,7 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Laptops', 'Apple Laptops', 'Mac Books'],
+    slug: 'Apple-Mac-book-Pro-2017-16gb-256ssd-Core-I7-Quality-Brand',
   },
   {
     name:
@@ -1621,6 +1724,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -1642,6 +1747,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -1665,6 +1771,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name:
@@ -1686,6 +1794,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Phones', 'Phones-Gadgets', 'Mobile Phones', 'iOS Phones'],
+    slug:
+      'Apple-IPhone-XS-Max-4GB-RAM-64GB-ROM-IOS-12-12MP-12MP-7MP-4G-Smartphone-Silver',
   },
   {
     name: 'Nikon D7200 DSLR Camera With 18-140mm VR Lens - Black',
@@ -1706,6 +1816,7 @@ const productsData: Array<Products> = [
     brandId: nikonBrand._id,
     brandName: 'Nikon',
     categoryNames: ['Camera', 'Photography', 'Nikon Cameras'],
+    slug: 'Nikon-D7200-DSLR-Camera-With-18-140mm-VR-Lens-Black',
   },
   {
     name: '6 Layers Shoes Rack With A Fabric Cover',
@@ -1721,6 +1832,7 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug: '6-Layers-Shoes-Rack-With-A-Fabric-Cover',
   },
   {
     name: 'X6 PSP Video Game Console Portable Handheld Game Player 4.3"',
@@ -1740,6 +1852,7 @@ const productsData: Array<Products> = [
     brandId: sonyBrand._id,
     brandName: 'Sony',
     categoryNames: ['Gaming', 'Playstation'],
+    slug: 'X6-PSP-Video-Game-Console-Portable-Handheld-Game-Player-4-3',
   },
   {
     name:
@@ -1767,6 +1880,8 @@ const productsData: Array<Products> = [
       'Samsung Phones',
       'Android Phones',
     ],
+    slug:
+      'Samsung-Galaxy-Note-10-Plus-Note-10-6-8-Inch-12GB-RAM-256GB-ROM-12MP-16MP-Dual-SIM-4-300-MAh-Smartphone-Aura-Black',
   },
   {
     name:
@@ -1787,6 +1902,8 @@ const productsData: Array<Products> = [
     ],
     isInStock: true,
     discountId: discount._id,
+    slug:
+      'Professional-Gaming-Headset-Stereo-Led-Headphones-With-Mic-For-PS4-Xbox-One-Phone-Black-Blue',
   },
   {
     name:
@@ -1806,6 +1923,8 @@ const productsData: Array<Products> = [
     discountId: discount._id,
     brandId: infinixBrand._id,
     brandName: 'Infinix',
+    slug:
+      'Infinix-S5-Lite-X652C-DUAL-SIM-32GB-ROM-3GB-RAM-4G-16MP-TRIPLE-AI-CAMERA-4000-MAh-FINGERPRINT-VIOLET',
   },
   {
     name: 'Binatone Blender And Smoothie Maker BLS-360',
@@ -1827,6 +1946,7 @@ const productsData: Array<Products> = [
     brandId: infinixBrand._id,
     brandName: 'Binatone',
     categoryNames: ['Home-Kitchen', 'Home', 'kitchen'],
+    slug: 'Binatone-Blender-And-Smoothie-Maker-BLS-360',
   },
   {
     name:
@@ -1850,6 +1970,8 @@ const productsData: Array<Products> = [
     brandId: appleBrand._id,
     brandName: 'Apple',
     categoryNames: ['Computer', 'Desktops', 'Apple Desktops', 'iMac'],
+    slug:
+      'Apple-2017-IMac-27-With-Retina-5K-Intel-Core-I5-7th-Gen-3-4-GHz-Quad-Core-8GB-RAM-1TH-FUSION-AMD-Radeon-Pro-570-Graphics-Card-4GB-Mac-OS-High-Sierra',
   },
   {
     name: 'Hisense 50"Smart UHD 4K TV+Netflix,Youtube&DSTV Now APP-50B7100UW',
@@ -1870,6 +1992,7 @@ const productsData: Array<Products> = [
     brandId: hisenseBrand._id,
     brandName: 'Hisense',
     categoryNames: ['Television Set', '4k'],
+    slug: 'Hisense-50-Smart-UHD-4K-TV-Netflix-Youtube-DSTV-Now-APP-50B7100UW',
   },
   {
     name: 'Polystar 43 INCH SMART CURVED LED TV + Free Wall Bracket',
@@ -1890,6 +2013,7 @@ const productsData: Array<Products> = [
     brandId: polyStarBrand._id,
     brandName: 'Polystar',
     categoryNames: ['Television Set', '4k'],
+    slug: 'Polystar-43-INCH-SMART-CURVED-LED-TV-Free-Wall-Bracket',
   },
 ];
 

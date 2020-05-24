@@ -1,6 +1,7 @@
 import Transaction, { ITransactionNoExtend } from '../models/transaction.model';
 import httpStatus from 'http-status';
 import sendResponse from '../helpers/response';
+import { getCollection } from '../helpers/paginator';
 import { IUser } from '../models/user.model';
 import Product from '../models/product.model';
 import { createOrder } from './order.controller';
@@ -9,7 +10,27 @@ import ControllerResponse from '../interfaces/ControllerResponse';
 import couponModel from '../models/coupon.model';
 
 // Return All Users
-export const getAllTransaction = () => Transaction.find();
+export const getSingleTransaction = async (id: string) => {
+  const transaction = await Transaction.findById(id);
+
+  if (!transaction) {
+    return sendResponse(
+      httpStatus.NOT_FOUND,
+      'Transaction not found',
+      transaction,
+      { message: 'Not found' },
+      null,
+    );
+  }
+  await transaction.save();
+  return sendResponse(
+    httpStatus.FOUND,
+    'Transaction found',
+    transaction,
+    null,
+    null,
+  );
+};
 
 // Creating a User
 export const init = async (user: IUser, body: ITransactionNoExtend) => {
@@ -181,19 +202,38 @@ export const verify = async (body: {
       remarks.push({ time: Date.now(), remark: `Order Created Successfully` });
       transaction.remarks = [...transaction.remarks, ...remarks];
       await transaction.save();
+      return sendResponse(
+        httpStatus.CREATED,
+        'Orders Created Successfully',
+        transaction,
+        null,
+        '',
+      );
+    } else {
+      throw new Error('Could not find transaction');
     }
-    return sendResponse(
-      httpStatus.CREATED,
-      'Orders Created Successfully',
-      transaction!!,
-      null,
-      '',
-    );
   } catch (error) {
     if (transaction) await transaction.save();
     return sendResponse(
       httpStatus.INTERNAL_SERVER_ERROR,
       'Transaction failed to initialize',
+      {},
+      { message: error.message },
+      '',
+    );
+  }
+};
+
+// get all transactions
+export const getAllTransactions = async (query: {}) => {
+  try {
+    const transactions = await getCollection(Transaction, query);
+    // the find pre-hook on transaction populates user and items
+    return sendResponse(httpStatus.FOUND, 'Success', transactions, null, '');
+  } catch (error) {
+    return sendResponse(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Transaction query failed',
       {},
       { message: error.message },
       '',

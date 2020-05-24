@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { celebrate as validate, errors } from 'celebrate';
 import orderValidation from '../validations/order.validation';
+import reservationValidation from '../validations/reservation.validation';
 import {
   createOrder,
   changeOrderStatus,
@@ -15,21 +16,17 @@ import adminAuth from '../middlewares/adminAuth';
 const router = Router();
 
 router.use(userAuth);
-router.post(
-  '/',
-  validate(orderValidation.create, { abortEarly: false }),
-  async function(req: Request, res: Response) {
-    try {
-      const response = await createOrder(req.body.id, req.body);
+router.post('/', async function(req: Request, res: Response) {
+  try {
+    const response = await createOrder(req.body.id, req.body);
 
-      return res.status(response.statusCode).json(response);
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ message: 'Internal Server Error', error: error.message });
-    }
-  },
-);
+    return res.status(response.statusCode).json(response);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: error.message });
+  }
+});
 
 router.get('/:id', async function(req: Request, res: Response) {
   try {
@@ -73,9 +70,9 @@ router.put(
   },
 );
 
-router.get('/', async function(_req: Request, res: Response) {
+router.get('/', async function(req: Request, res: Response) {
   try {
-    const response = await GetAllOrder();
+    const response = await GetAllOrder(req.query);
 
     return res.status(response.statusCode).json(response);
   } catch (error) {
@@ -85,16 +82,20 @@ router.get('/', async function(_req: Request, res: Response) {
   }
 });
 
-router.post('/reservation', async function(req, res) {
-  try {
-    const response = await create(req.body.id, req.body);
-    return res.status(response.statusCode).json(response);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: 'Internal Server Error', error: error.message });
-  }
-});
+router.post(
+  '/reservation',
+  validate(reservationValidation.create, { abortEarly: false }),
+  async function(req, res) {
+    try {
+      const response = await create(req.body.id, req.body);
+      return res.status(response.statusCode).json(response);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: 'Internal Server Error', error: error.message });
+    }
+  },
+);
 
 router.use(errors());
 
