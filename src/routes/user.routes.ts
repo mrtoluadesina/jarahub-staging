@@ -39,6 +39,18 @@ router.post(
   },
 );
 
+router.post('/sociallogin', async function(req: Request, res: Response) {
+  try {
+    const response = await userController.SocialLogin(req.body);
+
+    return res.status(response.statusCode).json(response);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: error.message });
+  }
+});
+
 router.get('/me', userAuth, async function(req: Request, res: Response) {
   try {
     const { user } = req.body;

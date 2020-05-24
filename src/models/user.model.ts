@@ -7,11 +7,13 @@ export interface IUserNoExtend {
   lastName: String;
   DOB?: Date;
   phone?: String;
-  password: String;
+  password?: String;
   isDeleted?: Boolean;
   isActive?: Boolean;
   isVerified?: Boolean;
   isGuest?: Boolean;
+  isSocial?: boolean;
+  domain?: string;
 }
 
 export interface IUser extends Document {
@@ -20,12 +22,14 @@ export interface IUser extends Document {
   lastName: String;
   DOB?: Date;
   phone?: String;
-  password: String;
+  password?: String;
   isDeleted?: Boolean;
   isActive?: Boolean;
   isVerified?: Boolean;
   isGuest?: Boolean;
   transform: Function;
+  isSocial?: boolean;
+  domain?: string;
 }
 
 export interface ILogin {
@@ -42,15 +46,13 @@ const UserModel = new Schema(
     phone: { type: String },
     password: {
       type: String,
-      required: function() {
-        // @ts-ignore
-        return !this.isGuest;
-      },
     },
     isDeleted: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
     isVerified: { type: Boolean, default: false },
     isGuest: { type: Boolean, default: false },
+    isSocial: { type: Boolean, default: false },
+    domain: { type: String },
   },
   { timestamps: true },
 );
@@ -58,7 +60,7 @@ const UserModel = new Schema(
 UserModel.pre<IUser>('save', async function() {
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
-    this.password = await hash(this.password.toString(), salt);
+    this.password = await hash(this.password!.toString(), salt);
   }
 });
 // UserModel.pre<IUser>('findOneAndUpdate', async function() {
@@ -79,6 +81,8 @@ UserModel.methods = {
       isActive,
       isVerified,
       isGuest,
+      isSocial,
+      domain,
     } = this;
 
     return {
@@ -91,6 +95,8 @@ UserModel.methods = {
       isActive,
       isVerified,
       isGuest,
+      isSocial,
+      domain,
     };
   },
 };

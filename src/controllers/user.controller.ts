@@ -10,6 +10,13 @@ import sendMail from '../helpers/sendMail';
 import messages from '../helpers/mailMessage';
 import sendMailV2 from '../helpers/sendMailV2';
 
+export interface ISocialLogin {
+  firstName: string;
+  lastName: string;
+  email: string;
+  isActive: boolean;
+}
+
 // Return All Users
 export const getAllUsers = () => User.find();
 
@@ -93,6 +100,35 @@ export const Login = async (body: ILogin) => {
       user,
       null,
       TokenEncoder(email, _id, isActive),
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+//Socail Login
+export const SocialLogin = async (body: ISocialLogin) => {
+  try {
+    const user: any = await User.findOne({ email: body.email });
+    if (!user) {
+      const newUser = new User(body);
+      await newUser.save();
+
+      return sendResponse(
+        httpStatus.OK,
+        'Login Successful',
+        newUser,
+        null,
+        TokenEncoder(newUser.email, newUser._id, body.isActive),
+      );
+    }
+
+    return sendResponse(
+      httpStatus.OK,
+      'Login Successful',
+      user,
+      null,
+      TokenEncoder(user.email, user._id, user.isActive),
     );
   } catch (error) {
     throw new Error(error);
