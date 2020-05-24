@@ -9,6 +9,10 @@ export default {
       logo: Joi.string()
         .required()
         .error(new Error('logo is required')),
+      id: Joi.string()
+        .regex(/[0-9a-fA-F]{24}/)
+        .required(),
+      user: Joi.object().required(),
     },
   },
 };

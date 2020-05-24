@@ -23,6 +23,7 @@ import couponRouter from './routes/coupon.routes';
 import collectionRouter from './routes/collection.routes';
 import wishlistRouter from './routes/wishlist.routes';
 import statsRouter from './routes/statistics.routes';
+import brandRouter from './routes/brand.routes';
 
 import schema from './schema';
 import mongoose from 'mongoose';
@@ -83,6 +84,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/v1', apiRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/brand', brandRouter);
 app.use('/api/v1/product', productRouter);
 app.use('/api/v1/category', categoryRouter);
 app.use('/api/v1/address', addressRouter);
