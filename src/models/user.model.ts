@@ -44,6 +44,7 @@ const UserModel = new Schema(
     password: {
       type: String,
       required: function() {
+        //@ts-ignore
         return !this.isGuest;
       },
     },
