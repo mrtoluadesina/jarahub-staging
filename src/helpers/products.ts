@@ -14,6 +14,7 @@ export const getActualPrice = (qty: number, productPrice: Object) => {
     let highestOrder = parseInt(lastKey.split('-')[1]);
     // @ts-ignore
     let firstTotal =
+      //@ts-ignore
       Math.floor(qty / highestOrder) * parseInt(productPrice[lastKey]);
     amount = firstTotal + getActualPrice(qty % highestOrder, productPrice);
   }
