@@ -9,7 +9,7 @@ export interface IAdmin extends mongoose.Document {
   phone: String;
   password: string;
   isDeleted: Boolean;
-  role: String;
+  role: Number;
   isSuper?: Boolean;
   isBlocked: Boolean;
   isVerfied: Boolean;
@@ -23,6 +23,7 @@ const AdminModel = new Schema(
     DOB: { type: Date, required: true },
     phone: { type: String, required: true },
     password: { type: String, required: true },
+    role: { type: Number, enum: [ 1, 2, 3], required: true},
     isSuper: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     isVerfied: { type: Boolean, default: false },
