@@ -15,6 +15,7 @@ export default {
         .error(new Error('Lastname is required')),
       DOB: Joi.date().error(new Error('DOB is required')),
       phone: Joi.string().error(new Error('Phone is required')),
+      role: Joi.number().valid(1, 2, 3),
       password: Joi.string()
         .min(6)
         .max(100)
