@@ -1,4 +1,5 @@
 import Product, { IProduct } from '../models/product.model';
+import Brand from '../models/brand.model';
 import Category from '../models/category.model';
 import elasticsearch from '../elasticsearch/config';
 import algoliaClient from '../algolia';
@@ -110,6 +111,17 @@ export const Create_v2 = async (body: IProduct) => {
     }
 
     const index = algoliaClient.initIndex('products');
+
+    const categoryNames = body.categoryId.map(async categoryId => {
+      let category = await Category.findById(categoryId);
+      return category!.name;
+    });
+
+    body.categoryNames = await Promise.all(categoryNames);
+    const brand = await Brand.findById(product.brandId);
+    body.brandName = brand!.name;
+    product.brandName = body.brandName;
+    product.categoryNames = body.categoryNames;
 
     index
       .setSettings({
