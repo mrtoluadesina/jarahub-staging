@@ -213,7 +213,13 @@ export const verify = async (body: {
       throw new Error('Could not find transaction');
     }
   } catch (error) {
-    if (transaction) await transaction.save();
+    // track error and last state of the transaction
+    if (transaction) {
+      // get the error remark and save in transaction for tracking purposes
+      remarks.push({ time: Date.now(), remark: `Error occured: ${error.message}`})
+      transaction.remarks = [...transaction.remarks, ...remarks];
+      await transaction.save();
+    }
     return sendResponse(
       httpStatus.INTERNAL_SERVER_ERROR,
       'Transaction failed to initialize',
