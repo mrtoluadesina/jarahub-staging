@@ -411,7 +411,7 @@ export const getAllProductsPaginated = async (pageNumber: number) => {
 
   if (!count) return sendResponse(404, 'No data was found', {}, null, '');
 
-  let payload = await Product.find()
+  let payload = await Product.find({ isDeleted: false })
     .skip(skip)
     .limit(limit);
 
@@ -439,6 +439,7 @@ export const getProductsByCategoryWithPagination = async (
     let categoryCount = await Product.countDocuments(
       {
         categoryId: { $in: [category._id] },
+        isDeleted: false,
       },
       function(err, _count) {
         if (err) throw new Error(err.message);
@@ -449,6 +450,7 @@ export const getProductsByCategoryWithPagination = async (
 
     let payload = await Product.find({
       categoryId: { $in: [category._id] },
+      isDeleted: false,
     })
       .skip(skip)
       .limit(limit);
