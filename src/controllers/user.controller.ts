@@ -51,7 +51,6 @@ export const Signup = async (body: IUserNoExtend) => {
         Receiver_Name: `${user!.firstName} ${user!.lastName}`,
       },
       process.env.WELCOME_MAIL_TEMPLATE_ID,
-      'Welcome to GaraHUB',
     );
     await sendMailV2(msg);
     const data = await user!!.save();

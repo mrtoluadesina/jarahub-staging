@@ -2,12 +2,16 @@ import Transaction, { ITransactionNoExtend } from '../models/transaction.model';
 import httpStatus from 'http-status';
 import sendResponse from '../helpers/response';
 import { getCollection } from '../helpers/paginator';
-import { IUser } from '../models/user.model';
+import User, { IUser } from '../models/user.model';
 import Product from '../models/product.model';
 import { createOrder } from './order.controller';
 import addressModel from '../models/address.model';
 import ControllerResponse from '../interfaces/ControllerResponse';
 import couponModel from '../models/coupon.model';
+import OrderItem from '../models/orderItem.model';
+import generateMessageTemplate from '../helpers/generateMessageTemplateHeader';
+import sendMailV2 from '../helpers/sendMailV2';
+import Address from '../models/address.model';
 
 // Return All Users
 export const getSingleTransaction = async (id: string) => {
@@ -199,6 +203,52 @@ export const verify = async (body: {
       // @ts-ignore
       // DO NOT SAVE TRANSACTION BEFORE HERE!!!
       const order = await createOrder(transaction.user, orderBody);
+
+      /**
+       * Get all order items and generate mail table structure
+       * I am sure there is a better way of optimizing this
+       * Come back to fix
+       */
+      const orderItems = order.payload.orderItems.map(
+        async (orderItemId: string) => {
+          let orderItem = await OrderItem.findById(orderItemId);
+          let productDetail = await Product.findById(
+            orderItem!.productDetailsId,
+          );
+          let mailDetail = {
+            name: productDetail!.name,
+            image: productDetail!.images[0],
+            price: `${orderItem!.amount / 100}`,
+            quantity: `${orderItem!.quantity}`,
+          };
+          return mailDetail;
+        },
+      );
+
+      const mailDetail = await Promise.all(orderItems);
+      const shipmentaddress = (await Address.findById(transaction.address))!
+        .address1;
+      //Get customer email address
+      const { email, firstName, lastName } = (await User.findById(
+        order.payload.userId,
+      )) as IUser;
+      //Generate mail template
+      const mailMessage = generateMessageTemplate(
+        process.env.SENDER_MAIL,
+        email,
+        {
+          items: mailDetail,
+          total: order.payload.amount / 100,
+          receipt: true,
+          customername: `${firstName} ${lastName}`,
+          orderid: order.payload._id,
+          shipmentaddress,
+        },
+        process.env.ORDER_TEMPLATE_ID,
+      );
+
+      await sendMailV2(mailMessage);
+
       remarks.push({ time: Date.now(), remark: `Order Created Successfully` });
       transaction.remarks = [...transaction.remarks, ...remarks];
       await transaction.save();
@@ -216,7 +266,10 @@ export const verify = async (body: {
     // track error and last state of the transaction
     if (transaction) {
       // get the error remark and save in transaction for tracking purposes
-      remarks.push({ time: Date.now(), remark: `Error occured: ${error.message}`})
+      remarks.push({
+        time: Date.now(),
+        remark: `Error occured: ${error.message}`,
+      });
       transaction.remarks = [...transaction.remarks, ...remarks];
       await transaction.save();
     }

@@ -5,10 +5,8 @@ export default function formatMessageHeaders(
   to: string,
   templateData: Record<string, unknown>,
   templateId: string,
-  subject: string,
 ): MailDataRequired {
   return {
-    text: subject,
     from,
     personalizations: [
       {
