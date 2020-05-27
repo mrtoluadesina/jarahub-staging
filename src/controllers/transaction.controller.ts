@@ -237,6 +237,7 @@ export const verify = async (body: {
         process.env.SENDER_MAIL,
         email,
         {
+          email,
           items: mailDetail,
           total: order.payload.amount / 100,
           receipt: true,

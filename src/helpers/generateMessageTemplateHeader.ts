@@ -7,6 +7,7 @@ export default function formatMessageHeaders(
   templateId: string,
 ): MailDataRequired {
   return {
+    html: '<p>Success</p>',
     from,
     personalizations: [
       {
