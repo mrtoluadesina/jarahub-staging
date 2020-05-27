@@ -1,17 +1,17 @@
-import { MailDataRequired } from '@sendgrid/helpers/classes/mail';
+// import { MailDataRequired } from '@sendgrid/helpers/classes/mail';
 
 export default function formatMessageHeaders(
   from: string,
   to: string,
   templateData: Record<string, unknown>,
   templateId: string,
-): MailDataRequired {
+): any {
   return {
     from,
     personalizations: [
       {
         to: [{ email: to }],
-        dynamicTemplateData: templateData,
+        dynamic_template_data: templateData,
       },
     ],
     templateId,
