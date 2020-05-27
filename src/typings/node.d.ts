@@ -19,5 +19,6 @@ declare namespace NodeJS {
     SENDGRID_API_KEY: string;
     WELCOME_MAIL_TEMPLATE_ID: string;
     SENDER_MAIL: string;
+    ORDER_TEMPLATE_ID: string;
   }
 }
