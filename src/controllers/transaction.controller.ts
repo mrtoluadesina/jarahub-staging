@@ -247,7 +247,11 @@ export const verify = async (body: {
         process.env.ORDER_TEMPLATE_ID,
       );
 
-      await sendMailV2(mailMessage);
+      try {
+        await sendMailV2(mailMessage);
+      } catch (error) {
+        console.log(error.message);
+      }
 
       remarks.push({ time: Date.now(), remark: `Order Created Successfully` });
       transaction.remarks = [...transaction.remarks, ...remarks];
