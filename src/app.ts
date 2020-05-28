@@ -24,6 +24,7 @@ import collectionRouter from './routes/collection.routes';
 import wishlistRouter from './routes/wishlist.routes';
 import statsRouter from './routes/statistics.routes';
 import brandRouter from './routes/brand.routes';
+import exchangeRateRouter from './routes/exchangerate.routes';
 
 import schema from './schema';
 import mongoose from 'mongoose';
@@ -99,6 +100,7 @@ app.use('/api/v1/collection', collectionRouter);
 app.use('/api/v1/wishlist', wishlistRouter);
 app.use('/api/v1/stats', statsRouter);
 app.use('/api/v1/brand', brandRouter);
+app.use('/api/v1/exchangerate', exchangeRateRouter);
 
 app.use(
   '/graphql',
