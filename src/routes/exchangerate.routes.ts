@@ -1,7 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { create, update } from '../controllers/exchangerate.controller';
+import adminAuth from '../middlewares/adminAuth';
 
 const router = Router();
+
+router.use(adminAuth);
 
 router.post('/', async function createExchangeRate(
   req: Request,
