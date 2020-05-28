@@ -36,7 +36,7 @@ export async function create(data: ExchangeRateType): Promise<Response> {
       throw new Error('Rate exists');
     }
 
-    const exchangeRate = new ExchangeRate({ icon, rate, code, sign });
+    const exchangeRate = new ExchangeRate({ icon, rate, code, sign, country });
     const newRate = await exchangeRate.save();
 
     return sendResponse(
