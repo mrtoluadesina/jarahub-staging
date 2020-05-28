@@ -91,3 +91,39 @@ export async function update(
     throw new Error(error.message);
   }
 }
+
+export async function getExchangeRates(): Promise<Response> {
+  try {
+    const exchangeRates = await ExchangeRate.find();
+
+    return sendResponse(
+      httpStatus.OK,
+      'Rates Found',
+      exchangeRates,
+      null,
+      null,
+    );
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getExchangeRate(rateID: string): Promise<Response> {
+  try {
+    const exchangeRate = await ExchangeRate.findById(rateID);
+
+    if (!exchangeRate) {
+      return sendResponse(
+        httpStatus.NOT_FOUND,
+        'Rate not found',
+        null,
+        null,
+        null,
+      );
+    }
+
+    return sendResponse(httpStatus.OK, 'Rate found', exchangeRate, null, null);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
