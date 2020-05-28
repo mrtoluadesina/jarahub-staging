@@ -14,6 +14,7 @@ const ExchangeRateValidator = Joi.object().keys({
   sign: Joi.string()
     .max(1)
     .required(),
+  country: Joi.string().required(),
 });
 
 export async function create(data: ExchangeRateType): Promise<Response> {
