@@ -4,6 +4,7 @@ import {
   GraphQLList,
   GraphQLBoolean,
   GraphQLInt,
+  GraphQLNonNull,
 } from 'graphql';
 
 export const ProductByCategoryType = new GraphQLObjectType({
@@ -164,6 +165,11 @@ export const ProductByCategoryPayload = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The product id',
       resolve: parent => parent._id,
+    },
+    slug: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: 'The URL Slug',
+      resolve: parent => parent.slug,
     },
   }),
 });
