@@ -5,6 +5,7 @@ export interface ExchangeRateType extends Document {
   sign: string;
   rate: number;
   code: string;
+  country: string;
 }
 
 const ExchangeRateSchema = new Schema<ExchangeRateType>(
@@ -13,6 +14,7 @@ const ExchangeRateSchema = new Schema<ExchangeRateType>(
     rate: { type: Number, required: true },
     code: { type: String, required: true },
     sign: { type: String, required: true },
+    country: { type: String, required: true },
   },
   { timestamps: true },
 );

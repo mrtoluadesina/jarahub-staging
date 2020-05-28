@@ -14,6 +14,7 @@ const ExchangeRateValidator = Joi.object().keys({
   sign: Joi.string()
     .max(1)
     .required(),
+  country: Joi.string().required(),
 });
 
 export async function create(data: ExchangeRateType): Promise<Response> {
@@ -27,7 +28,13 @@ export async function create(data: ExchangeRateType): Promise<Response> {
       throw new Error(error.message);
     }
 
-    const { icon, rate, code, sign } = value;
+    const { icon, rate, code, sign, country } = value;
+
+    const exchangeRateExist = await ExchangeRate.findOne({ country });
+
+    if (exchangeRateExist) {
+      throw new Error('Rate exists');
+    }
 
     const exchangeRate = new ExchangeRate({ icon, rate, code, sign });
     const newRate = await exchangeRate.save();
