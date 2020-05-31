@@ -14,7 +14,7 @@ const OrderItemModel = new Schema(
     orderId: { type: mongoose.Types.ObjectId, ref: 'Order', required: true },
     productDetailsId: {
       type: mongoose.Types.ObjectId,
-      ref: 'ProductDetails',
+      ref: 'Product',
       required: true,
     },
     quantity: { type: Number, required: true },
@@ -25,6 +25,15 @@ const OrderItemModel = new Schema(
     timestamps: true,
   },
 );
+
+OrderItemModel.pre('find', function(next) {
+  this.populate(
+    'productDetailsId',
+    'name images description specification brandName slug',
+    'Product',
+  );
+  next();
+});
 
 OrderItemModel.statics = {
   async getByRange(range: String = 'week') {
