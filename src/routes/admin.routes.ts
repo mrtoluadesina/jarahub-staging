@@ -10,6 +10,7 @@ import {
   unblockAdmin,
   loginAdmin,
   getSingleAdmin,
+  deleteAdmin,
 } from '../controllers/admin.controllers';
 // import adminAuth from '../middlewares/adminAuth';
 
@@ -108,6 +109,16 @@ router.post(
     }
   },
 );
+router.delete('/:id', async function(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const response = await deleteAdmin(id);
+
+    return res.status(response.statusCode).json(response);
+  } catch (error) {
+    return res.status(500).json({ message: error.message, error });
+  }
+});
 
 router.use(errors());
 
