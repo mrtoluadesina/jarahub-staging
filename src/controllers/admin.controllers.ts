@@ -117,6 +117,29 @@ export async function updateAdmin(
     };
   }
 }
+export async function deleteAdmin(adminId: string): Promise<StatusResponse> {
+  try {
+    const exist = await Admin.findById(adminId);
+
+    if (!exist) return { statusCode: 404, message: 'Admin not found' };
+
+    const payload = await Admin.findByIdAndUpdate(
+      { _id: adminId },
+      { $set: { isDeleted: true } },
+      {
+        new: true,
+      },
+    );
+
+    return { statusCode: 200, message: 'Admin Deleted', payload };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      message: error.message,
+      error,
+    };
+  }
+}
 
 /**
  *
