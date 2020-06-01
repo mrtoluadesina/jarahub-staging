@@ -74,7 +74,9 @@ export async function getSingleAdmin(userId: string): Promise<StatusResponse> {
 
 export async function getAllAdmin(): Promise<StatusResponse> {
   try {
-    const payload = await Admin.find();
+    const allUsers = await Admin.find();
+
+    const payload = allUsers.filter(user => user.isDeleted === false);
 
     if (!payload.length) return { statusCode: 404, message: 'No users found' };
 
@@ -88,6 +90,21 @@ export async function getAllAdmin(): Promise<StatusResponse> {
   }
 }
 
+export async function getAdmins(): Promise<StatusResponse> {
+  try {
+    const payload = await Admin.find();
+
+    if (!payload.length) return { statusCode: 404, message: 'No users found' };
+
+    return { statusCode: 200, message: 'Admin found', payload };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      message: 'Internal Server Error',
+      error: error.message,
+    };
+  }
+}
 /**
  *
  * @param adminId - The admin Id
