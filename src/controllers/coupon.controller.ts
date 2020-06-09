@@ -59,3 +59,14 @@ export const createCoupon = async (body: ICouponNoExtend) => {
     );
   }
 };
+
+export const getAll = async () => {
+  const coupons = await Coupon.find({});
+  return sendResponse(
+    httpStatus.CREATED,
+    'Coupon created successfully',
+    coupons,
+    null,
+    '',
+  );
+};
