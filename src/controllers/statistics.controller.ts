@@ -5,12 +5,19 @@ import StatFactory from '../helpers/statsMaker';
 import sendResponse from '../helpers/response';
 import OrderItem, { IOrderItem } from '../models/orderItem.model';
 import Coupon from '../models/coupon.model';
+import Order from '../models/order.model';
+import Product from '../models/product.model';
 import Admin from '../models/admin.model';
+import Customers from '../models/user.model';
 
 export const getDashboard = async () => {
   const coupons = await Coupon.find({});
   const admins = await Admin.find({});
-  const data = { coupons, admins };
+  const products = await Product.find({});
+  const orders = await Order.find({});
+  const customers = await Customers.find({});
+  const data = { coupons, admins, orders, products, customers };
+
   return sendResponse(
     httpStatus.OK,
     'Dashboard Information Found',
