@@ -5,6 +5,16 @@ import * as statsCtrl from '../controllers/statistics.controller';
 
 const router = Router();
 
+router.get('/dashboard', async (_req: Request, res: Response) => {
+  const {
+    message,
+    statusCode,
+    error,
+    payload,
+  } = await statsCtrl.getDashboard();
+  return res.json({ message, payload, error, statusCode });
+});
+
 router.get('/revenue', async (req: Request, res: Response) => {
   const range = req.query.range;
   const { statusCode, message, payload, error } = await statsCtrl.revenue(
