@@ -113,7 +113,7 @@ class MonthStat extends Stat {
   }
 }
 
-export default function(range: String) {
+export default function(range: String = 'week') {
   switch (range.toLocaleLowerCase()) {
     case 'year':
       return new YearStat();

@@ -81,6 +81,7 @@ OrderModel.post('save', function(doc, next) {
 
 OrderModel.statics = {
   async getByRange(range: String = 'week') {
+    console.log('print...', range);
     /*
     if range is year, get year beginning eqivalent
     if range is month, get month beginning

@@ -4,6 +4,21 @@ import StatFactory from '../helpers/statsMaker';
 
 import sendResponse from '../helpers/response';
 import OrderItem, { IOrderItem } from '../models/orderItem.model';
+import Coupon from '../models/coupon.model';
+import Admin from '../models/admin.model';
+
+export const getDashboard = async () => {
+  const coupons = await Coupon.find({});
+  const admins = await Admin.find({});
+  const data = { coupons, admins };
+  return sendResponse(
+    httpStatus.OK,
+    'Dashboard Information Found',
+    data,
+    null,
+    '',
+  );
+};
 
 export const revenue = async (range: string) => {
   // @ts-ignore
