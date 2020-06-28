@@ -9,6 +9,7 @@ import Order from '../models/order.model';
 import Product from '../models/product.model';
 import Admin from '../models/admin.model';
 import Customers from '../models/user.model';
+import Transactions from '../models/transaction.model';
 
 export const getDashboard = async () => {
   const coupons = await Coupon.find({});
@@ -16,7 +17,9 @@ export const getDashboard = async () => {
   const products = await Product.find({});
   const orders = await Order.find({});
   const customers = await Customers.find({});
-  const data = { coupons, admins, orders, products, customers };
+  const transactions = await Transactions.find({});
+
+  const data = { coupons, admins, orders, products, customers, transactions };
 
   return sendResponse(
     httpStatus.OK,
