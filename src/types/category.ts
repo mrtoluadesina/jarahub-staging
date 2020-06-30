@@ -36,6 +36,11 @@ export const CategoryType: GraphQLObjectType<ICategory> = new GraphQLObjectType(
         description: 'The sub categories',
         resolve: parent => parent.children,
       },
+      image: {
+        type: GraphQLString,
+        description: 'The category image representation',
+        resolve: parent => parent.image,
+      },
     }),
   },
 );

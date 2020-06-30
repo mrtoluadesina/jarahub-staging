@@ -38,9 +38,14 @@ export default {
   },
   updateStatus: {
     body: {
-      status: Joi.boolean()
+      status: Joi.string()
+        .valid('Pending', 'In-Progress', 'Completed', 'Failed', 'Cancelled')
         .required()
-        .error(new Error('status is required and must be a boolean')),
+        .error(
+          new Error(
+            'status is required and can either be Pending, In-Progress, Completed, Failed, or Cancelled',
+          ),
+        ),
     },
   },
 };
