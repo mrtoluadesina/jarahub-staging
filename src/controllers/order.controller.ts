@@ -129,6 +129,13 @@ export async function changeOrderStatus(
       { new: true },
     );
 
+    //Check if order status was update to completed
+    //Get order and send mail to client to rate products bought
+    if (payload!.status === 'Completed') {
+      const order = await Order.findById(orderId);
+      console.log(order);
+    }
+
     return sendResponse(200, 'Order Status Changed', payload!, null, '');
   } catch (error) {
     throw new Error(error.message);

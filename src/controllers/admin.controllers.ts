@@ -74,7 +74,9 @@ export async function getSingleAdmin(userId: string): Promise<StatusResponse> {
 
 export async function getAllAdmin(): Promise<StatusResponse> {
   try {
-    const payload = await Admin.find();
+    const allUsers = await Admin.find();
+
+    const payload = allUsers.filter(user => user.isDeleted === false);
 
     if (!payload.length) return { statusCode: 404, message: 'No users found' };
 
@@ -88,6 +90,21 @@ export async function getAllAdmin(): Promise<StatusResponse> {
   }
 }
 
+export async function getAdmins(): Promise<StatusResponse> {
+  try {
+    const payload = await Admin.find();
+
+    if (!payload.length) return { statusCode: 404, message: 'No users found' };
+
+    return { statusCode: 200, message: 'Admin found', payload };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      message: 'Internal Server Error',
+      error: error.message,
+    };
+  }
+}
 /**
  *
  * @param adminId - The admin Id
@@ -114,6 +131,29 @@ export async function updateAdmin(
       statusCode: 500,
       message: 'Internal Server Error',
       error: error.message,
+    };
+  }
+}
+export async function deleteAdmin(adminId: string): Promise<StatusResponse> {
+  try {
+    const exist = await Admin.findById(adminId);
+
+    if (!exist) return { statusCode: 404, message: 'Admin not found' };
+
+    const payload = await Admin.findByIdAndUpdate(
+      { _id: adminId },
+      { $set: { isDeleted: true } },
+      {
+        new: true,
+      },
+    );
+
+    return { statusCode: 200, message: 'Admin Deleted', payload };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      message: error.message,
+      error,
     };
   }
 }

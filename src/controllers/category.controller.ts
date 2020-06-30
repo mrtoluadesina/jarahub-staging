@@ -3,6 +3,7 @@ import elasticsearch from '../elasticsearch/config';
 import algolia from '../algolia';
 import sendResponse from '../helpers/response';
 import httpStatus = require('http-status');
+import checkValidSlug from '../helpers/checkValidSlug';
 
 /**
  * @typedef {Object} ControllerResponse
@@ -36,12 +37,36 @@ export const GetAllCategories = async () =>
 //Create a Category
 export const Create = async (body: ICategory) => {
   try {
-    const { name } = body;
+    const { name, slug } = body;
 
     const Exist = await Category.findOne({ name });
 
     if (Exist) {
       return sendResponse(httpStatus.OK, 'this category exist', {}, null, '');
+    }
+
+    let slugIsValid = checkValidSlug(slug);
+
+    if (!slugIsValid) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Slug must be a string or match pattern TV-Accessories',
+        null,
+        null,
+        '',
+      );
+    }
+
+    let slugExist = await Category.findOne({ slug });
+
+    if (slugExist) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Category with this slug exist. Kindly use another',
+        {},
+        null,
+        '',
+      );
     }
 
     const category = await new Category(body);
@@ -61,7 +86,7 @@ export const Create = async (body: ICategory) => {
         .toLowerCase(),
       type: 'category',
       id: category._id.toString(),
-      body: { name: category.name, isDeleted: category.isDeleted },
+      body: { name: category.name, isDeleted: category.isDeleted, slug },
     });
 
     const savePayload = await category.save();
@@ -82,7 +107,7 @@ export const Create = async (body: ICategory) => {
 
 export const Create_v2 = async (body: ICategory) => {
   try {
-    const { name } = body;
+    const { name, slug } = body;
     const isExist = await Category.findOne({ name });
 
     if (isExist) {
@@ -94,6 +119,31 @@ export const Create_v2 = async (body: ICategory) => {
         '',
       );
     }
+
+    let slugIsValid = checkValidSlug(slug);
+
+    if (!slugIsValid) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Slug must be a string or match pattern TV-Accessories',
+        null,
+        null,
+        '',
+      );
+    }
+
+    let slugExist = await Category.findOne({ slug });
+
+    if (slugExist) {
+      return sendResponse(
+        httpStatus.BAD_REQUEST,
+        'Category with this slug exist. Kindly use another',
+        {},
+        null,
+        '',
+      );
+    }
+
     const category = new Category(body);
 
     if (body.parents && body.parents.length) {
@@ -108,7 +158,7 @@ export const Create_v2 = async (body: ICategory) => {
 
     index
       .setSettings({
-        searchableAttributes: ['name'],
+        searchableAttributes: ['name', 'slug'],
       })
       .then(() => {
         console.log('Settings for categories created');

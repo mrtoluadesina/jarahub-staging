@@ -8,7 +8,13 @@ const router = Router();
 router
   .route('/')
   .get(async (_req: Request, res: Response) => {
-    return res.json({ message: 'original' });
+    const {
+      message,
+      statusCode,
+      error,
+      payload,
+    } = await couponController.getAll();
+    return res.json({ message, payload, error, statusCode });
   })
   // create a coupon code
   .post(adminAuth, async (req: Request, res: Response) => {

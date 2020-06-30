@@ -23,10 +23,11 @@ const AdminModel = new Schema(
     DOB: { type: Date, required: true },
     phone: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: Number, enum: [ 1, 2, 3], required: true},
+    role: { type: Number, enum: [1, 2, 3], required: true },
     isSuper: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     isVerfied: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

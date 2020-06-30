@@ -59,3 +59,8 @@ export const createCoupon = async (body: ICouponNoExtend) => {
     );
   }
 };
+
+export const getAll = async () => {
+  const coupons = await Coupon.find({});
+  return sendResponse(httpStatus.OK, 'Coupons Found', coupons, null, '');
+};
