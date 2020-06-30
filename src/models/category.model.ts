@@ -6,6 +6,7 @@ export interface ICategory extends Document {
   parents?: Types.ObjectId[];
   icon?: string;
   children?: Types.ObjectId[];
+  image?: string;
 }
 
 export interface Category {
@@ -14,6 +15,7 @@ export interface Category {
   parents?: Types.ObjectId[];
   icon?: string;
   children?: Types.ObjectId[];
+  image?: string;
 }
 
 const CategoryModel = new Schema(
@@ -34,6 +36,7 @@ const CategoryModel = new Schema(
       type: String,
     },
     children: [{ type: Types.ObjectId, ref: 'Category' }],
+    image: { type: String },
   },
   { timestamps: true },
 );
