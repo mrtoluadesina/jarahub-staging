@@ -104,7 +104,7 @@ export async function updateAdmin(
 
     if (!exist) return { statusCode: 404, message: 'Admin not found' };
 
-    const payload = Admin.findByIdAndUpdate({ _id: adminId }, data, {
+    const payload = await Admin.findByIdAndUpdate({ _id: adminId }, data, {
       new: true,
     });
 
