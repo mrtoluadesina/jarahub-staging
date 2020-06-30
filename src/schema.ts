@@ -120,9 +120,12 @@ const query = new GraphQLObjectType({
       },
     },
     getBrands: {
-      type: BrandType,
+      type: new GraphQLList(BrandType),
       description: 'Query to get all brands',
-      resolve: () => getBrands(),
+      resolve: async () => {
+        const result = await getBrands();
+        return result.payload;
+      },
     },
     getSingleBrand: {
       type: BrandType,
