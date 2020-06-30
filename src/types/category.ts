@@ -41,6 +41,11 @@ export const CategoryType: GraphQLObjectType<ICategory> = new GraphQLObjectType(
         description: 'The category image representation',
         resolve: parent => parent.image,
       },
+      slug: {
+        type: GraphQLString,
+        description: 'The category URL slug',
+        resolve: parent => parent.slug,
+      },
     }),
   },
 );
