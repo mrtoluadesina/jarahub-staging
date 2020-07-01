@@ -171,6 +171,11 @@ export const ProductByCategoryPayload = new GraphQLObjectType({
       description: 'The URL Slug',
       resolve: parent => parent.slug,
     },
+    categoryNames: {
+      type: new GraphQLList(GraphQLString),
+      description: 'The categories the product can be found in',
+      resolve: parent => parent.categoryNames,
+    },
   }),
 });
 
