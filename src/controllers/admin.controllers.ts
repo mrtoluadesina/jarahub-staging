@@ -74,7 +74,7 @@ export async function getSingleAdmin(userId: string): Promise<StatusResponse> {
 
 export async function getAllAdmin(): Promise<StatusResponse> {
   try {
-    const allUsers = await Admin.find();
+    const allUsers = await Admin.find({ isDeleted: false});
 
     const payload = allUsers.filter(user => user.isDeleted === false);
 
