@@ -46,6 +46,8 @@ export default {
             'status is required and can either be Pending, In-Progress, Completed, Failed, or Cancelled',
           ),
         ),
+      id: Joi.string(),
+      user: Joi.any()
     },
   },
 };
