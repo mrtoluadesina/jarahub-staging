@@ -7,7 +7,7 @@ import adminAuth from '../middlewares/adminAuth';
 const router = Router();
 router
   .route('/')
-  .get(async (_req: Request, res: Response) => {
+  .get(adminAuth, async (_req: Request, res: Response) => {
     const {
       message,
       statusCode,
@@ -62,6 +62,55 @@ router.get('/:code', async (req: Request, res: Response) => {
     });
   }
 });
+
+// update and delete coupon
+router.route('/:couponId').put(
+  adminAuth,
+  async (req: Request, res: Response)=> {
+    try {
+      const {
+        message,
+        statusCode,
+        error,
+        payload,
+      } = await couponController.update(req.body, req.params.couponId);
+      return res.status(statusCode).json({
+        message,
+        payload,
+        error,
+        statusCode,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+        statusCode: error.status,
+      });
+
+    }
+  }
+).delete(
+  adminAuth,
+  async (req: Request, res: Response) => {
+  try {
+    const {
+      message,
+      statusCode,
+      error,
+      payload,
+    } = await couponController.deleteCoupon(req.params.couponId);
+    return res.status(statusCode).json({
+      message,
+      payload,
+      error,
+      statusCode,
+    });
+} catch (error) {
+  return res.status(500).json({
+    message: error.message,
+    statusCode: error.status,
+  });
+}
+})
 
 router.use(errors());
 

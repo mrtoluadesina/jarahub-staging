@@ -64,3 +64,85 @@ export const getAll = async () => {
   const coupons = await Coupon.find({});
   return sendResponse(httpStatus.OK, 'Coupons Found', coupons, null, '');
 };
+
+//Update a Coupon
+export const update = async (body: ICouponNoExtend, couponId: String) => {
+  try {
+    const coupon = await Coupon.findById(couponId);
+
+    if (!coupon) {
+      return sendResponse(
+        httpStatus.NOT_FOUND,
+        'Coupon not found',
+        {},
+        null,
+        '',
+      );
+    }
+    // check that new code does not exist
+    const codeExist = await Coupon.findOne({ code: body.code, isDeleted: false , _id: {
+      $ne: couponId
+    }});
+
+    if (codeExist) {
+      return sendResponse(
+        httpStatus.NOT_FOUND,
+        'Coupon code already exist',
+        {},
+        null,
+        '',
+      );
+    }
+
+    const newCoupon = await Coupon.findOneAndUpdate(
+      { _id: couponId },
+      { $set: body },
+      { new: true })
+
+    return sendResponse(
+          httpStatus.OK,
+          'Coupon created',
+          newCoupon,
+          null,
+          '',
+        );
+    
+  
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+
+//Delete a Coupon
+export const deleteCoupon = async (couponId: String) => {
+  try {
+    const coupon = await Coupon.findById(couponId);
+
+    if (!coupon) {
+      return sendResponse(
+        httpStatus.NOT_FOUND,
+        'Coupon not found',
+        {},
+        null,
+        '',
+      );
+    }
+
+    const result = await Coupon.findByIdAndUpdate(
+      { _id: couponId },
+      { $set: { isDeleted: true } },
+      { new: true })
+
+        return sendResponse(
+          httpStatus.OK,
+          'coupon updated',
+          result,
+          null,
+          '',
+        );
+
+  } catch (error) {
+    throw new Error(error);
+  }
+};
