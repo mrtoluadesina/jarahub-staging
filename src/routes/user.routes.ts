@@ -79,7 +79,7 @@ router.get('/userprofile', userAuth, async function(
 
 router.put(
   '/:userID',
-  validate(userValidation.createUser, { abortEarly: false }),
+  validate(userValidation.updateUser, { abortEarly: false }),
   async function(req: Request, res: Response) {
     try {
       const response = await userController.Update(req.body, req.params.userID);

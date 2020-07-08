@@ -2,7 +2,7 @@ import TokenDecoder from '../helpers/TokenDecoder';
 import Admin from '../models/admin.model';
 import { Request, Response, NextFunction } from 'express';
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, _res: Response, next: NextFunction) => {
   try {
     const { decodedToken } = TokenDecoder(req);
 
@@ -19,7 +19,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       req.body.user = admin;
       return next();
     }
-    return res.json({ message: 'Unappoved User' });
+    throw new Error('Unappoved User');
   } catch (error) {
     next(error);
   }

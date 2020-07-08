@@ -3,7 +3,7 @@ import { Joi } from 'celebrate';
 export default {
   forgotPassword: {
     body: {
-      email: Joi.string()
+      email: Joi.string().trim().lowercase()
         .email()
         .required()
         .error(new Error('Valid email is required')),

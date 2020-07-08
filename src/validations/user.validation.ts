@@ -3,7 +3,7 @@ import { Joi } from 'celebrate';
 export default {
   createUser: {
     body: {
-      email: Joi.string()
+      email: Joi.string().trim().lowercase()
         .email()
         .required()
         .error(new Error('Email is required')),
@@ -25,9 +25,20 @@ export default {
       isVerified: Joi.boolean().default(false),
     },
   },
+  updateUser: {
+    body: {
+      firstName: Joi.string(),
+      lastName: Joi.string(),
+      DOB: Joi.date().error(new Error('DOB is required')),
+      phone: Joi.string().error(new Error('Phone is required')),
+      role: Joi.number().valid(1, 2, 3),
+      isActive: Joi.boolean(),
+      isVerified: Joi.boolean()
+    },
+  },
   login: {
     body: {
-      email: Joi.string()
+      email: Joi.string().trim().lowercase()
         .email()
         .required()
         .error(new Error('Email is required')),
