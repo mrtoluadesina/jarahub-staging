@@ -14,7 +14,7 @@ export default {
           .required(),
       }),
       userDetails: Joi.object({
-        email: Joi.string()
+        email: Joi.string().trim().lowercase()
           .email()
           .required(),
         firstName: Joi.string().required(),
