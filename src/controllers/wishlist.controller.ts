@@ -32,7 +32,7 @@ export async function GetWishlist() {
 
 export async function GetUserWishlist(userId: string) {
   try {
-    const payload = await Wishlist.find({ userId });
+    const payload = await Wishlist.find({ userId }).populate("productId userId");
 
     return sendResponse(200, 'Success', payload, null, '');
   } catch (error) {
