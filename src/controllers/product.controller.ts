@@ -413,7 +413,8 @@ export const getAllProductsPaginated = async (pageNumber: number) => {
 
   let payload = await Product.find({ isDeleted: false })
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   return sendResponse(200, 'Products found', payload, null, '');
 };
