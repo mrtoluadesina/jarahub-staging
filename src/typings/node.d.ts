@@ -20,5 +20,8 @@ declare namespace NodeJS {
     WELCOME_MAIL_TEMPLATE_ID: string;
     SENDER_MAIL: string;
     ORDER_TEMPLATE_ID: string;
+    CONTACT_FORM_TEMPLATE_ID: string;
+    CONTACT_FORM_MAIL: string;
+    CONTACT_AUTO_REPLY_MAIL_TEMPLATE: string;
   }
 }

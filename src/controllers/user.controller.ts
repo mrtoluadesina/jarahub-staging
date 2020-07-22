@@ -9,6 +9,7 @@ import { tokenEncoder as TokenEncoder } from '../helpers/tokenEncoder';
 import sendMail from '../helpers/sendMail';
 import messages from '../helpers/mailMessage';
 import sendMailV2 from '../helpers/sendMailV2';
+import joi from '@hapi/joi';
 
 export interface ISocialLogin {
   firstName: string;
@@ -261,6 +262,65 @@ export const getMe = async (userId: string) => {
   }
 };
 
-//Change Password
+//Submit Contact Form
 
-//
+const contactFormSchema = joi.object().keys({
+  name: joi.string().required(),
+  email: joi
+    .string()
+    .email()
+    .required(),
+  how: joi.string().required(),
+  message: joi.string().required(),
+});
+
+export const submitContact = async (data: {
+  name: string;
+  email: string;
+  how: string;
+  message: string;
+}) => {
+  try {
+    const { value, error } = contactFormSchema.validate(data, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const { email, how, message, name } = value as {
+      name: string;
+      email: string;
+      how: string;
+      message: string;
+    };
+
+    const msg = generateMessageTemplate(
+      process.env.SENDER_MAIL,
+      process.env.CONTACT_FORM_MAIL,
+      {
+        email,
+        name,
+        enquiry: how,
+        message,
+      },
+      process.env.CONTACT_FORM_TEMPLATE_ID,
+    );
+    const reply = generateMessageTemplate(
+      process.env.SENDER_MAIL,
+      email,
+      {
+        name,
+        enquiry: how,
+      },
+      process.env.CONTACT_AUTO_REPLY_MAIL_TEMPLATE,
+    );
+    await sendMailV2(msg);
+    await sendMailV2(reply);
+    return sendResponse(httpStatus.OK, 'Enquiry submitted', {}, null, '');
+  } catch (error) {
+    throw new Error(error);
+  }
+};
