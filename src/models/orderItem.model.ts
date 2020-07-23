@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
+import { IProduct } from './product.model';
 
 export interface IOrderItem extends mongoose.Document {
   orderId: mongoose.Types.ObjectId;
-  productDetailsId: mongoose.Types.ObjectId;
+  productDetailsId: IProduct;
   quantity: Number;
   isWholeSale: Boolean;
   amount: number;
