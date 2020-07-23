@@ -8,6 +8,8 @@ import Response from '../interfaces/ControllerResponse';
 import { OrderBody } from '../interfaces/Orders';
 import productModel from '../models/product.model';
 import sendMail from '../helpers/sendMail';
+import generateMessageTemplateHeaders from '../helpers/generateMessageTemplateHeader';
+import sendMailV2 from '../helpers/sendMailV2';
 
 /**
  * @typedef {Object} UserResponse
@@ -131,9 +133,39 @@ export async function changeOrderStatus(
 
     //Check if order status was update to completed
     //Get order and send mail to client to rate products bought
-    if (payload!.status === 'Completed') {
+    if (!payload) {
+      throw new Error('Order not found');
+    }
+
+    if (payload.status === 'Completed') {
       const order = await Order.findById(orderId);
-      console.log(order);
+
+      if (!order) {
+        throw new Error('Order not found');
+      }
+
+      const products = order!.orderItems.map(item => {
+        return {
+          //@ts-ignore
+          ...item.productDetailsId._doc,
+          url: `${process.env.CLIENT_SIDE_URL}/reviews/${item.productDetailsId._id}`,
+        };
+      });
+
+      const msg = generateMessageTemplateHeaders(
+        process.env.SENDER_MAIL,
+        order.userId.email,
+        {
+          items: products,
+          total: order.amount,
+          subtotal: order.amount,
+          receipt: true,
+          customername: `${order.userId.firstName} ${order.userId.lastName}`,
+        },
+        process.env.REVIEW_TEMPLATE_ID,
+      );
+
+      sendMailV2(msg);
     }
 
     return sendResponse(200, 'Order Status Changed', payload!, null, '');

@@ -23,5 +23,6 @@ declare namespace NodeJS {
     CONTACT_FORM_TEMPLATE_ID: string;
     CONTACT_FORM_MAIL: string;
     CONTACT_AUTO_REPLY_MAIL_TEMPLATE: string;
+    REVIEW_TEMPLATE_ID: string;
   }
 }
