@@ -1,4 +1,6 @@
 import { Schema, Document, Types, model } from 'mongoose';
+import { IOrderItem } from './orderItem.model';
+import { IUserNoExtend } from './user.model';
 
 // enum OrderStatus {
 //   'Pending',
@@ -9,12 +11,12 @@ import { Schema, Document, Types, model } from 'mongoose';
 // }
 
 export interface IOrder extends Document {
-  userId: Types.ObjectId;
+  userId: IUserNoExtend;
   addressId: Types.ObjectId;
   discountId: Types.ObjectId;
   status?: String;
   amount: Number;
-  orderItems: String[];
+  orderItems: IOrderItem[];
   createdAt: Date;
 }
 
