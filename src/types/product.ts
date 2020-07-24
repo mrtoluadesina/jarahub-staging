@@ -6,6 +6,7 @@ import {
   GraphQLInt,
   GraphQLNonNull,
 } from 'graphql';
+import { ReviewType } from './review';
 
 export const ProductByCategoryType = new GraphQLObjectType({
   name: 'ProductbyCategoryType',
@@ -115,8 +116,8 @@ export const ProductByCategoryPayload = new GraphQLObjectType({
       resolve: parent => parent.tags,
     },
     reviews: {
-      type: new GraphQLList(GraphQLString),
-      description: 'The review forthis product',
+      type: new GraphQLList(ReviewType),
+      description: 'The review for this product',
       resolve: parent => parent.reviews,
     },
     name: {

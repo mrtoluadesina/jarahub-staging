@@ -26,6 +26,11 @@ export const ReviewType: GraphQLObjectType<Review> = new GraphQLObjectType({
       description: 'The review comment',
       resolve: parent => parent.comment,
     },
+    name: {
+      type: GraphQLString,
+      description: 'The name of the reviewer',
+      resolve: parent => parent.name,
+    },
     isVerified: {
       type: GraphQLBoolean,
       description:
@@ -46,6 +51,10 @@ export const ReviewBody = new GraphQLInputObjectType({
     comment: {
       type: GraphQLString,
       description: 'The review comment',
+    },
+    name: {
+      type: GraphQLString,
+      description: 'The name of the reviewer',
     },
     isVerified: {
       type: GraphQLBoolean,

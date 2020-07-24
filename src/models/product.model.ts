@@ -1,5 +1,6 @@
 import { Schema, Document, model, Types, Model } from 'mongoose';
 import { getActualPrice } from '../helpers/products';
+import { Review } from './reviews.model';
 
 export interface IProduct extends Document {
   name: string;
@@ -17,7 +18,7 @@ export interface IProduct extends Document {
   tags: Array<string>;
   brandId?: Types.ObjectId;
   brandName?: String;
-  reviews?: Array<Types.ObjectId>;
+  reviews?: Array<Review>;
   calculatePrice: Function;
   updateOrderCount: Function;
   categoryNames?: Array<string>;
@@ -95,7 +96,7 @@ const ProductModel = new Schema(
     brandName: { type: String },
     reviews: {
       type: Array,
-      of: Types.ObjectId,
+      of: Object,
       ref: 'Review',
     },
     orderCount: {
