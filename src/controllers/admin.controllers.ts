@@ -142,7 +142,7 @@ export async function deleteAdmin(adminId: string): Promise<StatusResponse> {
 
     const payload = await Admin.findByIdAndUpdate(
       { _id: adminId },
-      { $set: { isDeleted: true } },
+      { $set: { isDeleted: true, email: `${adminId}-${exist.email}` } },
       {
         new: true,
       },

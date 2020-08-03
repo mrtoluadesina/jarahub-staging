@@ -185,7 +185,7 @@ export const Delete = async (body: IUser, userID: String) => {
 
     await User.findOneAndUpdate(
       { _id: body._id },
-      { $set: { isDeleted: true, isActive: false } },
+      { $set: { isDeleted: true, isActive: false, email: `${body._id}-${user.email}` } },
       { new: true },
       (err, result) => {
         if (err) {
