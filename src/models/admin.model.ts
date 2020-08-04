@@ -39,4 +39,16 @@ AdminModel.pre<IAdmin>('save', async function() {
   }
 });
 
+AdminModel.methods = {
+  // add toJSON method
+  toJSON() {
+    const {
+      password,
+      __v,
+      ...rest
+    } = this.toObject();
+    return { ...rest };
+  },
+}
+
 export default mongoose.model<IAdmin>('Admin', AdminModel);
