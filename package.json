@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "postinstall": "tsc",
-    "build": "scripts/build.sh",
-    "start": "yarn tsc && node bin/www",
+    "build": "yarn tsc",
+    "start": "node ./bin/www",
     "start:dev": "tsc --watch & nodemon --exec NODE_ENV=development bin/www",
     "winstart:dev": "tsc --watch && nodemon export NODE_ENV=development bin/www",
     "test": "NODE_ENV=test jest",
