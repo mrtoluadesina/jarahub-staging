@@ -1,13 +1,8 @@
 FROM node:12
-
 WORKDIR /app
-
-# ADD package.json /usr/src/app/package.json
 COPY package.json .
-
 RUN yarn
-RUN yarn build
-
 COPY . .
+RUN yarn build
 EXPOSE 3005
 CMD ["yarn", "start"]
