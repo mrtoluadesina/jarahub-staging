@@ -1,8 +1,8 @@
 FROM node:12
 WORKDIR /app
-COPY package.json .
+COPY package.json ./
+COPY . ./
 RUN yarn
-COPY . .
-RUN yarn build
+RUN yarn tsc
 EXPOSE 3005
 CMD ["yarn", "start"]
