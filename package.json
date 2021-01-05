@@ -18,7 +18,7 @@
   "dependencies": {
     "@sendgrid/mail": "7.1.1",
     "algoliasearch": "4.0.3",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "bcryptjs": "2.4.3",
     "celebrate": "11.0.1",
     "cloudinary": "1.19.0",
